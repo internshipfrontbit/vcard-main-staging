@@ -76,8 +76,8 @@ class WhatsappStoreProductTable extends LivewireTableComponent
 
     public function builder(): Builder
     {
-        return WhatsappStoreProduct::where('whatsapp_store_id',$this->whatsappStoreId)->orderByRaw('position IS NULL, position ASC')
-        ->orderBy('created_at', 'desc');;
+        return WhatsappStoreProduct::query()->where('whatsapp_store_id',$this->whatsappStoreId)->orderByRaw('position IS NULL, position ASC')
+        ->orderBy('created_at', 'desc');
     }
 
     public function placeholder()
