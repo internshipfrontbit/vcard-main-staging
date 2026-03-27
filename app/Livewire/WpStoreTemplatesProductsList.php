@@ -133,7 +133,6 @@ class WpStoreTemplatesProductsList extends Component
             ->when($this->stockFilter === 'available', fn($query) => $query->where('available_stock', '>', 0))
             ->when($this->stockFilter === 'out_of_stock', fn($query) => $query->where('available_stock', '=', 0))
             ->when($this->stockFilter === 'all', fn($query) => $query )
-            ->orderByRaw('position IS NULL, position ASC')
             ->when($this->priceSortOrder, function ($query) {
                 if ($this->priceSortOrder === '1') {
                     $query->orderBy('selling_price', 'asc'); // Low to High
