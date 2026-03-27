@@ -355,7 +355,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 mt-5 d-none">
+                        <div class="col-md-6 mt-5">
                             <div class="form-group">
                                 <label class="form-label required">Production Position</label>
                                 <input type="number" class="form-control" name="position"
