@@ -24,6 +24,7 @@ class WhatsappStoreProductTable extends LivewireTableComponent
     {
         $this->setPrimaryKey('id');
         $this->setPageName('whatsapp-store-product-table');
+        $this->setDefaultSort('created_at','desc');
         $this->setColumnSelectStatus(false);
         $this->setQueryStringStatus(false);
         $this->resetPage('whatsapp-store-product-table');
@@ -76,8 +77,7 @@ class WhatsappStoreProductTable extends LivewireTableComponent
 
     public function builder(): Builder
     {
-        return WhatsappStoreProduct::query()->where('whatsapp_store_id',$this->whatsappStoreId)->orderByRaw('position IS NULL, position ASC')
-        ->orderBy('created_at', 'desc');
+        return WhatsappStoreProduct::where('whatsapp_store_id',$this->whatsappStoreId);
     }
 
     public function placeholder()
