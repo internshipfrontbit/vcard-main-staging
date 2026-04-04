@@ -210,7 +210,7 @@ class WhatsappStoreController extends AppBaseController
 
         $request["tenant_id"] = getLogInTenantId();
 
-        if(!$storeNew){
+        if($storeNew){
             return response()->json([
                 'success' => false,
                 'message' => 'Store already exists. Please choose a different one.',
