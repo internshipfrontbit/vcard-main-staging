@@ -106,6 +106,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthAPIController::class, 'logout']);
 
 
+    Route::post('whatsapp-store/new-store/create', [WhatsappStoreController::class, 'storeAPI']);
     Route::post('whatsapp-store/product/create', [WhatsappStoreProductController::class, 'store']);
     Route::get('whatsapp-store/getStoreDetails/{alias}', [WhatsappStoreController::class, 'apiShowNew']);
     Route::get('whatsapp-store/product/{alias}/{productId}/edit', [WhatsappStoreProductController::class, 'editApi']);

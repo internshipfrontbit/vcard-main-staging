@@ -202,6 +202,37 @@ class WhatsappStoreController extends AppBaseController
         return redirect(route('whatsapp.stores.edit', [$whatsappStore->id]));
     }
 
+    public function storeAPI(CreateWhatsappStoreRequest $request)
+    {
+        $store = WhatsappStore::where('url_alias', $request->url_alias)->first();
+
+        if($store){
+            return response()->json([
+                'success' => false,
+                'message' => 'Store already exists. Please choose a different one.',
+            ], 422);
+        }
+
+        $stores = WhatsappStore::where('tenant_id', getLogInTenantId())->first();
+            
+        if($stores){
+            return response()->json([
+                'success' => false,
+                'message' => 'You have already created a store.',
+            ], 403);
+        }
+
+        $input = $request->all();
+
+        $whatsappStore = $this->whatsappStoreRepository->store($input);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Store created successfully.',
+            'data' => $whatsappStore
+        ], 201);
+    }
+
     public function edit(WhatsappStore $whatsappStore, Request $request)
     {
         $isWhatsappStoreAllowed = getPlanFeature(getCurrentSubscription()->plan)['whatsapp_store'];
