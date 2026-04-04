@@ -243,6 +243,21 @@ class WhatsappStoreController extends AppBaseController
         ], 201);
     }
 
+    public function getPlans(){
+        $plans = Plan::with(['currency', 'planFeature'])->whereStatus(Plan::IS_ACTIVE)->whereIsDefault(Plan::IS_DEACTIVE)->get();
+
+        $monthlyPlans = $plans->where('frequency', Plan::MONTHLY);
+        $yearlyPlans = $plans->where('frequency', Plan::YEARLY);
+        $unLimitedPlans = $plans->where('frequency', Plan::UNLIMITED);
+
+        return response()->json([
+            'success' => true,
+            'monthly_plans' => $monthlyPlans,
+            'yearly_plans' => $yearlyPlans,
+            'unlimited_plans' => $unLimitedPlans,
+        ], 200);
+    }
+
     public function edit(WhatsappStore $whatsappStore, Request $request)
     {
         $isWhatsappStoreAllowed = getPlanFeature(getCurrentSubscription()->plan)['whatsapp_store'];
