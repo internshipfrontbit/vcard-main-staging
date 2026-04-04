@@ -81,6 +81,7 @@ Route::post('whatsapp-store/add-order/product-buy-online', [WhatsappStoreProduct
 Route::post('whatsapp-store/finalize-order-online', [WhatsappStoreProductController::class, 'finalizeOrder']);
 
 Route::post('social-login/{provider}', [SocialAuthApiController::class, 'socialLogin']);
+Route::post('social-register/{provider}', [SocialAuthApiController::class, 'socialRegister']);
 
 Route::get('whatsapp-store/get-data/{alias}', [WhatsappStoreController::class, 'apiShow'])->middleware('language');
 Route::get('whatsapp-store/get-product-data/{alias}/{categoryId?}', [WhatsappStoreController::class, 'apiShowProducts'])->middleware('language');
