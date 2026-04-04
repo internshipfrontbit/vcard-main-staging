@@ -19,6 +19,7 @@ use App\Http\Controllers\WhatsappStoreProductController;
 use App\Http\Controllers\SubSessionController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\API\Admin\GalleryAPIController;
 use App\Http\Controllers\API\Admin\NfcCardAPIController;
 use App\Http\Controllers\API\Admin\IframeAPIController;
@@ -108,6 +109,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('whatsapp-store/new-store/create', [WhatsappStoreController::class, 'storeAPI']);
     Route::get('whatsapp-store/new-store/get-plans', [WhatsappStoreController::class, 'getPlans']);
+    Route::get('whatsapp-store/new-store/create-plan-request', [SubscriptionController::class, 'manualPayApi']);
     Route::post('whatsapp-store/product/create', [WhatsappStoreProductController::class, 'store']);
     Route::get('whatsapp-store/getStoreDetails/{alias}', [WhatsappStoreController::class, 'apiShowNew']);
     Route::get('whatsapp-store/product/{alias}/{productId}/edit', [WhatsappStoreProductController::class, 'editApi']);

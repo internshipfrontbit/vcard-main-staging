@@ -218,6 +218,33 @@ class SubscriptionController extends AppBaseController
         return $this->sendSuccess(__('messages.placeholder.subscribed_plan_wait'));
     }
 
+    public function manualPayApi(Request $request){
+        $input = $request->all();
+
+        $this->subscriptionRepo->manageSubscription($input);
+        $data = Subscription::whereTenantId(getLogInTenantId())->orderBy('created_at', 'desc')->first();
+        Subscription::whereId($data->id)->update(['payment_type' => 'Cash', 'status' => Subscription::PENDING]);
+        $is_on = Setting::where('key', 'is_manual_payment_guide_on')->first();
+        $manual_payment_guide_step = Setting::where('key', 'manual_payment_guide')->first();
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $super_admin_data = [
+            'super_admin_msg' => $user->full_name . ' created request for payment of ' . $data->plan->currency->currency_icon . '' . $data->payable_amount,
+            'attachment' => $data->attachment ?? '',
+            'notes' => $data->notes ?? '',
+            'id' => $data->id,
+        ];
+
+        $planName = Plan::find($request->planId)->name;
+        $firstName = getLogInUser()->first_name;
+        $lastName = getLogInUser()->last_name;
+        $purchaseUserFullName = implode(' ', [$firstName, $lastName]);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('messages.placeholder.subscribed_plan_wait'),
+        ], 200);
+    }
+
     public function downloadAttachment($id): \Illuminate\Http\Response|Application|\Illuminate\Contracts\Routing\ResponseFactory
     {
         $subscription = Subscription::findOrFail($id);
