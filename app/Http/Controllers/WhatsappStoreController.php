@@ -259,6 +259,37 @@ class WhatsappStoreController extends AppBaseController
         ], 200);
     }
 
+    public function checkSubscriptionPlan(){
+         $plan = Subscription::whereTenantId(getLogInTenantId())->orderByDesc('id')->first();
+
+         if($plan && $plan->payment_type === null && now()->diffInMinutes($plan->created_at) < 30){
+            return response()->json([
+                'success' => true,
+                'message' => 'TRIAL_ACTIVE',
+            ], 200);
+        } else if($plan && $plan->payment_type === null && now()->diffInMinutes($plan->created_at) > 30){
+            return response()->json([
+                'success' => true,
+                'message' => 'TRIAL_EXPIRED',
+            ], 200);
+        } else if($plan && $plan->payment_type === "Cash" && $plan->trial_ends_at === null){
+            return response()->json([
+                'success' => true,
+                'message' => 'SUBSCRIPTION_PENDING',
+            ], 200);
+        } else if($plan && $plan->payment_type === "Online" && $plan->trial_ends_at > now()){
+             return response()->json([
+                'success' => true,
+                'message' => 'SUBSCRIPTION_EXPIRED',
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => true,
+                'message' => 'SUBSCRIPTION_ACTIVE',
+            ], 200);
+        }
+    }
+
     public function edit(WhatsappStore $whatsappStore, Request $request)
     {
         $isWhatsappStoreAllowed = getPlanFeature(getCurrentSubscription()->plan)['whatsapp_store'];
