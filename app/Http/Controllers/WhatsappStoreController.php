@@ -206,6 +206,8 @@ class WhatsappStoreController extends AppBaseController
     {
         $store = WhatsappStore::where('url_alias', $request->url_alias)->first();
 
+        $request["tenant_id"] = getLogInTenantId();
+
         if($store){
             return response()->json([
                 'success' => false,
