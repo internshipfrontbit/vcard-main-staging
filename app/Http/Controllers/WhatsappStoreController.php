@@ -212,7 +212,7 @@ class WhatsappStoreController extends AppBaseController
             return response()->json([
                 'success' => false,
                 'message' => 'Store already exists. Please choose a different one.',
-            ], 403);
+            ], 201);
         }
 
         $stores = WhatsappStore::where('tenant_id', getLogInTenantId())->first();
@@ -221,7 +221,7 @@ class WhatsappStoreController extends AppBaseController
             return response()->json([
                 'success' => false,
                 'message' => 'You have already created a store.',
-            ], 403);
+            ], 201);
         }
 
         $input = $request->all();
