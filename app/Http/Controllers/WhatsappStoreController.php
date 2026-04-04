@@ -204,10 +204,6 @@ class WhatsappStoreController extends AppBaseController
 
     public function storeAPI(Request $request)
     {
-        dd('here');
-
-        return;
-
         $storeNew = WhatsappStore::where('url_alias', 'meet-test-ip-store')->first();
 
         $request["tenant_id"] = getLogInTenantId();
