@@ -402,6 +402,19 @@ class WhatsappStoreController extends AppBaseController
 
         return redirect(route('whatsapp.stores.edit', [$whatsappStore->id]));
     }
+
+    public function updateAPI(Request $request){
+        $input = $request->all();
+            
+        $whatsappStore = WhatsappStore::where('id', $request->id)->first();
+
+        $whatsappStore = $this->whatsappStoreRepository->update($whatsappStore, $input);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Store updated successfully.',
+        ], 200);
+    }
     
     public function updateSocialLinks(Request $request)
     {
