@@ -221,7 +221,7 @@ class WhatsappStoreController extends AppBaseController
             return response()->json([
                 'success' => false,
                 'message' => 'You have already created a store.',
-            ], 201);
+            ], 400);
         }
 
         $input = $request->all();
