@@ -202,7 +202,7 @@ class WhatsappStoreController extends AppBaseController
         return redirect(route('whatsapp.stores.edit', [$whatsappStore->id]));
     }
 
-    public function storeAPI(CreateWhatsappStoreRequest $request)
+    public function storeAPI(Request $request)
     {
         dd('here');
 
