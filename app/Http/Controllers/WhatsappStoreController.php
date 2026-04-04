@@ -204,7 +204,7 @@ class WhatsappStoreController extends AppBaseController
 
     public function storeAPI(CreateWhatsappStoreRequest $request)
     {
-        $input = $request->all();
+        
 
         $storeNew = WhatsappStore::where('url_alias', 'meet-test-ip-store')->first();
 
@@ -225,6 +225,8 @@ class WhatsappStoreController extends AppBaseController
                 'message' => 'You have already created a store.',
             ], 400);
         }
+
+        $input = $request->all();
 
         $whatsappStore = $this->whatsappStoreRepository->store($input);
 
