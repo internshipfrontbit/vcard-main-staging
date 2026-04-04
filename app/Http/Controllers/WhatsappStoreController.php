@@ -206,11 +206,11 @@ class WhatsappStoreController extends AppBaseController
     {
         $input = $request->all();
 
-        $store = WhatsappStore::where('url_alias', $input['url_alias'])->first();
+        $storeNew = WhatsappStore::where('url_alias', $input['url_alias'])->first();
 
         $request["tenant_id"] = getLogInTenantId();
 
-        if($store){
+        if($storeNew){
             return response()->json([
                 'success' => false,
                 'message' => 'Store already exists. Please choose a different one.',
