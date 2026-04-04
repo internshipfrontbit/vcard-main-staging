@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Laracasts\Flash\Flash;
+use App\Models\Plan;
 use App\Models\WpOrderItem;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
