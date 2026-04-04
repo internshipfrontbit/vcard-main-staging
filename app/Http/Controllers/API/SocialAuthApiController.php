@@ -8,6 +8,8 @@ use App\Models\SocialAccount;
 use App\Models\Subscription;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Str;
+use Laracasts\Flash\Flash;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AppBaseController;
 use App\Models\User;
