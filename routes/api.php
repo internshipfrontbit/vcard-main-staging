@@ -90,6 +90,14 @@ Route::post('whatsapp-store/add-order/product-buy', [WhatsappStoreProductControl
 Route::post('heartbeat', [SubSessionController::class, 'heartbeat']);
 Route::get('/cron/end-inactive-sessions', [AnalyticsController::class, 'endInactiveSubSessions']);
 
+Route::post('/fetch-main-session', [AnalyticsController::class, 'createMainSession']);
+Route::post('/fetch-sub-session', [AnalyticsController::class, 'createSubSession']);
+Route::post('/apply-coupon-code-store', [AnalyticsController::class, 'applyCouponCode']);
+Route::post('/start-product-sub-session', [AnalyticsController::class, 'startProductSubSession']);
+Route::post('/start-product-inq-sub-session', [AnalyticsController::class, 'startProductInqSubSession']);
+Route::post('/end-product-inq-sub-session', [AnalyticsController::class, 'endInactiveProductInquiry']);
+Route::post('/update-product-inquiry-session', [AnalyticsController::class, 'updateProductInqSubSession']);
+
 Route::post('whatsapp-store/app-order', [WhatsappStoreProductController::class, 'appOrder']);
 
 

@@ -425,6 +425,16 @@
 </style>
 @endif
 
+@if($whatsappStore->id == 1502 || $whatsappStore->id == 1600)
+    <style>
+    .navbar-brand{
+        width: auto !important;
+    }
+    .navbar .fw-6.fs-18{
+        display: none !important;
+    }
+    </style>
+@endif
 
 
 

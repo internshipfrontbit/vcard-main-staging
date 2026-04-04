@@ -61,7 +61,7 @@ class WhatsappStoreProductController extends AppBaseController
         $limit1000 = [345, 208, 1488];
         $limit1550 = [691];
         $limit650 = [];
-        $limit100 = [364, 382, 503, 520, 564, 584,308, 752, 1014, 651, 966, 1234, 1238];
+        $limit100 = [364, 382, 503, 520, 564, 584,308, 752, 1014, 651, 966, 1234, 1238, 1277];
         $limit250 = [392, 425, 77, 970, 530];        
         $limit220 = [346];
         $limit150 = [128, 363, 652, 738, 376, 982, 1263];
@@ -140,7 +140,7 @@ class WhatsappStoreProductController extends AppBaseController
                         config('app.media_disc')
                     );
                 }
-            }else if($input['whatsapp_store_id'] == 327 || $input['whatsapp_store_id'] == 346 || $input['whatsapp_store_id'] == 406 || $input['whatsapp_store_id'] == 600 || $input['whatsapp_store_id'] == 41 || $input['whatsapp_store_id'] == 738 || $input['whatsapp_store_id'] == 927 || $input['whatsapp_store_id'] == 806 || $input['whatsapp_store_id'] == 530 || $input['whatsapp_store_id'] == 982 || $input['whatsapp_store_id'] == 990 || $input['whatsapp_store_id'] == 1158 || $input['whatsapp_store_id'] == 348 || $input['whatsapp_store_id'] == 1437 ) { 
+            }else if($input['whatsapp_store_id'] == 327 || $input['whatsapp_store_id'] == 346 || $input['whatsapp_store_id'] == 406 || $input['whatsapp_store_id'] == 600 || $input['whatsapp_store_id'] == 41 || $input['whatsapp_store_id'] == 738 || $input['whatsapp_store_id'] == 927 || $input['whatsapp_store_id'] == 806 || $input['whatsapp_store_id'] == 530 || $input['whatsapp_store_id'] == 982 || $input['whatsapp_store_id'] == 990 || $input['whatsapp_store_id'] == 1158 || $input['whatsapp_store_id'] == 348 || $input['whatsapp_store_id'] == 1437 || $input['whatsapp_store_id'] == 1588 || $input['whatsapp_store_id'] == 1497) { 
                  foreach ($images as $image) {
                     $product->refresh();
                     if ($product->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 2) {
@@ -167,7 +167,7 @@ class WhatsappStoreProductController extends AppBaseController
                         config('app.media_disc')
                     );
                 }
-            } else if($input['whatsapp_store_id'] == 865 ) {
+            } else if($input['whatsapp_store_id'] == 865 || $input['whatsapp_store_id'] == 1557) {
                 // Special case: allow max 3 images, remove oldest if needed
                 foreach ($images as $image) {
                     $product->refresh();
@@ -396,7 +396,7 @@ class WhatsappStoreProductController extends AppBaseController
                         config('app.media_disc')
                     );
                 }
-            }else if($input['whatsapp_store_id'] == 327 || $input['whatsapp_store_id'] == 346 || $input['whatsapp_store_id'] == 406 || $input['whatsapp_store_id'] == 600 || $input['whatsapp_store_id'] == 41 || $input['whatsapp_store_id'] == 738 || $input['whatsapp_store_id'] == 927 || $input['whatsapp_store_id'] == 806 || $input['whatsapp_store_id'] == 530 || $input['whatsapp_store_id'] == 982 || $input['whatsapp_store_id'] == 990 || $input['whatsapp_store_id'] == 1158 || $input['whatsapp_store_id'] == 348  || $input['whatsapp_store_id'] == 1437) {
+            }else if($input['whatsapp_store_id'] == 327 || $input['whatsapp_store_id'] == 346 || $input['whatsapp_store_id'] == 406 || $input['whatsapp_store_id'] == 600 || $input['whatsapp_store_id'] == 41 || $input['whatsapp_store_id'] == 738 || $input['whatsapp_store_id'] == 927 || $input['whatsapp_store_id'] == 806 || $input['whatsapp_store_id'] == 530 || $input['whatsapp_store_id'] == 982 || $input['whatsapp_store_id'] == 990 || $input['whatsapp_store_id'] == 1158 || $input['whatsapp_store_id'] == 348  || $input['whatsapp_store_id'] == 1437 || $input['whatsapp_store_id'] == 1588 || $input['whatsapp_store_id'] == 1497) {
                  foreach ($images as $image) {
                     $wpStoreProduct->refresh();
                     if ($wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 2) {
@@ -423,7 +423,7 @@ class WhatsappStoreProductController extends AppBaseController
                         config('app.media_disc')
                     );
                 }
-            } else if($input['whatsapp_store_id'] == 865) {
+            } else if($input['whatsapp_store_id'] == 865 || $input['whatsapp_store_id'] == 1557) {
                 // Special case: rolling image behavior
                 foreach ($images as $image) {
                     $wpStoreProduct->refresh();
@@ -644,7 +644,7 @@ class WhatsappStoreProductController extends AppBaseController
                         config('app.media_disc')
                     );
                 }
-            }else if($input['whatsapp_store_id'] == 327 || $input['whatsapp_store_id'] == 346 || $input['whatsapp_store_id'] == 406 || $input['whatsapp_store_id'] == 600 || $input['whatsapp_store_id'] == 41 || $input['whatsapp_store_id'] == 738 || $input['whatsapp_store_id'] == 927 || $input['whatsapp_store_id'] == 530 || $input['whatsapp_store_id'] == 806 || $input['whatsapp_store_id'] == 982 || $input['whatsapp_store_id'] == 990 || $input['whatsapp_store_id'] == 1158 || $input['whatsapp_store_id'] == 348 || $input['whatsapp_store_id'] == 1437) {
+            }else if($input['whatsapp_store_id'] == 327 || $input['whatsapp_store_id'] == 346 || $input['whatsapp_store_id'] == 406 || $input['whatsapp_store_id'] == 600 || $input['whatsapp_store_id'] == 41 || $input['whatsapp_store_id'] == 738 || $input['whatsapp_store_id'] == 927 || $input['whatsapp_store_id'] == 530 || $input['whatsapp_store_id'] == 806 || $input['whatsapp_store_id'] == 982 || $input['whatsapp_store_id'] == 990 || $input['whatsapp_store_id'] == 1158 || $input['whatsapp_store_id'] == 348 || $input['whatsapp_store_id'] == 1437 || $input['whatsapp_store_id'] == 1588 || $input['whatsapp_store_id'] == 1497) {
                  foreach ($images as $image) {
                     $wpStoreProduct->refresh();
                     if ($wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 2) {
@@ -685,7 +685,7 @@ class WhatsappStoreProductController extends AppBaseController
                         config('app.media_disc')
                     );
                 }
-            } else if($input['whatsapp_store_id'] == 865) {
+            } else if($input['whatsapp_store_id'] == 865 || $input['whatsapp_store_id'] == 1557) {
                 // Special case: rolling image behavior
                 foreach ($images as $image) {
                     $wpStoreProduct->refresh();
@@ -815,6 +815,26 @@ class WhatsappStoreProductController extends AppBaseController
                     $discountAmount = ($grandTotal * $whatsappStore->dis_perc) / 100;
                     $grandTotal = $grandTotal - $discountAmount;
                 }
+
+                 if ($request->filled('coupon_code')) {
+                    $response = Http::withHeaders([
+                    'store_id' => $whatsappStore->id
+                    ])->post('https://backend.vcardking.com/analytics/api/analytics/coupons/apply', [
+                        'coupon_code'  => $request->coupon_code,
+                        'order_amount' => $grandTotal
+                    ]);
+
+                    if ($response->successful()) {
+                        $couponData = $response->json();
+
+                        if (isset($couponData['data']['final_amount'])) {
+                            $request->merge([
+                                'discount_amount'=> ($grandTotal - $couponData['data']['final_amount'])
+                            ]);
+                        }
+                    }
+                 }
+
 
                 if ($whatsappStore->id == 1463) {
 
@@ -1136,6 +1156,15 @@ class WhatsappStoreProductController extends AppBaseController
 
                     $input['dis_amt'] = $discountAmount;
 
+            if ($request->filled('discount_amount')) {
+                $input['grand_total'] = $input['grand_total'] - $request->discount_amount;
+                $input['dis_amt'] = $request->discount_amount;
+            }
+
+             if ($request->filled('coupon_code')) {
+                $input['coupon_code'] = $request->coupon_code;
+            }
+
             $wpOrder = WpOrder::create($input);
 
             $sessionIds = [];
@@ -1194,7 +1223,7 @@ class WhatsappStoreProductController extends AppBaseController
               $encodedId = urlencode($analyticsNew->decryptData($request->input("sc_id")));
               
              
-               \Log::info('-=-=-===-===-=-==-==-=-=-==-.',[$input["sc_id"],$request->input("sc_id"), $encodedId, $mainsessionId, $datacreate, $datam, $sessionIds]); 
+            
               $analyticsNew->apiSyncPut("analytics/main-sessions/".$encodedId, $datacreate);
 
                

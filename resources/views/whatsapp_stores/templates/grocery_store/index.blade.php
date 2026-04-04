@@ -447,7 +447,7 @@
                     <h2> {{ __('messages.whatsapp_stores_templates.choose_your_product') }}</h2>
                 </div>
                 <div class="row custom-row product-gap-row mb-40 product-cards">
-                    @foreach ($whatsappStore->products()->latest()->take(8)->get() as $product)
+                    @foreach ($whatsappStore->products()->where('is_active','=',true)->orderByRaw('position IS NULL, position ASC')->orderBy('created_at', 'desc')->take(8)->get() as $product)
                         <div class="col-xl-3 col-lg-4 col-sm-6 custom-margin-bottom mb-30">
                             <div class="product-card h-100 d-flex flex-column justify-content-between">
 

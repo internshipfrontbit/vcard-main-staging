@@ -357,7 +357,7 @@
     </style>
    @endif  
    
-  @if($whatsappStore->id == 348)
+  @if($whatsappStore->id == 348 || $whatsappStore->id == 1555)
     <style>
         
 @media(max-width: 600px) {
@@ -431,15 +431,18 @@ object-fit: fill;
                             <img src="{{ $whatsappStore->logo_url }}" alt="logo"
                                 class="w-100 h-100 object-fit-cover" loading="lazy" />
                         </a>
-                        @if (request()->getHost() === 'staging.vcardking.com') 
-                        <span class="fw-6 fs-18"><a
-                                href="{{ route('whatsapp.store.show', $whatsappStore->url_alias) }}"
-                                style="color: #212529 ">{{ $whatsappStore->store_name }}</a></span>
-                        @else
-                        <span class="fw-6 fs-18"><a
-                                href="{{ route('whatsapp.store.show') }}"
-                                style="color: #212529 ">{{ $whatsappStore->store_name }}</a></span>
-                        @endif
+                        
+                            @if (request()->getHost() === 'staging.vcardking.com') 
+                                <span class="fw-6 fs-18 whatsapp-stor-name"><a
+                                        href="{{ route('whatsapp.store.show', $whatsappStore->url_alias) }}"
+                                        style="color: #212529 ">{{ $whatsappStore->store_name }}</a></span>
+                            @else
+                                <span class="fw-6 fs-18"><a
+                                        href="{{ route('whatsapp.store.show') }}"
+                                        style="color: #212529 ">{{ $whatsappStore->store_name }}</a></span>
+                            @endif
+                       
+                        
                     </div>
 
                     <div class="d-flex align-items-center gap-lg-4 gap-sm-3 gap-2">
@@ -613,7 +616,47 @@ object-fit: fill;
         <div>
     @if($whatsappStore->id == 423)       
  <img src="https://staging.vcardking.com/uploads/top_1.jpg" alt="Footer Banner - JK Filterwala" style="width: 100%; margin-top: 32px;">
-    @endif             
+    @endif       
+    
+            
+            @if($whatsappStore->id == 1600) 
+
+                @if(count(\App\Helpers\VideoHelper::getVideoLinks($whatsappStore->id)) > 0)
+
+                    <div class="section-heading text-left mt-5">
+                        <div class="collection-title">
+                            <!--<img src="./public/images/left.png">-->
+                            <h2 class="crimson-pro-medium px-50">Our Trending Videos</h2>
+                            <!--<img src="./public/images/right.png">-->
+                        </div>
+                    </div>
+
+                    @endif
+
+                    
+            
+            
+                    <!-- Video Container -->
+                    <div class="horizontal-videos" id="videoContainer">
+                        @foreach (\App\Helpers\VideoHelper::getVideoLinks($whatsappStore->id) as $link)
+                            <div class="video-wrapper">
+                                <iframe 
+                                    src="{{ $link }}?autoplay=1&mute=1&loop=1&playlist={{ basename($link) }}&controls=0&showinfo=0&modestbranding=0" 
+                                    frameborder="0" 
+                                    allow="autoplay; encrypted-media; fullscreen" 
+                                    allowfullscreen></iframe>
+                                <div class="iframe-click-overlay"></div>
+                            </div>
+                        @endforeach
+                    </div>
+                    
+                    <!-- Overlay HTML -->
+                    <div id="videoOverlay">
+                        <div class="close-btn">&times;</div>
+                        <iframe src="" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+                    </div> 
+
+                @endif
                 
             <div class="category-section px-50 pt-30 mb-2 pb-1 position-relative">
                 @if($whatsappStore->id == 125 || $whatsappStore->id == 208 || $whatsappStore->id == 1488)
@@ -629,9 +672,16 @@ object-fit: fill;
                     </form>
                 @endif
                 <div class="section-heading d-flex justify-content-between" style="margin-bottom: 10px !important">
-                    <h2 class="title-size w-75">{{ __('messages.whatsapp_stores_templates.choos_your_category') }}</h2>
+                    
+                    @if($whatsappStore->id != 1502)
+                        <h2 class="title-size w-75">{{ __('messages.whatsapp_stores_templates.choos_your_category') }}</h2>
+                    @else
+                        <h2 class="title-size w-75">Shop by Category</h2>
+                    @endif
+                    
+
                     @if ($whatsappStore->categories->count() > 0)
-                         @if($whatsappStore->id != 348)
+                         @if($whatsappStore->id != 348 && $whatsappStore->id != 1555)
                         <div class="w-25 mt-2 mb-3 d-flex justify-content-end">
                             <svg class="cursor-pointer {{ $whatsappStore->id == 322 ? 'rotate-icon' : ''  }}" data-content="{{ $whatsappStore->id == 322 ? 'View Less' : 'View All' }}" id="viewAllButton" onclick="viewAllCategories()" style="height: 15px;width: 15px;margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 18 10" fill="none">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M0.615983 0.366227C0.381644 0.600637 0.25 0.918522 0.25 1.24998C0.25 1.58143 0.381644 1.89932 0.615983 2.13373L8.11598 9.63373C8.35039 9.86807 8.66828 9.99971 8.99973 9.99971C9.33119 9.99971 9.64907 9.86807 9.88348 9.63373L17.3835 2.13373C17.6112 1.89797 17.7372 1.58222 17.7343 1.25448C17.7315 0.92673 17.6 0.613214 17.3683 0.381454C17.1365 0.149694 16.823 0.0182329 16.4952 0.0153849C16.1675 0.0125369 15.8517 0.13853 15.616 0.366227L8.99973 6.98248L2.38348 0.366227C2.14907 0.131889 1.83119 0.000244141 1.49973 0.000244141C1.16828 0.000244141 0.850393 0.131889 0.615983 0.366227Z" fill="black"></path>
@@ -674,7 +724,7 @@ object-fit: fill;
                 </style>
                 <div class="row category-image-container horizontal-scroll" style="{{$whatsappStore->id == 322 ? 'flex-wrap: wrap' : 'flex-wrap: nowrap;'}}">
                     @foreach ($whatsappStore->categories as $category)
-                        <div class="col-xl-3 col-md-4 col-sm-6 mb-3 category-image-mobile position-relative" style="{{ $whatsappStore->id == 322 ? 'width: 97%' : ''  }}">
+                        <div class="col-xl-3 col-md-3 col-sm-6 mb-3 category-image-mobile position-relative" style="{{ $whatsappStore->id == 322 ? 'width: 97%' : ''  }}">
                            @if (request()->getHost() === 'staging.vcardking.com') 
                             <a href="{{ route('whatsapp.store.products', ['alias' => $whatsappStore->url_alias, 'category' => $category->id]) }}"
                            @else
@@ -786,7 +836,7 @@ object-fit: fill;
 @include('whatsapp_stores.templates.beauty_products.custom-category-view')             
             
             <div class="product-section-new product-section px-50 position-relative {{ $whatsappStore->id == 1488 ? 'd-none' : '' }}">
-                @if($whatsappStore->id != 348)
+                @if($whatsappStore->id != 348 && $whatsappStore->id != 1555)
                 <div class="section-heading" style="margin-bottom: 10px !important">
                     <h2 class="title-size">
                         
@@ -832,7 +882,7 @@ object-fit: fill;
                 </style>
                 <div class="row custom-row product-gap-row mb-40">
                     @php($productLimit= $whatsappStore->id == 423 ? 35 : $productLimit= $whatsappStore->id == 208 || $whatsappStore->id == 1488 ? 18 : 8)
-                    @foreach ($whatsappStore->products()->where('available_stock', '>', 0)->latest()->take($productLimit)->get() as $product)
+                    @foreach ($whatsappStore->products()->where('available_stock', '>', 0)->where('is_active','=',true)->orderByRaw('position IS NULL, position ASC')->orderBy('created_at', 'desc')->take($productLimit)->get() as $product)
                         <div class="col-xl-3 col-lg-4 col-sm-6 mb-30">
                             <div class="product-card h-100 d-flex flex-column items-new-product {{$whatsappStore->id == 345 ? 'mobile-card' : ''}}" style="padding:0px;">
                                  @if (request()->getHost() === 'staging.vcardking.com') 
@@ -957,7 +1007,7 @@ object-fit: fill;
                                                     </div>
                                          @else
                                             <div>
-                                        @if($whatsappStore->id == 860 )
+                                        @if($whatsappStore->id == 860 || $whatsappStore->id == 1518)
                                             <button data-id="{{ $product->id }}"
                                                 class="btn btn-primary d-flex justify-content-center align-items-center mx-auto gap-2 addToCartBtn w-100 mb-1 @if($product->available_stock == 0) disabled @endif"
                                                style="background: #25d366 !important; color: #ffffff !important;border: 1px solid #25d366 !important;">   
@@ -985,7 +1035,7 @@ object-fit: fill;
                                                     </div>
                                             
                                             
-                                          @elseif($whatsappStore->id != 396 && $whatsappStore->id != 322 && $whatsappStore->id != 619  && $whatsappStore->id != 860 && $whatsappStore->id != 983)
+                                          @elseif($whatsappStore->id != 396 && $whatsappStore->id != 322 && $whatsappStore->id != 619  && $whatsappStore->id != 860 && $whatsappStore->id != 1518 && $whatsappStore->id != 983)
                                                 @if($whatsappStore->id == 344 || $whatsappStore->id == 348 || $whatsappStore->id == 1502)
                                                 <button class="addToCartBtn" id="product-{{ $product->id }}" style="display: none;" data-id="{{ $product->id }}"></button>
                                                 <button data-id="{{ $product->id }}"
@@ -1024,7 +1074,7 @@ object-fit: fill;
                                             @endif
                                            
                                                  
-                                        @if($whatsappStore->id != 64 && $whatsappStore->id != 125 && $whatsappStore->id != 208 && $whatsappStore->id != 651 && $whatsappStore->id != 721 && $whatsappStore->id != 41 && $whatsappStore->id != 707 && $whatsappStore->id != 860 && $whatsappStore->id != 796 && $whatsappStore->id != 1010)
+                                        @if($whatsappStore->id != 64 && $whatsappStore->id != 125 && $whatsappStore->id != 208 && $whatsappStore->id != 651 && $whatsappStore->id != 721 && $whatsappStore->id != 41 && $whatsappStore->id != 707 && $whatsappStore->id != 860 && $whatsappStore->id != 1518 && $whatsappStore->id != 796 && $whatsappStore->id != 1010 && $whatsappStore->id != 1151)
                                         
                                             @if($whatsappStore->id == 344 || $whatsappStore->id == 348 || $whatsappStore->id == 1502)
                                                  <button data-id="{{ $product->id }}"
@@ -1142,41 +1192,48 @@ object-fit: fill;
                  @endif
                 
                 
+                
+                @if($whatsappStore->id != 1600) 
 
                 @if(count(\App\Helpers\VideoHelper::getVideoLinks($whatsappStore->id)) > 0)
 
-                <div class="section-heading text-center mt-5">
-                    <div class="collection-title">
-                        <!--<img src="./public/images/left.png">-->
-                        <h2 class="crimson-pro-medium">Our Trending Videos</h2>
-                        <!--<img src="./public/images/right.png">-->
+                    <div class="section-heading text-center mt-5">
+                        <div class="collection-title">
+                            <!--<img src="./public/images/left.png">-->
+                            <h2 class="crimson-pro-medium">Our Trending Videos</h2>
+                            <!--<img src="./public/images/right.png">-->
+                        </div>
                     </div>
-                </div>
+
+                    @endif
+
+                    
+            
+            
+                    <!-- Video Container -->
+                    <div class="horizontal-videos" id="videoContainer">
+                        @foreach (\App\Helpers\VideoHelper::getVideoLinks($whatsappStore->id) as $link)
+                            <div class="video-wrapper">
+                                <iframe 
+                                    src="{{ $link }}?autoplay=1&mute=1&loop=1&playlist={{ basename($link) }}&controls=0&showinfo=0&modestbranding=0" 
+                                    frameborder="0" 
+                                    allow="autoplay; encrypted-media; fullscreen" 
+                                    allowfullscreen></iframe>
+                                <div class="iframe-click-overlay"></div>
+                            </div>
+                        @endforeach
+                    </div>
+                    
+                    <!-- Overlay HTML -->
+                    <div id="videoOverlay">
+                        <div class="close-btn">&times;</div>
+                        <iframe src="" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+                    </div> 
 
                 @endif
+                
 
                 
-           
-           
-                <!-- Video Container -->
-                <div class="horizontal-videos" id="videoContainer">
-                    @foreach (\App\Helpers\VideoHelper::getVideoLinks($whatsappStore->id) as $link)
-                        <div class="video-wrapper">
-                            <iframe 
-                                src="{{ $link }}?autoplay=1&mute=1&loop=1&playlist={{ basename($link) }}&controls=0&showinfo=0&modestbranding=0" 
-                                frameborder="0" 
-                                allow="autoplay; encrypted-media; fullscreen" 
-                                allowfullscreen></iframe>
-                            <div class="iframe-click-overlay"></div>
-                        </div>
-                    @endforeach
-                </div>
-                
-                <!-- Overlay HTML -->
-                <div id="videoOverlay">
-                    <div class="close-btn">&times;</div>
-                    <iframe src="" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
-                </div> 
                 
                 
                 @if($whatsappStore->id == 423)
@@ -1206,7 +1263,14 @@ object-fit: fill;
             </div>
         @endif
         @include('whatsapp_stores.templates.order_modal')
-        @include('whatsapp_stores.templates.cart_modal')
+        
+        
+        @if($whatsappStore->id == 1151 || $whatsappStore->id == 1407 || $whatsappStore->id == 1591)
+            @include('whatsapp_stores.templates.ready_rasoi.cart_modal')
+        @else
+            @include('whatsapp_stores.templates.cart_modal')
+        @endif
+        
         @include('whatsapp_stores.templates.beauty_products.quantity_modal')
         @include('whatsapp_stores.templates.beauty_products.size_modal')
         @include('whatsapp_stores.templates.beauty_products.attributes_model')

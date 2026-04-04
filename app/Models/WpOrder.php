@@ -42,7 +42,8 @@ class WpOrder extends Model
         'delivery_instructions',    
         
         'dropdown_settings_order',
-        'shipping_tracking_id'
+        'shipping_tracking_id',
+        'coupon_code'
     ];
     
 

@@ -59,6 +59,13 @@ function viewOrderRenderData1(orderId) {
                 $("#paymentOrderStatus").text(order.payment_status);
                 $("#orderGrandTotal").html(order.grand_total);
                 $("#discountAmount").html(order.dis_amt);
+                if(order.dis_amt && order.dis_amt != 0 && order.coupon_code){
+                    $("#discountRow").removeClass("d-none");
+                    $("#discountTitle").html("Discount(Coupon: " + order.coupon_code + ")");
+                }else{
+                    $("#discountRow").addClass("d-none");
+                    $("#discountTitle").html("Discount");
+                }    
                 if (storeId == 208 || storeId == 1488 || storeId == 676 || storeId == 424) {
                     $("#orderNotes").val(order.notes);
                     $("#orderAdvancePayment").val('');
@@ -125,8 +132,8 @@ function viewOrderRenderData1(orderId) {
                                 ${ storeId == 1209 ? product.offer_text && product.offer_text != '' ? `<br/><small style="color: #770101;font-weight: 600;font-size: 13px;">Offer Applied: ${product.offer_text}</small>` : `` : ``}
                              </td>
                         
-                                ${storeId == 236 || storeId == 4 || storeId == 77 || storeId == 344 || storeId == 364 || storeId == 1323 || storeId == 1502 ? `<td>${product.size}</td>` : ``}
-                                ${storeId == 36 || storeId == 77 ? `<td>${product.color}</td>` : ``}
+                                ${storeId == 236 || storeId == 4 || storeId == 77 || storeId == 344 || storeId == 364 || storeId == 1323 || storeId == 1502 || storeId == 1463 ? `<td>${product.size}</td>` : ``}
+                                ${storeId == 36 || storeId == 77 || storeId == 1502 ? `<td>${product.color}</td>` : ``}
                             ${storeId == 208 || storeId == 1488 || storeId == 7 || storeId == 424 ?
                             `
                             <td><input type="number" style="min-width: 100px;" class="form-control" oninput="updatePrice(${product.product?.id})" value="${product.qty}" id="product-qty-${product.product?.id}" /></td>

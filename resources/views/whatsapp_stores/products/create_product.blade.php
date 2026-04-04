@@ -146,7 +146,7 @@
                                 </div>
                             </div>
                         @endif
-                        @if($whatsappStore->id == 236 || $whatsappStore->id == 344 || $whatsappStore->id == 364 || $whatsappStore->id == 530 || $whatsappStore->id == 77 || $whatsappStore->id == 1158 || $whatsappStore->id == 348 || $whatsappStore->id == 1323 || $whatsappStore->id == 1502)
+                        @if($whatsappStore->id == 236 || $whatsappStore->id == 344 || $whatsappStore->id == 364 || $whatsappStore->id == 530 || $whatsappStore->id == 77 || $whatsappStore->id == 1158 || $whatsappStore->id == 348 || $whatsappStore->id == 1323 || $whatsappStore->id == 1502 || $whatsappStore->id == 1463)
                             <div class="col-md-12 mt-5">
                                 <div class="form-group">
                                     <label class="form-label">{{ 'Sizes' . ':' }}</label>
@@ -228,7 +228,7 @@
                               border-radius: 4px;
                             }
                         </style>
-                         @if($whatsappStore->id == 191 || $whatsappStore->id == 77 || $whatsappStore->id == 1158)
+                         @if($whatsappStore->id == 191 || $whatsappStore->id == 77 || $whatsappStore->id == 1158 || $whatsappStore->id == 1502)
                         <div class="col-md-12 mt-5">
                             <div class="form-group">
                                 <label class="form-label">{{ 'Colors' . ':' }}</label>
@@ -355,13 +355,15 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 mt-5">
-                            <div class="form-group">
-                                <label class="form-label required">Production Position</label>
-                                <input type="number" class="form-control" name="position"
-                                placeholder="Enter category position number">
+                  
+                            <div class="col-md-6 mt-5">
+                                <div class="form-group">
+                                    <label class="form-label required">Product Position</label>
+                                    <input type="number" class="form-control" name="position"
+                                    placeholder="Enter product position number">
+                                </div>
                             </div>
-                        </div>
+                  
                        
                     </div>
             </div>

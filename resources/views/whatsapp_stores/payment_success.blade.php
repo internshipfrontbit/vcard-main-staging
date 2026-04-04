@@ -465,7 +465,7 @@ function getdomain() {
 
          var backUrl;
 
-        if (getdomain() != "vcardking.com") {
+        if (getdomain() != "staging.vcardking.com") {
             storeAlias = `https://${getdomain()}`;
                 backUrl = `https://${getdomain()}`;
         }else{
@@ -575,7 +575,7 @@ var alias = savedFormData.url_alias;
 
                         var backUrl;
 
-                        if (getdomain() != "vcardking.com") {
+                        if (getdomain() != "staging.vcardking.com") {
                                 backUrl = `https://${getdomain()}`;
                         }else{
                          backUrl = baseUrl + "/store/" + alias;

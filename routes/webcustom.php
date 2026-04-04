@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\WhatsappStoreController;
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\WhatsappStoreProductController;
 
 $customDomains = [
@@ -66,6 +67,7 @@ $customDomains = [
     'gj03i.naturalnest.in' => 'nngj03i',
     'krupasjewellery.com' => 'krupas-jewellery',
     'wowtrend.in' => 'wow-trend',
+    'fosvex.in' => 'fosvex.in'
 ];
 
 $currentDomain = request()->getHost();
@@ -122,7 +124,17 @@ if (isset($customDomains[$currentDomain])) {
         ->defaults('alias', $alias)
         ->withoutMiddleware([VerifyCsrfToken::class]);
         
-    Route::post('/whatsapp-store/verify-phonepe-payment', [WhatsappStoreProductController::class, 'verifyPhonePePayment']);    
+    Route::post('/whatsapp-store/verify-phonepe-payment', [WhatsappStoreProductController::class, 'verifyPhonePePayment']);
+    
+    Route::post('/apply-coupon-code-store', [AnalyticsController::class, 'applyCouponCode']);
+
+    Route::post('/fetch-main-session', [AnalyticsController::class, 'createMainSession']);
+    Route::post('/fetch-sub-session', [AnalyticsController::class, 'createSubSession']);
+    Route::post('/apply-coupon-code-store', [AnalyticsController::class, 'applyCouponCode']);
+    Route::post('/start-product-sub-session', [AnalyticsController::class, 'startProductSubSession']);
+    Route::post('/start-product-inq-sub-session', [AnalyticsController::class, 'startProductInqSubSession']);
+    Route::post('/end-product-inq-sub-session', [AnalyticsController::class, 'endInactiveProductInquiry']);
+    Route::post('/update-product-inquiry-session', [AnalyticsController::class, 'updateProductInqSubSession']);
         
     });
 }

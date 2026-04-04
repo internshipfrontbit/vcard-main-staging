@@ -76,7 +76,7 @@
                             @php
                                 $storeUrl = url("store/{$whatsappStore->url_alias}");
                             @endphp
-                            <a class="btn btn-primary fs-6 text-white text-decoration-none mt-0" style="margin-right: 2px" href="https://qrcode.vcardking.com/?{{$storeUrl}}"
+                            <a class="btn btn-primary fs-6 text-white text-decoration-none mt-0" style="margin-right: 2px" href="https://qrcode.staging.vcardking.com/?{{$storeUrl}}"
                                 target="_blank">
                                 
                                 <img src="{{ asset('assets/images/qr.png') }}" width="16px" height="16px">

@@ -1074,6 +1074,7 @@ Route::middleware(['freshInstall'])->group(function () {
 
     Route::post('/fetch-main-session', [AnalyticsController::class, 'createMainSession']);
     Route::post('/fetch-sub-session', [AnalyticsController::class, 'createSubSession']);
+    Route::post('/apply-coupon-code-store', [AnalyticsController::class, 'applyCouponCode']);
     Route::post('/start-product-sub-session', [AnalyticsController::class, 'startProductSubSession']);
     Route::post('/start-product-inq-sub-session', [AnalyticsController::class, 'startProductInqSubSession']);
     Route::post('/end-product-inq-sub-session', [AnalyticsController::class, 'endInactiveProductInquiry']);

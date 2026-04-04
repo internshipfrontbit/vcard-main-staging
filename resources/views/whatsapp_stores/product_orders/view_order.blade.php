@@ -180,10 +180,10 @@
                             <tr>
                                 <th>#</th>
                                 <th>{{ __('messages.vcard.product_name') }}</th>
-                                @if($whatsappStore->id == 236 || $whatsappStore->id == 344 || $whatsappStore->id == 364 || $whatsappStore->id == 77 || $whatsappStore->id == 1323)
+                                @if($whatsappStore->id == 236 || $whatsappStore->id == 344 || $whatsappStore->id == 364 || $whatsappStore->id == 77 || $whatsappStore->id == 1323 || $whatsappStore->id == 1502 || $whatsappStore->id == 1463)
                                     <th>{{ 'Size' }}</th>
                                 @endif
-                                @if($whatsappStore->id == 191 || $whatsappStore->id == 77)
+                                @if($whatsappStore->id == 191 || $whatsappStore->id == 77 || $whatsappStore->id == 1502)
                                     <th>{{ 'Color' }}</th>
                                 @endif
                                 <th>{{ __('messages.whatsapp_stores_templates.quantity') }}</th>
@@ -234,6 +234,11 @@
                                     <td id="discountAmount" class="fw-bold"></td>
                                  @endif
                             </tr>
+                            @else
+                                <tr id="discountRow" class="d-none">
+                                    <td colspan="4" class="text-end" id="discountTitle">Discount:</td>
+                                    <td id="discountAmount" class="fw-bold"></td>
+                                </tr>
                             @endif
                             <tr>
                                 @if($whatsappStore->id == 236 || $whatsappStore->id == 344 || $whatsappStore->id == 364)

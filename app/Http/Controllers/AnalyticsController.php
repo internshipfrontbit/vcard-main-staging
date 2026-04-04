@@ -465,6 +465,63 @@ class AnalyticsController extends AppBaseController
         ], 500);
         }
     }
+
+    public function applyCouponCode(Request $request){
+        try {
+            $storeId = $request->store_id;
+            $couponCode = $request->coupon_code;
+            $grandTotal = $request->order_amount;
+            $payload = [
+                "coupon_code" => $couponCode,
+                "order_amount" => $grandTotal,
+            ];
+
+            // API URL with base
+            $url = $this->baseUrl . "/analytics/coupons/apply";
+
+            // Call API using cURL
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "Content-Type: application/json",
+                "store_id: " . $storeId
+            ]);
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            if (curl_errno($ch)) {
+                Log::error("cURL Error: " . curl_error($ch));
+            }
+
+            curl_close($ch);
+
+            $decodedResponse = json_decode($response, true);
+
+            // Transform response if success
+            if ($httpCode === 200 && isset($decodedResponse['data'])) {
+                $data = $decodedResponse['data'];
+                        
+                return response()->json($data, 200);
+            }
+    
+            // Default fallback
+            return response()->json([
+                "status" => $httpCode,
+                "response" => $decodedResponse
+            ], $httpCode);
+        
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update offer text.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
     
     public function createSubSession(Request $request)
     {
@@ -991,34 +1048,14 @@ public function apiSync($apiUrl, $payload){
 
     public function apiSyncPut($apiUrl, $payload){
         $url = $this->baseUrl . "/" . $apiUrl;
-         \Log::info('AnalyticsController: Starting process for user1.',[$apiUrl]);
+         
         try {
-             \Log::info('AnalyticsController: Starting process for user2.',[$payload]);
+         
             $response = Http::timeout(2)
                 ->withHeaders([
                     'Content-Type' => 'application/json'
                 ])
                 ->put($url, $payload);
-                 \Log::info('AnalyticsController: Starting process for user3.',[$payload]);
-
-            if ($response->successful()) {
-                \Log::info('AnalyticsController: Starting process for user4.',[$payload]);
-                \Log::info('API PUT Success', [
-                    'status' => $response->status(),
-                    'response' => $response->body(),
-                    'payload' => $payload
-                ]);
-
-            } else {
-                \Log::info('AnalyticsController: Starting process for user5.',[$payload]);
-                \Log::error('API PUT Failed', [
-                    'status' => $response->status(),
-                    'response' => $response->body(),
-                    'payload' => $payload
-                ]);
-
-            }
-            \Log::info('AnalyticsController: Starting process for user6.',[$payload]);
 
             return response()->json([
                 "status" => "success",
@@ -1026,12 +1063,6 @@ public function apiSync($apiUrl, $payload){
             ]);
 
         } catch (\Exception $e) {
-
-            \Log::error('API PUT Exception', [
-                'message' => $e->getMessage(),
-                'payload' => $payload
-            ]);
-
             return response()->json([
                 "status" => "error",
                 "message" => $e->getMessage()

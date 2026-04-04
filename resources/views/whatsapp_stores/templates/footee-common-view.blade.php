@@ -589,6 +589,17 @@
 </style>
 @endif
 
+@if($whatsappStore->id == 1600)
+<style>
+    .object-fit-footerlogo {
+        border-radius: 10px !important;    
+        object-fit: fill;
+        height: 60px !important;
+        width: auto !important;
+    }
+</style>
+@endif
+
 
 @php
     // Decode settings to populate values

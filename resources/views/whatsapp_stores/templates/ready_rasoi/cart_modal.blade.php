@@ -13,7 +13,9 @@
             --rr-gray-text: #6b7280;
         }
 
-        .add-to-cart-btn {
+
+
+        .ready-rrasoi .add-to-cart-btn {
     border: 2px solid #025d18 !important;
     background: #feff03 !important;
     background-color: #feff03 !important;
@@ -186,11 +188,10 @@
         .ready-rasoi-cart .qty-minus:hover { background-color: #e5e7eb; }
         
         .ready-rasoi-cart .qty-plus {
-            background-color: var(--rr-yellow);
-            color: var(--rr-dark);
-            border: 1px solid var(--rr-yellow-dark);
+            background-color: #f3f4f6;
+              border: 1px solid #aaaaab;
         }
-        .ready-rasoi-cart .qty-plus:hover { background-color: #facc15; }
+        .ready-rasoi-cart .qty-plus:hover { background-color: #f3f4f6; }
 
         .ready-rasoi-cart .qty-input {
             width: 30px;
@@ -214,7 +215,7 @@
             text-align: right;
             font-size: 0.75rem;
             font-weight: 700;
-            color: var(--rr-magenta);
+            color: var(--rr-dark);
             width: 100%;
         }
 
@@ -270,7 +271,7 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(213, 1, 112, 0.3);
+            /* box-shadow: 0 4px 6px -1px rgba(213, 1, 112, 0.3); */
             transition: all 0.2s;
         }
         .ready-rasoi-cart .btn-order:hover {
@@ -284,6 +285,84 @@
                 padding: 22px !important;
             }
         }
+
+        /* Coupon Section */
+.coupon-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px dashed #d1d5db;
+    margin-left: 12px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+/* Input */
+.coupon-input-wrapper {
+    display: flex;
+    gap: 8px;
+}
+.coupon-input-wrapper input {
+    flex: 1;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 12px;
+}
+.coupon-input-wrapper button {
+    background: #025d18;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Applied Coupon */
+.coupon-applied {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ecfdf5;
+    border: 1px solid #10b981;
+    border-radius: 10px;
+    padding: 8px;
+    margin-top: 6px;
+}
+
+.coupon-left {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.coupon-left i {
+    color: #10b981;
+}
+.coupon-title {
+    font-size: 12px;
+    font-weight: 700;
+}
+.coupon-desc {
+    font-size: 10px;
+    color: #065f46;
+}
+
+.remove-coupon {
+    border: none;
+    background: none;
+    color: #ef4444;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.discount-row{
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 14px;
+}
     </style>
 
     <div class="modal fade ready-rasoi-cart" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
@@ -303,8 +382,31 @@
                 <div class="modal-body" id="cartItemsReadyRasoi">
                     
                 </div>
+                <div class="coupon-section">
+                    <div class="coupon-input-wrapper" id="couponInputWrapper">
+                        <input type="text" id="couponCode" placeholder="Enter coupon code">
+                        <button onclick="applyCoupon()">Apply</button>
+                    </div>
+
+                    <span id="errormessage" style="color: red;font-weight: 500;font-size: 12px;"></span>
+
+                    <div class="coupon-applied d-none" id="couponAppliedBox">
+                        <div class="coupon-left">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <div>
+                                <div class="coupon-title" id="appliedCouponName">SAVE50 Applied</div>
+                                <div class="coupon-desc">You saved ₹ <span id="discountAmount">0</span></div>
+                            </div>
+                        </div>
+                        <button class="remove-coupon" onclick="removeCoupon()">Remove</button>
+                    </div>
+                </div>
 
                 <div class="modal-footer">
+                    <div class="discount-row d-none" id="discountRow">
+                        <span>Discount</span>
+                        <span class="text-success">- ₹ <span id="discountValue">0</span></span>
+                    </div>
                     <div class="footer-summary">
                         <span class="total-label">Grand Total</span>
                         <span class="grand-total">₹ <span id="grandTotal">0</span></span>

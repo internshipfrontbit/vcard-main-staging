@@ -41,7 +41,8 @@ class WhatsappStoreProduct extends Model implements HasMedia
         'dis_qty',
         'dis_free',
         'dis_text',
-        'position'
+        'position',
+        'is_active'
     ];
 
     protected $appends = [

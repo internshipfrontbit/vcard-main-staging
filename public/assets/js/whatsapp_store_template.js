@@ -49,7 +49,7 @@ async function startProductViewSession(productId){
             }
         }
     
-    const response = await fetch("https://staging.vcardking.com/start-product-sub-session", {
+    const response = await fetch(`https://${getdomain()}/start-product-sub-session`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -88,7 +88,7 @@ async function startProductInquirySession(productId, quantity){
             quantity
         };
     
-    const response = await fetch("https://staging.vcardking.com/start-product-inq-sub-session", {
+    const response = await fetch(`https://${getdomain()}/start-product-inq-sub-session`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -117,8 +117,8 @@ async function updateProductInquirySession(session_id,productId, quantity){
             inq_session_id: session_id,
             quantity
         };
-    
-    const response = await fetch("https://staging.vcardking.com/update-product-inquiry-session", {
+    ``
+    const response = await fetch(`https://${getdomain()}/update-product-inquiry-session`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -140,7 +140,7 @@ async function endProductInquirySession(sessionId){
             sub_session_id: sessionId
         };
     
-    const response = await fetch("https://staging.vcardking.com/end-product-inq-sub-session", {
+    const response = await fetch(`https://${getdomain()}/end-product-inq-sub-session`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -177,7 +177,7 @@ async function fetchMainSession(storeId, mainSessionId = null) {
             payload.main_session_id = mainSessionId;
         }
 
-        const response = await fetch("https://staging.vcardking.com/fetch-main-session", {
+        const response = await fetch(`https://${getdomain()}/fetch-main-session`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -222,7 +222,7 @@ async function fetchMainSession(storeId, mainSessionId = null) {
                 payload1.main_session_id = mainSessionId;
             }
     
-            const responseNew = await fetch("https://staging.vcardking.com/fetch-sub-session", {
+            const responseNew = await fetch(`https://${getdomain()}/fetch-sub-session`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -570,7 +570,7 @@ listenClick(".addToCartBtn", function (event) {
         product.selectAttribute = selectAttribute.name;
         product.dis_quantity = selectAttribute.discount_quantity;
     }else{
-        if (storeId == 77) {
+        if (storeId == 77 || storeId == 1502) {
             if(colorValue && sizeValue){
                 product.indexkey  = product.id + `_${colorValue.replace(/\s+/g, '_')}` + `_${sizeValue.replace(/\s+/g, '_')}`;
             }
@@ -618,6 +618,7 @@ function sendAddToCart(storeId, productDetails) {
 }
 
 function addToCart(storeId, product, isFromStore = false) {
+    removeCoupon();
     let cart = JSON.parse(localStorage.getItem("cart")) || {};
 
     if (!cart[`store_${storeId}`]) {
@@ -673,7 +674,7 @@ function addToCart(storeId, product, isFromStore = false) {
     localStorage.setItem("cart", JSON.stringify(cart));
 
     productCount(storeId);
-    if (storeId == 692 || storeId == 860 || storeId == 939 || storeId == 1065 || storeId == 1193) {
+    if (storeId == 692 || storeId == 860 || storeId == 1518 || storeId == 939 || storeId == 1065 || storeId == 1193) {
         setTimeout(function () {
             $(".order-btn").click();
         }, 100);
@@ -690,6 +691,8 @@ function addToCart(storeId, product, isFromStore = false) {
     }
 
     startProductInquirySession(product.id, storeCart[productKey].qty);
+
+    
 }
 
 function setSubsessionInCart(product_id, session_id){
@@ -710,6 +713,7 @@ function setSubsessionInCart(product_id, session_id){
 }
 
 function setQtyandClose(id) {
+    removeCoupon();
     let storeId = $("#whatsappStoreId").val();
 
     let cart = JSON.parse(localStorage.getItem("cart")) || {};
@@ -735,6 +739,7 @@ function setQtyandClose(id) {
     $("#newWhatsappOrderButton").text("Send Order on WhatsApp");
     $("#quantityModal").modal("hide");
     displaySuccessMessage("Quantity updated successfully!");
+    
 }
 
 listenClick("#addToCartViewBtn", function () {
@@ -745,6 +750,10 @@ listenClick("#addToCartViewBtn", function () {
     let cart = cartData[`store_${storeId}`] || {};
 
     let grandTotal = cart?.grand_total ?? 0;
+
+
+   
+    
 
     
 
@@ -887,12 +896,12 @@ listenClick("#addToCartViewBtn", function () {
                         </div>
                     </div>
                 </td>
-                   ${storeId == 236 || storeId == 344 || storeId == 364 || storeId == 77 || storeId == 1323 || storeId == 1158 || storeId == 348 ? `
+                   ${storeId == 236 || storeId == 344 || storeId == 364 || storeId == 77 || storeId == 1323 || storeId == 1158 || storeId == 1502 || storeId == 348 || storeId == 1463 ? `
                <td class="fw-6 fs-14">
                       ${item.sizeValue}
                    </td>
             ` : ''}
-            ${storeId == 364 || storeId == 7 || storeId == 396 || storeId == 77 || storeId == 1158 ? `
+            ${storeId == 364 || storeId == 7 || storeId == 396 || storeId == 77 || storeId == 1158 || storeId == 1502 ? `
                <td class="fw-6 fs-14">
                       ${item.colorValue}
                    </td>
@@ -967,12 +976,12 @@ listenClick("#addToCartViewBtn", function () {
          </div>
       </div>
    </td>
-   ${storeId == 236 || storeId == 344 || storeId == 364 || storeId == 77 || storeId == 1323 || storeId == 1323 || storeId == 1158 || storeId == 348 ? `
+   ${storeId == 236 || storeId == 344 || storeId == 364 || storeId == 77 || storeId == 1323 || storeId == 1323 || storeId == 1158 || storeId == 348 || storeId == 1502 || storeId == 1463 ? `
                <td class="fs-16 fw-5 text-center text-nowrap restaurant-white">
                       ${item.sizeValue}
                    </td>
             ` : ''}
-    ${storeId == 364 || storeId == 7 || storeId == 396 || storeId == 77 || storeId == 1158 ? `
+    ${storeId == 364 || storeId == 7 || storeId == 396 || storeId == 77 || storeId == 1158 || storeId == 1502? `
                <td class="fs-16 fw-5 text-center text-nowrap restaurant-white">
                       ${item.colorValue}
                    </td>
@@ -1017,6 +1026,10 @@ listenClick("#addToCartViewBtn", function () {
     }
     updateCourierCharge();
     $("#cartModal").modal("show");
+
+    if(cart.coupon){
+        setCartCouponCode(cart.coupon, cart.coupon_discount);
+    }
 });
 
 listenClick(".delete-btn", function () {
@@ -1072,6 +1085,7 @@ listenClick(".delete-btn", function () {
 });
 
 listenClick(".plus-btn", function () {
+    removeCoupon();
     let storeId = $("#whatsappStoreId").val();
     let productId = $(this).attr("data-id");
 
@@ -1134,6 +1148,7 @@ listenClick(".plus-btn", function () {
         
 
         updateProductInquirySession(storeCart[productId].session_id,productId,storeCart[productId].session_qty);
+        
     }
 
     if (storeId == 208 || storeId == 721 || storeId == 584 || storeId == 1488 || storeId == 796 || storeId == 1327) {
@@ -1153,6 +1168,7 @@ listenClick(".plus-btn", function () {
 });
 
 $(document).on('change', '.qty-input', function () {
+    removeCoupon();
     let storeId = $("#whatsappStoreId").val();
     let productId = $(this).attr("data-id");
     let newQty = parseInt($(this).val());
@@ -1243,6 +1259,7 @@ $(document).on('change', '.qty-input', function () {
         }
 
         getOfferText(storeCart[productId].dis_quantity, storeCart[productId].qty, storeCart[productId].id);
+        
     }
 
     
@@ -1252,6 +1269,7 @@ $(document).on('change', '.qty-input', function () {
 
 
 listenClick(".minus-btn", function () {
+    removeCoupon();
     let storeId = $("#whatsappStoreId").val();
     let productId = $(this).attr("data-id");
 
@@ -1315,6 +1333,7 @@ listenClick(".minus-btn", function () {
         
 
         updateProductInquirySession(storeCart[productId].session_id,productId,storeCart[productId].session_qty);
+        
     }
 
     if (storeId == 208 || storeId == 721 || storeId == 584 || storeId == 1488 || storeId == 796 || storeId == 1327) {
@@ -1333,6 +1352,7 @@ listenClick(".minus-btn", function () {
 
 
 $(document).on("input", "input[type='number']", function () {
+    removeCoupon();
     let storeId = $("#whatsappStoreId").val();
     let productId = $(this).attr("id").split("-")[2];
     let newQty = parseInt($(this).val());
@@ -1393,6 +1413,8 @@ $(document).on("input", "input[type='number']", function () {
     $("#grandTotal").text(`${Number(storeCart.grand_total).toFixed(2)}`);
 
     updateCourierCharge();
+
+    
 });
 
 // Prevent typing ., e, -, etc.
@@ -1594,6 +1616,8 @@ listenSubmit("#orderForm", function (event) {
                 encodeURIComponent(sc_id) +
                 "&grand_total=" +
                 grandTotal +
+                "&coupon_code=" +
+                 storeCart.coupon+
                 "&products=" +
                 encodeURIComponent(JSON.stringify(products)) +
                 "&language=" + lang;
@@ -2034,11 +2058,15 @@ function prepareAndSendWpMessage(order, paymentId) {
 
         message += 'Total' + ` :  ${order.dis_amt + order.grand_total}\n`;
 
-        message += 'Discount' + ` :  ${order.dis_amt}\n`;
+        if(order.coupon_code != ""){
+            message += `Discount(Coupon: ${order.coupon_code})` + ` :  ${Number(order.dis_amt).toFixed(2)}\n`;
+        }else{
+            message += 'Discount' + ` :  ${order.dis_amt}\n`;
+        }
         message += `------------------------------\n`;
     }
 
-    message += `\nGrand Total: ${order.grand_total}\n`;
+    message += `\nGrand Total: ${Number(order.grand_total).toFixed(2)}\n`;
     let recipientPhone = `+${wpRegionCode}${whatsappNumber}`;
     let encodedMessage = encodeURIComponent(message);
     if(storeId == 1488){
@@ -2355,7 +2383,7 @@ function prepareAndSendWpMessageDirect(productId, productName, currency_icon, pr
 
     let isShowUserInfo = $("#wp_show_order_form").val();
 
-    if (isEnableRezorpay == "1" || storeId == 860 || storeId == 865 || storeId == 982 || storeId == 70 || storeId == 1065 || storeId == 1093 || storeId == 1151 || storeId == 1193 || storeId == 1201 || isShowUserInfo == "on") {
+    if (isEnableRezorpay == "1" || storeId == 860 || storeId == 1518 || storeId == 865 || storeId == 982 || storeId == 70 || storeId == 1065 || storeId == 1093 || storeId == 1151 || storeId == 1407 || storeId == 1591 || storeId == 1193 || storeId == 1201 || isShowUserInfo == "on") {
         
 
         if(!isAttributeAsk && !sizes){
@@ -2375,7 +2403,7 @@ function prepareAndSendWpMessageDirect(productId, productName, currency_icon, pr
 
 
 
-    if (isAttributeAsk && storeId != 322 && storeId != 396 && storeId != 1502) {
+    if (isAttributeAsk && storeId != 322 && storeId != 396 && storeId != 1502 && storeId != 1463) {
         localStorage.removeItem("selectedProductId");
         localStorage.setItem("selectedProduct", JSON.stringify({
             productId,
@@ -3008,7 +3036,11 @@ function prepareAndSendWpMessageForPhonepe(order, paymentId,storeInfo) {
 
         message += 'Total' + ` :  ${order.dis_amt + order.grand_total}\n`;
 
-        message += 'Discount' + ` :  ${order.dis_amt}\n`;
+        if(order.coupon_code != ""){
+            message += `Discount(Coupon: ${order.coupon_code})` + ` :  ${order.dis_amt}\n`;
+        }else{
+            message += 'Discount' + ` :  ${order.dis_amt}\n`;
+        }
         message += `------------------------------\n`;
     }
 
@@ -3092,4 +3124,119 @@ async function getPincodeDetails(pincode) {
   } else {
     return null;
   }
+}
+
+let discount = 0;
+
+async function applyCoupon() {
+    const code = document.getElementById('couponCode').value.trim();
+    const storeId = $("#whatsappStoreId").val();
+    if(!code){
+        $("#errormessage").html("Please enter coupon code");
+        return;
+    }
+
+     const response = await fetch("https://microvedaofficial.com/apply-coupon-code-store", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content // only if using web.php
+            },
+            body: JSON.stringify({
+                "coupon_code": code,
+                "order_amount": Number($("#grandTotal").html()),
+                "store_id": storeId,
+            })
+        });
+
+        const result = await response.json();
+
+        let cart = JSON.parse(localStorage.getItem("cart")) || {};
+        let storeCart = cart[`store_${storeId}`];
+        
+        if(result.final_amount){
+            $("#errormessage").html("");
+            
+
+                discount = (Number($("#grandTotal").html()) - Number(result.final_amount)).toFixed(2);
+
+                document.getElementById('couponInputWrapper').classList.add('d-none');
+                document.getElementById('couponAppliedBox').classList.remove('d-none');
+
+                document.getElementById('discountAmount').innerText = discount;
+                document.getElementById('discountValue').innerText = discount;
+
+                document.getElementById('discountRow').classList.remove('d-none');
+
+                document.getElementById('appliedCouponName').innerHTML = code + " Applied";
+
+
+                storeCart["coupon"] = code;
+                storeCart["coupon_discount"] = discount;
+
+                updateGrandTotal();
+
+                document.getElementById('couponCode').value = "";
+
+        }else{
+            $("#errormessage").html(result.response.message);
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+function setCartCouponCode(code, discountAmount){
+
+    document.getElementById('couponInputWrapper').classList.add('d-none');
+    document.getElementById('couponAppliedBox').classList.remove('d-none');
+
+    document.getElementById('discountAmount').innerText = discountAmount;
+    document.getElementById('discountValue').innerText = discountAmount;
+
+    document.getElementById('discountRow').classList.remove('d-none');
+
+    document.getElementById('appliedCouponName').innerHTML = code + " Applied";
+
+    discount = discountAmount;
+
+    updateGrandTotal();
+}
+
+function removeCoupon() {
+    if($(".coupon-applied").hasClass("d-none")) return;
+    $("#errormessage").html("");
+    if(document.getElementById('couponInputWrapper')){
+        document.getElementById('couponInputWrapper').classList.remove('d-none');
+    document.getElementById('couponAppliedBox').classList.add('d-none');
+    document.getElementById('discountAmount').innerText = 0;
+    document.getElementById('discountValue').innerText = 0;
+    document.getElementById('discountRow').classList.add('d-none');
+    let storeId = $("#whatsappStoreId").val();
+    let cart = JSON.parse(localStorage.getItem("cart")) || {};
+    let storeCart = cart[`store_${storeId}`];
+    discount = storeCart.coupon_discount;
+
+    if(storeCart){
+        delete storeCart.coupon;
+        delete storeCart.coupon_discount;
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    document.getElementById('couponCode').value = "";
+
+    updateGrandTotal(true);
+    }
+    
+}
+
+function updateGrandTotal(isRemove = false) {
+    let total = Number($("#grandTotal").html()); // replace with your actual total logic
+    if(!isRemove){
+        let finalTotal = Number(total - discount).toFixed(2);
+        document.getElementById('grandTotal').innerText = finalTotal;
+    } else{
+        let finalTotal = (Number(total) + Number(discount)).toFixed(2);
+        document.getElementById('grandTotal').innerText = finalTotal;
+    }
+    
 }

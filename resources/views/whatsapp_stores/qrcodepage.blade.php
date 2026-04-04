@@ -1,7 +1,7 @@
 <html>
     <head>
         <script>
-            window.location.href = "https://qrcode.vcardking.com/";
+            window.location.href = "https://qrcode.staging.vcardking.com/";
         </script>
     </head>
 </html>

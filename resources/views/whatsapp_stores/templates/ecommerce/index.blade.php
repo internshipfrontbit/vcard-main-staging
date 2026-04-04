@@ -407,7 +407,7 @@
                     </h2>
                 </div>
                 <div class="row custom-row product-gap-row mb-20">
-                    @foreach ($whatsappStore->products()->latest()->take(8)->get() as $product)
+                    @foreach ($whatsappStore->products()->where('is_active','=',true)->orderByRaw('position IS NULL, position ASC')->orderBy('created_at', 'desc')->take(8)->get() as $product)
                         <div class="col-xl-3 col-lg-4 col-sm-6 mb-28">
                             <div class="product-card d-flex flex-column h-100">
 

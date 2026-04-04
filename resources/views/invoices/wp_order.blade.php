@@ -176,10 +176,10 @@
           <th style="border: 1px solid #ddd; padding: 8px; color: #474747;">IMAGE</th>
            @endif          
           <th style="border: 1px solid #ddd; padding: 8px; color: #474747;">PRODUCT NAME</th>
-          @if($wpOrder->wp_store_id == 171 || $wpOrder->wp_store_id == 344 || $wpOrder->wp_store_id == 77 || $wpOrder->wp_store_id == 1323 || $wpOrder->wp_store_id == 364)
+          @if($wpOrder->wp_store_id == 171 || $wpOrder->wp_store_id == 344 || $wpOrder->wp_store_id == 77 || $wpOrder->wp_store_id == 1323 || $wpOrder->wp_store_id == 364 || $wpOrder->wp_store_id == 1502)
             <th style="border: 1px solid #ddd; padding: 8px; color: #474747;">PRODUCT SIZE</th>
           @endif
-          @if($wpOrder->wp_store_id == 364 || $wpOrder->wp_store_id == 77)
+          @if($wpOrder->wp_store_id == 364 || $wpOrder->wp_store_id == 77 || $wpOrder->wp_store_id == 1502)
             <th style="border: 1px solid #ddd; padding: 8px; color: #474747;">PRODUCT COLOR</th>
           @endif
           <th style="border: 1px solid #ddd; padding: 8px; color: #474747;">QUANTITY</th>
@@ -238,7 +238,7 @@
             @if($wpOrder->wp_store_id == 236 || $wpOrder->wp_store_id == 344 || $wpOrder->wp_store_id == 364 || $wpOrder->wp_store_id == 1502)
                 <td style="border: 1px solid #ddd; padding: 8px; color: #494949df;">{{ $item->size }}</td>
             @endif
-            @if($wpOrder->wp_store_id == 191)
+            @if($wpOrder->wp_store_id == 191 || $wpOrder->wp_store_id == 1502)
                 <td style="border: 1px solid #ddd; padding: 8px; color: #494949df;">{{ $item->color }}</td>
             @endif
             <td style="border: 1px solid #ddd; padding: 8px; color: #494949df;">{{ $item->qty }}</td>
@@ -285,9 +285,15 @@
                     <strong style="color: #474747;">Discount:</strong>
                 </td>
             @else
+              @if($wpOrder->coupon_code)
+                <td colspan="4" style="text-align: right; border: 1px solid #ddd; padding: 8px;">
+                    <strong style="color: #474747;">Discount(Coupon: {{ $wpOrder->coupon_code }}):</strong>
+                </td>
+              @else
                 <td colspan="4" style="text-align: right; border: 1px solid #ddd; padding: 8px;">
                     <strong style="color: #474747;">Discount:</strong>
                 </td>
+              @endif  
             @endif
           <td style="border: 1px solid #ddd; padding: 8px;">
             <strong style="color: #474747;">{{ number_format($wpOrder->dis_amt, 2) }}</strong>

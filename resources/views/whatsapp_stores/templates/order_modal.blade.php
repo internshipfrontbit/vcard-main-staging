@@ -119,10 +119,10 @@
                                          <textarea class="form-control" id="address" name="address" rows="1" required
                                              placeholder="City"></textarea>
                                         @else
-                                            <label for="name" class="form-label">{{ $whatsappStore->id == 860 ? 'Message' : __('messages.setting.address') }}:
+                                            <label for="name" class="form-label">{{ $whatsappStore->id == 860 || $whatsappStore->id == 1518 ? 'Message' : __('messages.setting.address') }}:
                                          </label><span class="text-danger">*</span>
                                          <textarea class="form-control" id="address" name="address" rows="3" required
-                                             placeholder="{{ $whatsappStore->id == 860 ? 'Message' : __('messages.setting.address') }}"></textarea>
+                                             placeholder="{{ $whatsappStore->id == 860 || $whatsappStore->id == 1518 ? 'Message' : __('messages.setting.address') }}"></textarea>
                                         @endif
                                         
                                      </div>
