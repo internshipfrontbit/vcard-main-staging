@@ -410,6 +410,13 @@ class WhatsappStoreController extends AppBaseController
 
         $whatsappStore = $this->whatsappStoreRepository->update($whatsappStore, $input);
 
+        // $data = [
+        //     'store_alias' => $whatsappStore->url_alias,
+        // ];
+                
+        // $analytics = new AnalyticsController();
+        // $analytics->apiSync("analytics/stores/store-sync-new", $data);  
+
         return response()->json([
             'success' => true,
             'message' => 'Store updated successfully.',
