@@ -52,10 +52,10 @@ class SocialAuthApiController extends AppBaseController
 
             $analytics = new AnalyticsController();
 
-            if ($analytics->decryptData($request->pwd) != 'NedDalyticPasdss') {
+            if ($analytics->decryptData($request->pwd) != 'DemoPassword') {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Invalid Credential 2',
+                    'message' => 'Invalid Credential',
                 ], 422);
             }
 
