@@ -110,6 +110,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('whatsapp-store/new-store/create', [WhatsappStoreController::class, 'storeAPI']);
     Route::post('whatsapp-store/new-store/update', [WhatsappStoreController::class, 'updateAPI']);
     Route::get('whatsapp-store/new-store/get-plans', [WhatsappStoreController::class, 'getPlans']);
+    Route::get('whatsapp-store/new-store/get-templates', [WhatsappStoreController::class, 'getTemplates']);
     Route::post('whatsapp-store/new-store/create-plan-request', [SubscriptionController::class, 'manualPayApi']);
     Route::get('whatsapp-store/new-store/check-subscription-plan', [WhatsappStoreController::class, 'checkSubscriptionPlan']);
     Route::post('whatsapp-store/product/create', [WhatsappStoreProductController::class, 'store']);
