@@ -84,6 +84,48 @@ class SubscriptionController extends AppBaseController
         return view('subscription.index', compact('currentPlan', 'remainingDay'));
     }
 
+    public function getCurrentPlanAPI(){
+        $currentPlan = getCurrentSubscription();
+
+        $days = $remainingDay = '';
+        if ($currentPlan->ends_at > Carbon::now()) {
+            $days = Carbon::parse($currentPlan->ends_at)->diffInDays();
+            $remainingDay = $days . ' Days';
+        }
+
+        if ($days >= 30 && $days <= 365) {
+            $remainingDay = '';
+            $months = floor($days / 30);
+            $extraDays = $days % 30;
+            if ($extraDays > 0) {
+                $remainingDay .= $months . ' Month ' . $extraDays . ' Days';
+            } else {
+                $remainingDay .= $months . ' Month ';
+            }
+        }
+
+        if ($days >= 365) {
+            $remainingDay = '';
+            $years = floor($days / 365);
+            $extraMonths = floor($days % 365 / 30);
+            $extraDays = floor($days % 365 % 30);
+            if ($extraMonths > 0 && $extraDays < 1) {
+                $remainingDay .= $years . ' Years ' . $extraMonths . ' Month ';
+            } elseif ($extraDays > 0 && $extraMonths < 1) {
+                $remainingDay .= $years . ' Years ' . $extraDays . ' Days';
+            } elseif ($years > 0 && $extraDays > 0 && $extraMonths > 0) {
+                $remainingDay .= $years . ' Years ' . $extraMonths . ' Month ' . $extraDays . ' Days';
+            } else {
+                $remainingDay .= $years . ' Years ';
+            }
+        }
+
+        return response()->json([
+            'currentPlan' => new \App\Http\Resources\SubscriptionResource($currentPlan),
+            'remainingDay' => $remainingDay,
+        ]);
+    }
+
     public function choosePaymentType($planId, $context = null, $fromScreen = null)
     {
         $currentSubscription = getCurrentSubscription();
