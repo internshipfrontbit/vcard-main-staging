@@ -121,7 +121,7 @@ class SubscriptionController extends AppBaseController
         }
 
         return response()->json([
-            'currentPlan' => new \App\Http\Resources\SubscriptionResource($currentPlan),
+            'currentPlan' => $currentPlan,
             'remainingDay' => $remainingDay,
         ]);
     }
