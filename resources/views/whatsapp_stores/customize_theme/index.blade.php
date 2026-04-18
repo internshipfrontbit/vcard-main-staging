@@ -94,13 +94,10 @@
 
                     row.innerHTML = `
                         <div class="col-md-5">
-                            <input type="text" class="form-control mobile" placeholder="Mobile Number" value="${data.mobile || ''}">
+                            <input type="text" class="form-control mobile" placeholder="Mobile Number" value="${data.mobile || ''}" oninput="updateRow(this)">
                         </div>
                         <div class="col-md-3">
-                            <input type="number" class="form-control discount" placeholder="Discount %" value="${data.discount || ''}">
-                        </div>
-                        <div class="col-md-2">
-                            <a class="btn btn-warning w-100" onclick="updateRow(this)"><i class="fas fa-pencil"></i></a>
+                            <input type="number" class="form-control discount" placeholder="Discount %" value="${data.discount || ''}" oninput="updateRow(this)">
                         </div>
                         <div class="col-md-2">
                             <a class="btn btn-danger w-100" onclick="deleteRow(this)"><i class="fas fa-trash"></i></a>
@@ -110,8 +107,8 @@
                     document.getElementById('rowsContainer').appendChild(row);
                 }
 
-                function updateRow(btn) {
-                    const row = btn.closest('.row');
+                function updateRow(input) {
+                    const row = input.closest('.row');
                     const index = row.getAttribute('data-index');
 
                     const mobile = row.querySelector('.mobile').value.trim();
