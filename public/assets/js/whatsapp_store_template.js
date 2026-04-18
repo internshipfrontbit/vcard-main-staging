@@ -749,6 +749,7 @@ listenClick("#addToCartViewBtn", function () {
     if(storeId == 4){
         if(isUserDetailsSet()){
             openUserModelForm();
+            return;
         }
     }
 
