@@ -62,15 +62,14 @@
                 </div>
             </div>
             
-            <div class="container mt-4">
-
-                <button class="btn btn-primary mb-3" onclick="addRow()">Add</button>
+            <fieldset class="mt-4">
+                <legend>Mobile Based Discounts:</legend>
+                <a class="btn btn-primary mb-3" onclick="addRow()">Add</a>
 
                 <input type="hidden" id="dataInput">
 
                 <div id="rowsContainer"></div>
-
-            </div>
+            </fieldset>
 
             <script>
                 let records = [];
