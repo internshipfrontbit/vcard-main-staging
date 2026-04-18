@@ -14,7 +14,8 @@
       </style>
 
 
- <div class="modal fade" @if (getLanguage($whatsappStore->default_language) == 'Arabic') dir="rtl" @endif id="userFormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal fade"  data-bs-backdrop="static"
+     data-bs-keyboard="false" @if (getLanguage($whatsappStore->default_language) == 'Arabic') dir="rtl" @endif id="userFormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered order-modal-dialog">
          <div class="modal-content" @if (getLanguage($whatsappStore->default_language) == 'Arabic') dir="rtl" @endif>
              <div class="modal-header px-0 pt-0">
