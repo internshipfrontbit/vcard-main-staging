@@ -66,7 +66,7 @@
                 <legend style="font-size: 16px;font-weight: 600;">Mobile Based Discounts:</legend>
                 <a class="btn btn-primary mb-3" onclick="addRow()">Add</a>
 
-                <input type="hidden" id="dataInput">
+                <input type="hidden" name="mobile_discount_settings" id="dataInput" value="{{ $whatsappStore->mobile_discount_settings }}">
 
                 <div id="rowsContainer"></div>
             </fieldset>

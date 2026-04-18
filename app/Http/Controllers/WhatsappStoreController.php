@@ -1341,6 +1341,7 @@ public function contactUs($alias)
 
         // Encode back to JSON
         $store->theme_settings = json_encode($existingSettings);
+        $store->mobile_discount_settings = $request->mobile_discount_settings;
 
         // Save changes
         $store->save();
