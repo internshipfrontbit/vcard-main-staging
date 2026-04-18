@@ -743,8 +743,14 @@ function setQtyandClose(id) {
 }
 
 listenClick("#addToCartViewBtn", function () {
-    openUserModelForm();
+    
     let storeId = $("#whatsappStoreId").val();
+
+    if(storeId == 4){
+        if(isUserDetailsSet()){
+            this.openUserModelForm();
+        }
+    }
 
     let cartData = JSON.parse(localStorage.getItem("cart")) || {};
 
@@ -2943,14 +2949,14 @@ function setUserDetailsToLocalStorage() {
     localStorage.setItem(storeAlias + "user_d", JSON.stringify(userdetails));
 }
 
-function openUserModelForm(){
+function isUserDetailsSet(){
     let storeAlias = $("#storeAlias").val();
-
     let userDetails =  localStorage.getItem(storeAlias + "user_d") ? JSON.parse(localStorage.getItem(storeAlias + "user_d")) : null;
+    return userDetails && userDetails.name == null;
+}
 
-    if(userDetails && userDetails.name == null){
+function openUserModelForm(){    
         $("#userFormModal").modal("show");
-    }
 }
 
 function prepareAndSendWpMessageForPhonepe(order, paymentId,storeInfo) {
