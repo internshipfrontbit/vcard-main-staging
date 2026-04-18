@@ -262,6 +262,12 @@ document.addEventListener("DOMContentLoaded", function () {
     Lang.setLocale(lang);
     productCount(storeId);
 
+    if(storeId == 4){
+        if(isUserDetailsSet()){
+            openUserModelForm();
+        }
+    }
+
 
     const urlParams = new URLSearchParams(window.location.search);
 
@@ -441,6 +447,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 listenClick(".addToCartBtn", function (event) {
     event.preventDefault();
+    let storeId = $("#whatsappStoreId").val();
+    if(storeId == 4){
+        if(isUserDetailsSet()){
+            openUserModelForm();
+            return;
+        }
+    }
 
     localStorage.removeItem("selectedProductId");
 
@@ -468,7 +481,7 @@ listenClick(".addToCartBtn", function (event) {
 
     let button = $(this);
     let originalContent = button.html();
-    let storeId = $("#whatsappStoreId").val();
+    
     let isStore = $(this).attr("data-storebutton");
     if (!isStore && storeId != 208) {
         button.html(" ✓ ").addClass("animate-btn");
