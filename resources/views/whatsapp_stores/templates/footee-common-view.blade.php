@@ -609,6 +609,8 @@
 
 @include('whatsapp_stores.templates.payment_success_popup')
 
+<input type="hidden" id="mobileDiscountSettings" value="{{ $whatsappStore->mobile_discount_settings }}">
+
 <footer class="bg-dark text-white pt-5 pb-4 position-relative">
     <div class="container-new">
         <div class="row">

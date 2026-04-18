@@ -60,7 +60,79 @@
                     <input class="form-check-input" type="checkbox" name="wp_show_order_form" 
                            {{ isset($settings['wp_show_order_form']) && $settings['wp_show_order_form'] == "on" ? 'checked' : '' }}>
                 </div>
-            </div>               
+            </div>
+            
+            <div class="container mt-4">
+
+                <button class="btn btn-primary mb-3" onclick="addRow()">Add</button>
+
+                <input type="hidden" id="dataInput">
+
+                <div id="rowsContainer"></div>
+
+            </div>
+
+            <script>
+                let records = [];
+
+                function syncHidden() {
+                    // remove blank rows before saving
+                    const filtered = records.filter(r => r.mobile && r.discount);
+                    document.getElementById('dataInput').value = JSON.stringify(filtered);
+                }
+
+                function addRow(data = {}) {
+                    const index = records.length;
+
+                    records.push({
+                        mobile: data.mobile || '',
+                        discount: data.discount || ''
+                    });
+
+                    const row = document.createElement('div');
+                    row.className = "row mb-2 align-items-center";
+                    row.setAttribute("data-index", index);
+
+                    row.innerHTML = `
+                        <div class="col-md-5">
+                            <input type="text" class="form-control mobile" placeholder="Mobile Number" value="${data.mobile || ''}">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" class="form-control discount" placeholder="Discount %" value="${data.discount || ''}">
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-warning w-100" onclick="updateRow(this)">Edit</button>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-danger w-100" onclick="deleteRow(this)">Delete</button>
+                        </div>
+                    `;
+
+                    document.getElementById('rowsContainer').appendChild(row);
+                }
+
+                function updateRow(btn) {
+                    const row = btn.closest('.row');
+                    const index = row.getAttribute('data-index');
+
+                    const mobile = row.querySelector('.mobile').value.trim();
+                    const discount = row.querySelector('.discount').value.trim();
+
+                    records[index] = { mobile, discount };
+
+                    syncHidden();
+                }
+
+                function deleteRow(btn) {
+                    const row = btn.closest('.row');
+                    const index = row.getAttribute('data-index');
+
+                    records[index] = null; // mark deleted
+                    row.remove();
+
+                    syncHidden();
+                }
+            </script>
 
     </div>
 
