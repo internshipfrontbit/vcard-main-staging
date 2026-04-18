@@ -1541,7 +1541,9 @@ function productCount(storeId) {
 
 function loadPhoneInput() {
     let phoneInput = document.querySelector("#phoneNumber");
+    let phoneInputNew = document.querySelector("#customphoneNumber");
     let regionCodeInput = document.querySelector("#prefix_code");
+    let regionCodeInputNew = document.querySelector("#custom_prefix_code");
 
     if (phoneInput) {
         let iti = window.intlTelInput(phoneInput, {
@@ -1553,6 +1555,30 @@ function loadPhoneInput() {
         phoneInput.addEventListener("countrychange", function () {
             let countryData = iti.getSelectedCountryData();
             regionCodeInput.value = countryData.dialCode;
+        });
+
+        // phoneInput.addEventListener("blur", function () {
+        //     if (iti.isValidNumber()) {
+
+        //         document.getElementById("valid-msg").classList.remove("d-none");
+        //         document.getElementById("error-msg").classList.add("d-none");
+        //     } else {
+        //         document.getElementById("valid-msg").classList.add("d-none");
+        //         document.getElementById("error-msg").classList.remove("d-none");
+        //     }
+        // });
+    }
+
+    if (phoneInputNew) {
+        let iti = window.intlTelInput(phoneInputNew, {
+            initialCountry: "in",
+            preferredCountries: ["us", "gb", "in"],
+            separateDialCode: true,
+        });
+
+        phoneInputNew.addEventListener("countrychange", function () {
+            let countryData = iti.getSelectedCountryData();
+            regionCodeInputNew.value = countryData.dialCode;
         });
 
         // phoneInput.addEventListener("blur", function () {

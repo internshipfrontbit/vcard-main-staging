@@ -56,7 +56,7 @@
                                          onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" /> -->
 
                                      <input type="hidden" name="region_code" value="{{ $whatsappStore->region_code }}"
-                                         id="prefix_code" />
+                                         id="custom_prefix_code" />
                                      </div>
                                 </div>
                          </div>
