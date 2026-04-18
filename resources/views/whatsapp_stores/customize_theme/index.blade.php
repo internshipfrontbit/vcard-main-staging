@@ -72,6 +72,25 @@
             </fieldset>
 
             <script>
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    const input = document.getElementById('dataInput');
+
+                    if (input.value) {
+                        try {
+                            // Convert HTML entities to normal JSON string
+                            const decoded = input.value.replace(/&quot;/g, '"');
+
+                            const data = JSON.parse(decoded);
+
+                            if (Array.isArray(data)) {
+                                data.forEach(item => addRow(item));
+                            }
+                        } catch (e) {
+                            console.error('Invalid JSON in hidden input', e);
+                        }
+                    }
+                });
                 let records = [];
 
                 function syncHidden() {
