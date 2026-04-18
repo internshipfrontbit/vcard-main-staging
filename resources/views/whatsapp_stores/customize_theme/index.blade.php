@@ -145,7 +145,16 @@
                     records[index] = null; // mark deleted
                     row.remove();
 
+                    refreshIndexes();
                     syncHidden();
+                }
+
+                function refreshIndexes() {
+                    const rows = document.querySelectorAll('#rowsContainer .row');
+
+                    rows.forEach((row, i) => {
+                        row.setAttribute('data-index', i);
+                    });
                 }
             </script>
 
