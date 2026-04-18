@@ -608,6 +608,7 @@
 <input type="hidden" id="wp_show_order_form" value="{{ isset($settings['wp_show_order_form']) && $settings['wp_show_order_form'] ? $settings['wp_show_order_form'] : '' }}">
 
 @include('whatsapp_stores.templates.payment_success_popup')
+@include('whatsapp_stores.templates.userForm')
 
 <input type="hidden" id="mobileDiscountSettings" value="{{ $whatsappStore->mobile_discount_settings }}">
 

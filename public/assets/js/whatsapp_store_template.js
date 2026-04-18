@@ -743,6 +743,7 @@ function setQtyandClose(id) {
 }
 
 listenClick("#addToCartViewBtn", function () {
+    openUserModelForm();
     let storeId = $("#whatsappStoreId").val();
 
     let cartData = JSON.parse(localStorage.getItem("cart")) || {};
@@ -2583,7 +2584,7 @@ function prepareAndSendWpMessageDirect(productId, productName, currency_icon, pr
             
 
             message += `------------------------------\n`;
-            let dis = $("#discount_percentage").val() || 0;
+            let dis = getDiscountPercentage() || 0;
             if (Number(dis) != 0) {
                 dis = (((productPrice * quantity) * dis) / 100).toFixed();
                 message += 'Discount' + ` : ${currency_icon} ${dis}\n`;
@@ -2895,7 +2896,7 @@ function updateCourierCharge() {
 
     if ($("#grandTotal").html() != 0) {
         $(".discount-class").show();
-        let discount = $("#discount_percentage").val();
+        let discount = getDiscountPercentage();
         if (discount != 0 && discount) {
             let courierCharge = $("#courierCharge").html() || 0;
             let total = Number($("#grandTotal").html()) - Number(courierCharge) || 0;
@@ -2905,6 +2906,50 @@ function updateCourierCharge() {
         }
     } else {
         $(".discount-class").hide();
+    }
+}
+
+function getDiscountPercentage() {
+    let discount = $("#discount_percentage").val();
+    let storeAlias = $("#storeAlias").val();
+    let userDetails =  localStorage.getItem(storeAlias + "user_d") ? JSON.parse(localStorage.getItem(storeAlias + "user_d")) : null;
+
+    const input = document.getElementById('mobileDiscountSettings');
+
+    if (input.value) {
+                
+                // Convert HTML entities to normal JSON string
+                const decoded = input.value.replace(/&quot;/g, '"');
+
+                const data = JSON.parse(decoded);
+
+                if (Array.isArray(data) && userDetails && userDetails.phone) {
+                    if(data.length > 0){
+                        let findMobile = data.find(item => item.mobile == userDetails.phone);
+                        if(findMobile){
+                            discount = findMobile.discount;
+                        }
+                    }
+                }
+            } 
+    
+    return discount;        
+}
+
+function setUserDetailsToLocalStorage() {
+    let storeAlias = $("#storeAlias").val();
+    let userdetails = {"name":null,"phone":null,"email":null,"address":null,"country_code":null};
+    
+    localStorage.setItem(storeAlias + "user_d", JSON.stringify(userdetails));
+}
+
+function openUserModelForm(){
+    let storeAlias = $("#storeAlias").val();
+
+    let userDetails =  localStorage.getItem(storeAlias + "user_d") ? JSON.parse(localStorage.getItem(storeAlias + "user_d")) : null;
+
+    if(userDetails && userDetails.name == null){
+        $("#userFormModal").modal("show");
     }
 }
 
