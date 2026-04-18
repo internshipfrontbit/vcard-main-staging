@@ -142,7 +142,7 @@
                     const row = btn.closest('.row');
                     const index = row.getAttribute('data-index');
 
-                    records[index] = null; // mark deleted
+                    records.splice(index, 1);
                     row.remove();
 
                     refreshIndexes();
