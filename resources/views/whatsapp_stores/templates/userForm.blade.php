@@ -32,7 +32,7 @@
                                  <div class="mb-3 form-group">
                                      <label for="name" class="form-label">{{ __('messages.common.name') }}:
                                      </label><span class="text-danger">*</span>
-                                     <input type="text" required class="form-control" name="name" id="name"
+                                     <input type="text" required class="form-control" name="name" id="customName"
                                          placeholder="{{ __('messages.common.name') }}">
                                      <input type="hidden" name="baseUrl" id="baseUrl"
                                          value="{{ config('app.url') }}">
@@ -50,7 +50,7 @@
                                      <label for="phoneNumber" class="form-label required">
                                          {{ __('messages.whatsapp_stores.whatsapp_no') }}:
                                      </label><span class="text-danger">*</span>
-                                     {{ Form::text('phone', isset($whatsappStore) ? (isset($whatsappStore->region_code) ? '+' . $whatsappStore->region_code . '' . '' : '') : null, ['class' => 'form-control','maxlength' => 10,'minlength' => 10, 'placeholder' => __('messages.whatsapp_stores.whatsapp_no'), 'id' => 'phoneNumber', 'onkeyup' => 'if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,"")']) }}
+                                     {{ Form::text('phone', isset($whatsappStore) ? (isset($whatsappStore->region_code) ? '+' . $whatsappStore->region_code . '' . '' : '') : null, ['class' => 'form-control','maxlength' => 10,'minlength' => 10, 'placeholder' => __('messages.whatsapp_stores.whatsapp_no'), 'id' => 'customphoneNumber', 'oninput' => 'checkFunctionEnableDisable()','onkeyup' => 'if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,"")']) }}
                                      <!-- <input type="text" required name="phone" id="phoneNumber" class="form-control "
                                          placeholder="{{ __('messages.whatsapp_stores.whatsapp_no') }}"
                                          onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" /> -->
@@ -60,7 +60,7 @@
                                      </div>
                                 </div>
                          </div>
-                         <button type="submit" class="btn btn-primary m-0 w-100" disabled onclick="submitUserDetails()">
+                         <button type="submit" id="saveUserDetails" class="btn btn-primary m-0 w-100" disabled onclick="submitUserDetails()">
                               Submit
                          </button>
                  </div>

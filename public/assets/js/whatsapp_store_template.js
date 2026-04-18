@@ -2973,6 +2973,18 @@ function openUserModelForm(){
         $("#userFormModal").modal("show");
 }
 
+
+function checkFunctionEnableDisable(){
+    let name = $("#customName").val();
+    let phone = $("#customphoneNumber").val();
+
+    if(name != '' && phone != ''){
+        $("#saveUserDetails").removeAttr("disabled");
+    } else {
+        $("#saveUserDetails").attr("disabled", "disabled");
+    }
+}
+
 function prepareAndSendWpMessageForPhonepe(order, paymentId,storeInfo) {
 
 
