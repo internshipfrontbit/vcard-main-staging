@@ -63,7 +63,7 @@
             </div>
             
             <fieldset class="mt-4">
-                <legend>Mobile Based Discounts:</legend>
+                <legend style="font-size: 16px;font-weight: 600;">Mobile Based Discounts:</legend>
                 <a class="btn btn-primary mb-3" onclick="addRow()">Add</a>
 
                 <input type="hidden" id="dataInput">
@@ -100,10 +100,10 @@
                             <input type="number" class="form-control discount" placeholder="Discount %" value="${data.discount || ''}">
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-warning w-100" onclick="updateRow(this)">Edit</button>
+                            <a class="btn btn-warning w-100" onclick="updateRow(this)"><i class="fas fa-pencil"></i></a>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-danger w-100" onclick="deleteRow(this)">Delete</button>
+                            <a class="btn btn-danger w-100" onclick="deleteRow(this)"><i class="fas fa-trash"></i></a>
                         </div>
                     `;
 
