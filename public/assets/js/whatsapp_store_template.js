@@ -2982,7 +2982,7 @@ function getDiscountPercentage() {
     return discount;        
 }
 
-function setUserDetailsToLocalStorage() {
+function submitUserDetails() {
     let storeAlias = $("#storeAlias").val();
     let userdetails = {"name":null,"phone":null,"email":null,"address":null,"country_code":null};
 
