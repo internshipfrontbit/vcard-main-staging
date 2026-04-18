@@ -2998,7 +2998,7 @@ function submitUserDetails() {
         userdetails.country_code = $("#custom_prefix_code").val();
     }
 
-    $("#SizeModal").modal("hide");
+    $("#userFormModal").modal("hide");
     
     localStorage.setItem(storeAlias + "user_d", JSON.stringify(userdetails));
 }
