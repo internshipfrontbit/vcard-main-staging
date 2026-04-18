@@ -2985,6 +2985,20 @@ function getDiscountPercentage() {
 function setUserDetailsToLocalStorage() {
     let storeAlias = $("#storeAlias").val();
     let userdetails = {"name":null,"phone":null,"email":null,"address":null,"country_code":null};
+
+    if ($("#customName").val()) {
+        userdetails.name = $("#customName").val();
+    }
+
+    if ($("#customphoneNumber").val()) {
+        userdetails.phone = $("#customphoneNumber").val();
+    }
+
+    if($("#custom_prefix_code").val()){
+        userdetails.country_code = $("#custom_prefix_code").val();
+    }
+
+    $("#SizeModal").modal("hide");
     
     localStorage.setItem(storeAlias + "user_d", JSON.stringify(userdetails));
 }
