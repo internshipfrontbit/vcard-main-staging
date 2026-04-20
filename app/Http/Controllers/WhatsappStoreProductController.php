@@ -1245,6 +1245,8 @@ class WhatsappStoreProductController extends AppBaseController
     public function updateSessionUserData(Request $request){
         $input = $request->all();
 
+        $analyticsNew = new AnalyticsController();
+
         $datacreate = [
             'name' => $input["name"],
             'email' => null,
