@@ -1079,6 +1079,8 @@ Route::middleware(['freshInstall'])->group(function () {
     Route::post('/start-product-inq-sub-session', [AnalyticsController::class, 'startProductInqSubSession']);
     Route::post('/end-product-inq-sub-session', [AnalyticsController::class, 'endInactiveProductInquiry']);
     Route::post('/update-product-inquiry-session', [AnalyticsController::class, 'updateProductInqSubSession']);
+
+    Route::post('/update-session-user-data', [WhatsappStoreProductController::class, 'updateSessionUserData']);
     
     Route::get('store/{alias}/about-us', [WhatsappStoreController::class, 'about'])->name('whatsapp.store.about')->middleware('language');
     Route::get('store/{alias}/privacy-policy', [WhatsappStoreController::class, 'privacyPolicy'])->name('whatsapp.store.privacy')->middleware('language');

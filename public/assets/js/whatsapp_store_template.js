@@ -2998,6 +2998,26 @@ function submitUserDetails() {
         userdetails.country_code = $("#custom_prefix_code").val();
     }
 
+    let mainSessionId = localStorage.getItem(storeAlias + "sc_id");
+    
+    const payload = {
+        name: productId,
+        phone: storeId,
+        region_code: subSessionId,
+        sc_id: mainSessionId,
+    };
+        
+    const response = await fetch(`https://${getdomain()}/update-session-user-data`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content // only if using web.php
+            },
+            body: JSON.stringify(payload)
+        });    
+
+        const result = await response.json();
+
     $("#userFormModal").modal("hide");
     
     localStorage.setItem(storeAlias + "user_d", JSON.stringify(userdetails));

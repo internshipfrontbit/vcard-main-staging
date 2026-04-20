@@ -1242,6 +1242,26 @@ class WhatsappStoreProductController extends AppBaseController
         }
     }
 
+    public function updateSessionUserData(Request $request){
+        $input = $request->all();
+
+        $datacreate = [
+            'name' => $input["name"],
+            'email' => null,
+            'country_code' => $input["region_code"],
+            'phone' => $input["phone"],
+            'address' => null
+        ];
+
+        $encodedId = urlencode($analyticsNew->decryptData($request->input("sc_id")));
+              
+        $analyticsNew = new AnalyticsController();
+
+        $analyticsNew->apiSyncPut("analytics/main-sessions/".$encodedId, $datacreate);
+        
+        return $this->sendResponse([], 'Order Created Successfully.');
+    }
+
 private function getPhonePeAccessToken($store, $env = 'uat')
 {
     Log::info("WpOrder: Requesting PhonePe Token");
