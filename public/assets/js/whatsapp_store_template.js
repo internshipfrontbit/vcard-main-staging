@@ -3026,7 +3026,7 @@ async function submitUserDetails() {
 function isUserDetailsSet(){
     let storeAlias = $("#storeAlias").val();
     let userDetails =  localStorage.getItem(storeAlias + "user_d") ? JSON.parse(localStorage.getItem(storeAlias + "user_d")) : null;
-    return userDetails && userDetails.name == null;
+    return (userDetails && userDetails.name == null) || !userDetails;
 }
 
 function openUserModelForm(){    
