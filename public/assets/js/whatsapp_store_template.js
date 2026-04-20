@@ -3001,9 +3001,9 @@ async function submitUserDetails() {
     let mainSessionId = localStorage.getItem(storeAlias + "sc_id");
     
     const payload = {
-        name: productId,
-        phone: storeId,
-        region_code: subSessionId,
+        name: userdetails.name,
+        phone: userdetails.phone,
+        region_code: userdetails.country_code,
         sc_id: mainSessionId,
     };
         
