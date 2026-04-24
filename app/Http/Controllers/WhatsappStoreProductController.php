@@ -812,8 +812,28 @@ class WhatsappStoreProductController extends AppBaseController
                 // 2. Apply Discount
                 $discountAmount = 0;
                 if ($whatsappStore->dis_perc != 0) {
-                    $discountAmount = ($grandTotal * $whatsappStore->dis_perc) / 100;
-                    $grandTotal = $grandTotal - $discountAmount;
+                    $mobileDiscountSettings = json_decode($model->mobile_discount_settings, true);
+
+                    $finalDiscount = $whatsappStore->dis_perc;
+
+                    if (!empty($mobileDiscountSettings)) {
+                         foreach ($mobileDiscountSettings as $item) {
+                            if ($item['mobile'] == $userMobile) {
+
+                                // If discount is 0 → no discount
+                                if ((float)$item['discount'] === 0.0) {
+                                    $finalDiscount = 0;
+                                } else {
+                                    $finalDiscount = (float)$item['discount'];
+                                }
+
+                                break; // stop loop once found
+                            }
+                        }
+                    }else{
+                        $discountAmount = ($grandTotal * $finalDiscount) / 100;
+                        $grandTotal = $grandTotal - $discountAmount;
+                    }
                 }
 
                  if ($request->filled('coupon_code')) {

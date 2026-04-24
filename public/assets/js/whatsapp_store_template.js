@@ -2957,27 +2957,27 @@ function updateCourierCharge() {
 
 function getDiscountPercentage() {
     let discount = $("#discount_percentage").val();
-    let storeAlias = $("#storeAlias").val();
-    let userDetails =  localStorage.getItem(storeAlias + "user_d") ? JSON.parse(localStorage.getItem(storeAlias + "user_d")) : null;
+    // let storeAlias = $("#storeAlias").val();
+    // let userDetails =  localStorage.getItem(storeAlias + "user_d") ? JSON.parse(localStorage.getItem(storeAlias + "user_d")) : null;
 
-    const input = document.getElementById('mobileDiscountSettings');
+    // const input = document.getElementById('mobileDiscountSettings');
 
-    if (input.value) {
+    // if (input.value) {
                 
-                // Convert HTML entities to normal JSON string
-                const decoded = input.value.replace(/&quot;/g, '"');
+    //             // Convert HTML entities to normal JSON string
+    //             const decoded = input.value.replace(/&quot;/g, '"');
 
-                const data = JSON.parse(decoded);
+    //             const data = JSON.parse(decoded);
 
-                if (Array.isArray(data) && userDetails && userDetails.phone) {
-                    if(data.length > 0){
-                        let findMobile = data.find(item => item.mobile == userDetails.phone);
-                        if(findMobile){
-                            discount = findMobile.discount;
-                        }
-                    }
-                }
-            } 
+    //             if (Array.isArray(data) && userDetails && userDetails.phone) {
+    //                 if(data.length > 0){
+    //                     let findMobile = data.find(item => item.mobile == userDetails.phone);
+    //                     if(findMobile){
+    //                         discount = findMobile.discount;
+    //                     }
+    //                 }
+    //             }
+    //         } 
     
     return discount;        
 }

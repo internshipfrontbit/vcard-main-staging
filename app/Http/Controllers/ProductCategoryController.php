@@ -63,7 +63,7 @@ class ProductCategoryController extends AppBaseController
             $plan->payment_type === null &&
             now()->diffInMinutes($plan->created_at) > 30
         ) {
-            return $this->sendError('Trial expired or payment not completed',401);
+            return $this->sendError('Trial expired or payment not completed',403);
         }
 
         $input = $request->all();
@@ -99,7 +99,7 @@ class ProductCategoryController extends AppBaseController
             $plan->payment_type === null &&
             now()->diffInMinutes($plan->created_at) > 30
         ) {
-            return $this->sendError('Trial expired or payment not completed',401);
+            return $this->sendError('Trial expired or payment not completed',403);
         }
 
         $productCategory = ProductCategory::where('id', $categoryId)
@@ -127,7 +127,7 @@ class ProductCategoryController extends AppBaseController
             $plan->payment_type === null &&
             now()->diffInMinutes($plan->created_at) > 30
         ) {
-            return $this->sendError('Trial expired or payment not completed',401);
+            return $this->sendError('Trial expired or payment not completed',403);
         }
 
         $productCategory = ProductCategory::where('id', $categoryId)
@@ -175,7 +175,7 @@ class ProductCategoryController extends AppBaseController
             $plan->payment_type === null &&
             now()->diffInMinutes($plan->created_at) > 30
         ) {
-            return $this->sendError('Trial expired or payment not completed',401);
+            return $this->sendError('Trial expired or payment not completed',403);
         }
 
         $productCategory = ProductCategory::where('id', $categoryId)
@@ -210,7 +210,7 @@ class ProductCategoryController extends AppBaseController
             $plan->payment_type === null &&
             now()->diffInMinutes($plan->created_at) > 30
         ) {
-            return $this->sendError('Trial expired or payment not completed',401);
+            return $this->sendError('Trial expired or payment not completed',403);
         }
     
         // Get pagination parameters
