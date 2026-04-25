@@ -1860,9 +1860,9 @@ listenSubmit("#orderForm", function (event) {
                 document.querySelector("#orderForm button").innerHTML = previousVal;
                 document.querySelector("#orderForm button").disabled = false;
                 $(this).find(".btn").prop("disabled", false);
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1500);
+                // setTimeout(() => {
+                //     window.location.reload();
+                // }, 1500);
             },
         });
 
