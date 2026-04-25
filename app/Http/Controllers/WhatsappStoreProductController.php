@@ -812,7 +812,7 @@ class WhatsappStoreProductController extends AppBaseController
                 // 2. Apply Discount
                 $discountAmount = 0;
                 if ($whatsappStore->dis_perc != 0) {
-                    $mobileDiscountSettings = json_decode($model->mobile_discount_settings, true);
+                    $mobileDiscountSettings = json_decode($whatsappStore->mobile_discount_settings, true);
 
                     $finalDiscount = $whatsappStore->dis_perc;
 
