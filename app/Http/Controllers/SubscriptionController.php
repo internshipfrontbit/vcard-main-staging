@@ -291,6 +291,52 @@ class SubscriptionController extends AppBaseController
         ], 200);
     }
 
+    public function PlanRequestsAcceptAPI(Request $request){
+        if ($request->status == Subscription::ACTIVE) {
+            $user = User::whereTenantId($request->tenant_id)->latest()->first();
+            if ($user) {
+                // send mail notification
+                $subscription = Subscription::findOrFail($request->id);
+                $planName = $subscription->plan->name;
+                $paymentAmount = $subscription->payable_amount;
+                $userEmail = $user->email;
+                $planName = $subscription->plan->name;
+                $firstName = $user->first_name;
+                $lastName =  $user->last_name;
+                // $emailData = [
+                //     'subscriptionId' => $request->id,
+                //     'subscriptionAmount' => $paymentAmount,
+                //     'transactionID' => $request->session_id,
+                //     'planName' => $planName,
+                //     'first_name' => $firstName,
+                //     'last_name' => $lastName,
+                // ];
+
+                // Mail::to($userEmail)->send(new SubscriptionPaymentSuccessMail($emailData));
+
+                $affiliateAmount = getSuperAdminSettingValue('affiliation_amount');
+                $affiliateAmountType = getSuperAdminSettingValue('affiliation_amount_type');
+                if ($affiliateAmountType == 1) {
+                    AffiliateUser::where('user_id', $user->id)->where('amount', 0)->withoutGlobalScopes()->update(['amount' => $affiliateAmount, 'is_verified' => 1]);
+                } else if ($affiliateAmountType == 2) {
+                    $amount = $paymentAmount * $affiliateAmount / 100;
+                    AffiliateUser::where('user_id', $user->id)->where('amount', 0)->withoutGlobalScopes()->update(['amount' => $amount, 'is_verified' => 1]);
+                }
+            }
+            Subscription::whereTenantId($request->tenant_id)->where('id', '!=', $request->id)->where('status', '!=', Subscription::REJECT)->update(['status' => Subscription::INACTIVE]);
+        }
+        Subscription::where('id', $request->id)->update([
+            'status' => $request->status,
+        ]);
+
+        $user = User::whereTenantId($request->tenant_id)->first();
+        manageVcards($user);
+        return response()->json([
+            'success' => true,
+            'message' => "Status Updated Successfully",
+        ], 200);
+    }
+
     public function getPlanRequestsAPI(Request $request){
         $subscriptions = Subscription::with(['tenant.user', 'plan.currency'])
         ->whereNotNull('payment_type')
