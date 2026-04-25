@@ -120,9 +120,13 @@ class SubscriptionController extends AppBaseController
             }
         }
 
+        $subscriptionHistory = Subscription::with(['plan'])
+            ->whereTenantId(getLogInTenantId())->latest()->get();
+
         return response()->json([
             'currentPlan' => $currentPlan,
             'remainingDay' => $remainingDay,
+            'subscriptionHistory' => $subscriptionHistory,
         ]);
     }
 
