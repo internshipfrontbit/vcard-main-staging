@@ -818,7 +818,7 @@ class WhatsappStoreProductController extends AppBaseController
 
                     if (!empty($mobileDiscountSettings)) {
                          foreach ($mobileDiscountSettings as $item) {
-                            if ($item['mobile'] == $userMobile) {
+                            if ($item['mobile'] == $request) {
 
                                 // If discount is 0 → no discount
                                 if ((float)$item['discount'] === 0.0) {
