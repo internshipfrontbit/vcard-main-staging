@@ -291,6 +291,19 @@ class SubscriptionController extends AppBaseController
         ], 200);
     }
 
+    public function getPlanRequestsAPI(Request $request){
+        $subscriptions = Subscription::with(['tenant.user', 'plan.currency'])
+        ->whereNotNull('payment_type')
+        ->select('subscriptions.*')
+        ->latest() 
+        ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $subscriptions
+        ]);
+    }
+
     public function downloadAttachment($id): \Illuminate\Http\Response|Application|\Illuminate\Contracts\Routing\ResponseFactory
     {
         $subscription = Subscription::findOrFail($id);
