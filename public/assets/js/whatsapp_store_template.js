@@ -1700,9 +1700,9 @@ listenSubmit("#orderForm", function (event) {
                             displaySuccessMessage("Your order has been placed successfully!");
                             document.querySelector("#orderForm button").innerHTML = previousVal;
                             document.querySelector("#orderForm button").disabled = false;
-                            // setTimeout(() => {
-                            //     window.location.reload();
-                            // }, 3000);
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 3000);
                         }
                     },
                     error: function (response) {
@@ -1712,9 +1712,9 @@ listenSubmit("#orderForm", function (event) {
                         $(this).find(".btn").prop("disabled", false);
                         displayErrorMessage(response.responseJSON.message);
                         console.log(response.responseJSON.message);
-                        // setTimeout(() => {
-                        //     window.location.reload();
-                        // }, 1500);
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
                     },
                 });
             }, 1000);
@@ -1861,9 +1861,9 @@ listenSubmit("#orderForm", function (event) {
                 document.querySelector("#orderForm button").innerHTML = previousVal;
                 document.querySelector("#orderForm button").disabled = false;
                 $(this).find(".btn").prop("disabled", false);
-                // setTimeout(() => {
-                //     window.location.reload();
-                // }, 1500);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
             },
         });
 
