@@ -1663,8 +1663,7 @@ listenSubmit("#orderForm", function (event) {
                 encodeURIComponent(sc_id) +
                 "&grand_total=" +
                 grandTotal +
-                "&coupon_code=" +
-                 storeCart.coupon+
+                `${ storeCart.coupon ? "&coupon_code=" + encodeURIComponent(storeCart.coupon) : "" }` +
                 "&products=" +
                 encodeURIComponent(JSON.stringify(products)) +
                 "&language=" + lang;
