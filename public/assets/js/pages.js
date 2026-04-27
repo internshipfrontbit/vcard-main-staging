@@ -132,7 +132,7 @@ function viewOrderRenderData1(orderId) {
                                 ${ storeId == 1209 ? product.offer_text && product.offer_text != '' ? `<br/><small style="color: #770101;font-weight: 600;font-size: 13px;">Offer Applied: ${product.offer_text}</small>` : `` : ``}
                              </td>
                         
-                                ${storeId == 236 || storeId == 4 || storeId == 77 || storeId == 344 || storeId == 364 || storeId == 1323 || storeId == 1502 || storeId == 1463 ? `<td>${product.size}</td>` : ``}
+                                ${storeId == 236 || storeId == 77 || storeId == 344 || storeId == 364 || storeId == 1323 || storeId == 1502 || storeId == 1463 ? `<td>${product.size}</td>` : ``}
                                 ${storeId == 36 || storeId == 77 || storeId == 1502 ? `<td>${product.color}</td>` : ``}
                             ${storeId == 208 || storeId == 1488 || storeId == 7 || storeId == 424 ?
                             `
