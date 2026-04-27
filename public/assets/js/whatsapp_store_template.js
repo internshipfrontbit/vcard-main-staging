@@ -1856,6 +1856,7 @@ listenSubmit("#orderForm", function (event) {
                 }
             },
             error: function (response) {
+                console.log(response.responseJSON.message);
                 displayErrorMessage(response.responseJSON.message);
                 document.querySelector("#orderForm button").innerHTML = previousVal;
                 document.querySelector("#orderForm button").disabled = false;
