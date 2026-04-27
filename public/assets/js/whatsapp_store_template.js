@@ -1712,9 +1712,10 @@ listenSubmit("#orderForm", function (event) {
                         document.querySelector("#orderForm button").disabled = false;
                         $(this).find(".btn").prop("disabled", false);
                         displayErrorMessage(response.responseJSON.message);
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1500);
+                        console.log(response.responseJSON.message);
+                        // setTimeout(() => {
+                        //     window.location.reload();
+                        // }, 1500);
                     },
                 });
             }, 1000);
