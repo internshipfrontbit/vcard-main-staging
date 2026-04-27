@@ -811,30 +811,87 @@ class WhatsappStoreProductController extends AppBaseController
 
                 // 2. Apply Discount
                 $discountAmount = 0;
+                Log::info('Discount calculation started', [
+                    'phone' => $request->phone,
+                    'grandTotal_initial' => $grandTotal
+                ]);
+
                 if ($whatsappStore->dis_perc != 0) {
+
+                    Log::info('Store discount exists', [
+                        'store_discount' => $whatsappStore->dis_perc
+                    ]);
+
                     $mobileDiscountSettings = json_decode($whatsappStore->mobile_discount_settings, true);
+
+                    Log::info('Mobile discount settings decoded', [
+                        'settings' => $mobileDiscountSettings
+                    ]);
 
                     $finalDiscount = $whatsappStore->dis_perc;
 
                     if (!empty($mobileDiscountSettings)) {
-                         foreach ($mobileDiscountSettings as $item) {
+
+                        Log::info('Mobile discount settings found');
+
+                        foreach ($mobileDiscountSettings as $item) {
+
+                            Log::info('Checking mobile match', [
+                                'item_mobile' => $item['mobile'] ?? null,
+                                'request_mobile' => $request->phone
+                            ]);
+
                             if ($item['mobile'] == $request->phone) {
+
+                                Log::info('Mobile matched', $item);
 
                                 // If discount is 0 → no discount
                                 if ((float)$item['discount'] === 0.0) {
+
+                                    Log::info('Mobile discount is 0, no discount applied');
                                     $finalDiscount = 0;
+
                                 } else {
+
                                     $finalDiscount = (float)$item['discount'];
+
+                                    Log::info('Mobile specific discount applied', [
+                                        'finalDiscount' => $finalDiscount
+                                    ]);
                                 }
 
-                                break; // stop loop once found
+                                break;
                             }
                         }
-                    }else{
+
+                    } else {
+
+                        Log::info('No mobile-specific discount settings, applying default');
+
                         $discountAmount = ($grandTotal * $finalDiscount) / 100;
+
+                        Log::info('Calculated discount amount', [
+                            'discountAmount' => $discountAmount
+                        ]);
+
                         $grandTotal = $grandTotal - $discountAmount;
+
+                        Log::info('Grand total after discount', [
+                            'grandTotal' => $grandTotal
+                        ]);
                     }
+
+                    Log::info('Final discount value', [
+                        'finalDiscount' => $finalDiscount
+                    ]);
+
+                } else {
+                    Log::info('No store discount applied (dis_perc = 0)');
                 }
+
+                Log::info('Discount calculation completed', [
+                    'grandTotal_final' => $grandTotal
+                ]);
 
                  if ($request->filled('coupon_code')) {
                     $response = Http::withHeaders([
