@@ -2106,7 +2106,7 @@ function prepareAndSendWpMessage(order, paymentId) {
 
         message += 'Total' + ` :  ${order.dis_amt + order.grand_total}\n`;
 
-        if(order.coupon_code != ""){
+        if(order.coupon_code != "" && order.coupon_code != null && order.coupon_code != undefined){
             message += `Discount(Coupon: ${order.coupon_code})` + ` :  ${Number(order.dis_amt).toFixed(2)}\n`;
         }else{
             message += 'Discount' + ` :  ${order.dis_amt}\n`;
@@ -3174,7 +3174,7 @@ function prepareAndSendWpMessageForPhonepe(order, paymentId,storeInfo) {
 
         message += 'Total' + ` :  ${order.dis_amt + order.grand_total}\n`;
 
-        if(order.coupon_code != ""){
+        if(order.coupon_code != "" && order.coupon_code != null && order.coupon_code != undefined){
             message += `Discount(Coupon: ${order.coupon_code})` + ` :  ${order.dis_amt}\n`;
         }else{
             message += 'Discount' + ` :  ${order.dis_amt}\n`;
