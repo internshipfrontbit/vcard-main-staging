@@ -71,9 +71,9 @@ class WhatsappStoreProductController extends AppBaseController
 
         $unlimited = false;
 
-        if($plan->plan_id == 24){
-            $unlimited = true;
-        }
+        // if($plan->plan_id == 24){
+        //     $unlimited = true;
+        // }
 
         // Determine the max limit
         if (in_array($input['whatsapp_store_id'], $limit550)) {
