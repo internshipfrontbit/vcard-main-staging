@@ -67,7 +67,7 @@ class WhatsappStoreProductController extends AppBaseController
         $limit150 = [128, 363, 652, 738, 376, 982, 1263];
         $limit200 = [322,1241,151];
         $limit80 = [210];
-        $limit2 = [99];
+        $limit2 = [99,1662];
 
         $unlimited = false;
 
