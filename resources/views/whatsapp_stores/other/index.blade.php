@@ -48,6 +48,106 @@
             <input type="number" id="dis-percent" class="form-control" placeholder="Enter Discount Percentage"
                 value="{{ $whatsappStore->dis_perc }}">
         </div>
+
+        <fieldset class="mt-4">
+    <legend style="font-size: 16px;font-weight: 600;">Testimonials:</legend>
+
+    <a class="btn btn-primary mb-3" onclick="addTestimonial()">Add</a>
+
+    <input type="hidden" name="testimonials" id="testimonialInput" value="{{ $whatsappStore->testimonials }}">
+
+    <div id="testimonialContainer"></div>
+</fieldset>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById('testimonialInput');
+
+    if (input.value) {
+        try {
+            const decoded = input.value.replace(/&quot;/g, '"');
+            const data = JSON.parse(decoded);
+
+            if (Array.isArray(data)) {
+                data.forEach(item => addTestimonial(item));
+            }
+        } catch (e) {
+            console.error('Invalid JSON in testimonial input', e);
+        }
+    }
+});
+
+let testimonials = [];
+
+function syncTestimonials() {
+    const filtered = testimonials.filter(t => t.name && t.review);
+    document.getElementById('testimonialInput').value = JSON.stringify(filtered);
+}
+
+function addTestimonial(data = {}) {
+    const index = testimonials.length;
+
+    testimonials.push({
+        name: data.name || '',
+        review: data.review || ''
+    });
+
+    const row = document.createElement('div');
+    row.className = "row mb-2 align-items-center";
+    row.setAttribute("data-index", index);
+
+    row.innerHTML = `
+        <div class="col-md-3">
+            <input type="text" class="form-control name" placeholder="Name"
+                value="${data.name || ''}" oninput="updateTestimonial(this)">
+        </div>
+
+        <div class="col-md-6">
+            <textarea class="form-control review" placeholder="Review"
+                oninput="updateTestimonial(this)">${data.review || ''}</textarea>
+        </div>
+
+        <div class="col-md-2">
+            <a class="btn btn-danger w-100" onclick="deleteTestimonial(this)">
+                <i class="fas fa-trash"></i>
+            </a>
+        </div>
+    `;
+
+    document.getElementById('testimonialContainer').appendChild(row);
+}
+
+function updateTestimonial(input) {
+    const row = input.closest('.row');
+    const index = row.getAttribute('data-index');
+
+    const name = row.querySelector('.name').value.trim();
+    const review = row.querySelector('.review').value.trim();
+
+    testimonials[index] = { name, review };
+
+    syncTestimonials();
+}
+
+function deleteTestimonial(btn) {
+    const row = btn.closest('.row');
+    const index = row.getAttribute('data-index');
+
+    testimonials.splice(index, 1);
+    row.remove();
+
+    refreshTestimonialIndexes();
+    syncTestimonials();
+}
+
+function refreshTestimonialIndexes() {
+    const rows = document.querySelectorAll('#testimonialContainer .row');
+
+    rows.forEach((row, i) => {
+        row.setAttribute('data-index', i);
+    });
+}
+</script>
     
 
         
