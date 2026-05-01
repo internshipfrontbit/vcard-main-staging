@@ -1281,16 +1281,10 @@ object-fit: fill;
         }
                 </style>
 
-                @php
-                    $testimonials = [];
-
-                    if (!empty($whatsappStore->testimonials)) {
-                        $testimonials = json_decode($whatsappStore->testimonials, true);
-                    }
-                @endphp
 
 
-@if(!empty($testimonials) && count($testimonials) > 0)
+
+@if(!empty($whatsappStore->testimonials) && count(json_decode($whatsappStore->testimonials, true)) > 0)
 
 <section class="py-5 testimonial-section">
   <div class="container">
@@ -1300,7 +1294,7 @@ object-fit: fill;
     <div class="testimonial-slider">
       
       <!-- Slide 1 -->
-       @foreach($testimonials as $item)
+       @foreach(json_decode($whatsappStore->testimonials, true) as $item)
       <div class="px-2">
         <div class="testimonial-card p-4 rounded-4 shadow-sm bg-white">
           <div>
