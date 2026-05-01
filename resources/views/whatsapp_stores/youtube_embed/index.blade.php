@@ -70,7 +70,7 @@ $(document).ready(function(){
 
         // 🔢 Set video limit based on store id
     let storeId = {{ $whatsappStore->id }};
-    let videoLimit = (storeId == 424 || storeId == 208 || storeId == 1488) ? 15 : (storeId == 1600) ? 6 : 5;
+    let videoLimit = (storeId == 424 || storeId == 208 || storeId == 1488) ? 15 : (storeId == 1600) ? 12 : 5;
 
 
     // 🔄 Render existing links on page load

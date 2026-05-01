@@ -638,7 +638,7 @@ object-fit: fill;
             
                     <!-- Video Container -->
                     <div class="horizontal-videos" id="videoContainer">
-                        @foreach (\App\Helpers\VideoHelper::getVideoLinks($whatsappStore->id) as $link)
+                        @foreach (array_slice(\App\Helpers\VideoHelper::getVideoLinks($whatsappStore->id), 0, 6) as $link)
                             <div class="video-wrapper">
                                 <iframe 
                                     src="{{ $link }}?autoplay=1&mute=1&loop=1&playlist={{ basename($link) }}&controls=0&showinfo=0&modestbranding=0" 
