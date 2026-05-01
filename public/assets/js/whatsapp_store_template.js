@@ -287,22 +287,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    const container = document.getElementById('videoContainer');
+    function initVideoSlider({
+    containerId,
+    overlayId
+}) {
+    const container = document.getElementById(containerId);
     if (!container || container.querySelectorAll('.video-wrapper').length === 0) return;
-    const overlay = document.getElementById('videoOverlay');
+
+    const overlay = document.getElementById(overlayId);
     const overlayIframe = overlay.querySelector('iframe');
     const closeBtn = overlay.querySelector('.close-btn');
 
     const videoWrappers = container.querySelectorAll('.video-wrapper');
+    const iframes = container.querySelectorAll('iframe');
+
     let currentIndex = 0;
     let autoSlideInterval;
     let overlayOpen = false;
-
+    let loadedCount = 0;
 
     function isMobile() {
         return window.innerWidth <= 767;
     }
-
 
     function getVisibleCount() {
         const containerWidth = container.offsetWidth;
@@ -312,8 +318,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function autoSlide() {
         const visibleCount = getVisibleCount();
-        const currentVideoWrapper = videoWrappers[currentIndex];
-        const dynamicVideoWidth = currentVideoWrapper.offsetWidth + 10;
+        const dynamicVideoWidth = videoWrappers[currentIndex].offsetWidth + 10;
 
         currentIndex++;
 
@@ -322,21 +327,16 @@ document.addEventListener("DOMContentLoaded", function () {
             behavior: 'smooth'
         });
 
-
         if (currentIndex > (videoWrappers.length - visibleCount)) {
             setTimeout(() => {
-                container.scrollTo({
-                    left: 0,
-                    behavior: 'smooth'
-                });
+                container.scrollTo({ left: 0, behavior: 'smooth' });
                 currentIndex = 0;
             }, 600);
         }
     }
 
     function startAutoSlide() {
-        if (isMobile()) return;
-        if (autoSlideInterval) return;
+        if (isMobile() || autoSlideInterval) return;
         autoSlideInterval = setInterval(autoSlide, 3000);
     }
 
@@ -347,21 +347,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
+    // Visibility change
     document.addEventListener("visibilitychange", function () {
         if (isMobile()) return;
-
-        if (document.hidden) {
-            stopAutoSlide();
-        } else {
-            startAutoSlide();
-        }
+        document.hidden ? stopAutoSlide() : startAutoSlide();
     });
 
-
-    const iframes = container.querySelectorAll('iframe');
-    let loadedCount = 0;
-
+    // Shimmer loading
     iframes.forEach(iframe => {
         const shimmer = document.createElement('div');
         shimmer.classList.add('shimmer');
@@ -370,52 +362,34 @@ document.addEventListener("DOMContentLoaded", function () {
         iframe.addEventListener('load', () => {
             shimmer.style.display = 'none';
             loadedCount++;
+
             if (loadedCount === iframes.length && !isMobile()) {
                 startAutoSlide();
             }
         });
     });
 
-
+    // Click to open overlay
     container.addEventListener('click', function (e) {
         const overlayDiv = e.target.closest('.iframe-click-overlay');
-        if (overlayDiv) {
-            const iframe = overlayDiv.previousElementSibling;
-            stopAutoSlide();
+        if (!overlayDiv) return;
 
-            let src = iframe.src;
+        const iframe = overlayDiv.previousElementSibling;
+        stopAutoSlide();
 
-            src = src.replace(/(autoplay=0|autoplay=1)/, '');
-            src = src.replace(/(mute=0|mute=1)/, '');
-            src = src.replace(/(controls=0|controls=1)/, '');
+        let src = iframe.src
+            .replace(/(autoplay=\d)/, '')
+            .replace(/(mute=\d)/, '')
+            .replace(/(controls=\d)/, '');
 
-            src += (src.includes('?') ? '&' : '?') + 'autoplay=1&mute=0&controls=1';
+        src += (src.includes('?') ? '&' : '?') + 'autoplay=1&mute=0&controls=1';
 
-            overlayIframe.src = src;
-            overlay.classList.add('active');
-            overlayOpen = true;
+        overlayIframe.src = src;
+        overlay.classList.add('active');
+        overlayOpen = true;
 
-            if (!history.state || !history.state.overlayOpen) {
-                history.pushState({ overlayOpen: true }, '');
-            }
-        }
-    });
-
-    closeBtn.addEventListener('click', function () {
-        closeOverlay(true);
-    });
-
-
-    overlay.addEventListener('click', function (e) {
-        if (e.target === overlay) {
-            closeOverlay(true);
-        }
-    });
-
-
-    window.addEventListener('popstate', function (e) {
-        if (overlayOpen) {
-            closeOverlay(false);
+        if (!history.state || !history.state.overlayOpen) {
+            history.pushState({ overlayOpen: true }, '');
         }
     });
 
@@ -424,21 +398,38 @@ document.addEventListener("DOMContentLoaded", function () {
         overlayIframe.src = '';
         overlayOpen = false;
 
-        if (!isMobile()) {
-            startAutoSlide();
-        }
-
+        if (!isMobile()) startAutoSlide();
 
         if (fromCloseBtn) {
-            if (history.state && history.state.overlayOpen) {
-                history.back();
-            }
+            if (history.state?.overlayOpen) history.back();
         } else {
-            if (history.state && history.state.overlayOpen) {
-                history.replaceState(null, '');
-            }
+            if (history.state?.overlayOpen) history.replaceState(null, '');
         }
     }
+
+    // Close events
+    closeBtn.addEventListener('click', () => closeOverlay(true));
+
+    overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeOverlay(true);
+    });
+
+    window.addEventListener('popstate', function () {
+        if (overlayOpen) closeOverlay(false);
+    });
+}
+
+
+// ✅ Initialize both sliders
+initVideoSlider({
+    containerId: 'videoContainer',
+    overlayId: 'videoOverlay'
+});
+
+// initVideoSlider({
+//     containerId: 'videoContainernew',
+//     overlayId: 'videoOverlaynew'
+// });
 
 
 });
