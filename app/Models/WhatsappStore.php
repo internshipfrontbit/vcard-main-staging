@@ -63,7 +63,8 @@ class WhatsappStore extends Model implements HasMedia
         'dropdown_settings',
 
         'theme_settings',
-        'mobile_discount_settings'
+        'mobile_discount_settings',
+        'testimonials'
     ];
 
     protected $appends = [

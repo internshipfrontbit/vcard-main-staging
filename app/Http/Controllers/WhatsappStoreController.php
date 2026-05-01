@@ -541,6 +541,10 @@ public function updateOfferText(Request $request, $whatsappStore)
             $updateData['dis_perc'] = $request->dis_perc;
         }
 
+        if ($request->filled('testimonials')) {
+            $updateData['testimonials'] = $request->testimonials;
+        }
+
         $store->update($updateData);
 
         // OPTIONAL: clear existing images if replacing all
