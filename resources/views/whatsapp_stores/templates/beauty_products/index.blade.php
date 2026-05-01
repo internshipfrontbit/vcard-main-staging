@@ -1231,6 +1231,120 @@ object-fit: fill;
                     </div> 
 
                 @endif
+
+
+
+                <style>
+                    .testimonial-section .testimonial-card {
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            min-height: 280px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin: 10px; /* Space between slides in Slick */
+        }
+
+        .testimonial-section .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .testimonial-section .quote-icon {
+            width: 45px;
+            height: 45px;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+            fill: #000;
+        }
+
+        .testimonial-section .review-text {
+            font-size: 1.25rem; /* Slightly bigger as requested */
+            line-height: 1.6;
+            color: #4a4a4a;
+        }
+
+        /* Customizing Slick Dots */
+        .testimonial-section .slick-dots li button:before {
+            font-size: 12px;
+            color: #0d6efd;
+        }
+        .testimonial-section .slick-dots li.slick-active button:before {
+            color: #0d6efd;
+        }
+        
+        /* Ensure cards in the same row have equal height */
+        .testimonial-section .slick-track {
+            display: flex !important;
+        }
+        .testimonial-section .slick-slide {
+            height: inherit !important;
+        }
+                </style>
+
+<section class="py-5 bg-light testimonial-section">
+  <div class="container">
+    <h2 class="text-center mb-5 fw-bold">What Our Clients Say</h2>
+    
+    <!-- Slick Slider Container -->
+    <div class="testimonial-slider">
+      
+      <!-- Slide 1 -->
+      <div class="px-2">
+        <div class="testimonial-card p-4 rounded-4 shadow-sm bg-white">
+          <div>
+            <svg class="quote-icon" viewBox="0 0 512 512">
+                <path d="M119.472,66.59C53.489,66.59,0,120.094,0,186.1c0,65.983,53.489,119.487,119.472,119.487c0,0-0.578,44.392-36.642,108.284c-4.006,12.802,3.135,26.435,15.945,30.418c9.089,2.859,18.653,0.08,24.829-6.389c82.925-90.7,115.385-197.448,115.385-251.8C238.989,120.094,185.501,66.59,119.472,66.59z"/>
+                <path d="M392.482,66.59c-65.983,0-119.472,53.505-119.472,119.51c0,65.983,53.489,119.487,119.472,119.487c0,0-0.578,44.392-36.642,108.284c-4.006,12.802,3.136,26.435,15.945,30.418c9.089,2.859,18.653,0.08,24.828-6.389C479.539,347.2,512,240.452,512,186.1C512,120.094,458.511,66.59,392.482,66.59z"/>
+            </svg>
+            <p class="review-text fst-italic">"The interface is incredibly intuitive. It has completely transformed how our team handles daily workflows."</p>
+          </div>
+          <div class="mt-3">
+            <div class="text-warning mb-2" style="font-size: 18px;">★★★★★</div>
+            <h6 class="mb-0 fw-bold">Alex Johnson</h6>
+            <small class="text-muted">Product Manager</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="px-2">
+        <div class="testimonial-card p-4 rounded-4 shadow-sm bg-white">
+          <div>
+            <svg class="quote-icon" viewBox="0 0 512 512">
+                <path d="M119.472,66.59C53.489,66.59,0,120.094,0,186.1c0,65.983,53.489,119.487,119.472,119.487c0,0-0.578,44.392-36.642,108.284c-4.006,12.802,3.135,26.435,15.945,30.418c9.089,2.859,18.653,0.08,24.829-6.389c82.925-90.7,115.385-197.448,115.385-251.8C238.989,120.094,185.501,66.59,119.472,66.59z"/>
+                <path d="M392.482,66.59c-65.983,0-119.472,53.505-119.472,119.51c0,65.983,53.489,119.487,119.472,119.487c0,0-0.578,44.392-36.642,108.284c-4.006,12.802,3.136,26.435,15.945,30.418c9.089,2.859,18.653,0.08,24.828-6.389C479.539,347.2,512,240.452,512,186.1C512,120.094,458.511,66.59,392.482,66.59z"/>
+            </svg>
+            <p class="review-text fst-italic">"Clean code, modern aesthetics, and perfect responsiveness. Exactly what I was looking for!"</p>
+          </div>
+          <div class="mt-3">
+            <div class="text-warning mb-2" style="font-size: 18px;">★★★★★</div>
+            <h6 class="mb-0 fw-bold">Sarah Chen</h6>
+            <small class="text-muted">UX Designer</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="px-2">
+        <div class="testimonial-card p-4 rounded-4 shadow-sm bg-white">
+          <div>
+            <svg class="quote-icon" viewBox="0 0 512 512">
+                <path d="M119.472,66.59C53.489,66.59,0,120.094,0,186.1c0,65.983,53.489,119.487,119.472,119.487c0,0-0.578,44.392-36.642,108.284c-4.006,12.802,3.135,26.435,15.945,30.418c9.089,2.859,18.653,0.08,24.829-6.389c82.925-90.7,115.385-197.448,115.385-251.8C238.989,120.094,185.501,66.59,119.472,66.59z"/>
+                <path d="M392.482,66.59c-65.983,0-119.472,53.505-119.472,119.51c0,65.983,53.489,119.487,119.472,119.487c0,0-0.578,44.392-36.642,108.284c-4.006,12.802,3.136,26.435,15.945,30.418c9.089,2.859,18.653,0.08,24.828-6.389C479.539,347.2,512,240.452,512,186.1C512,120.094,458.511,66.59,392.482,66.59z"/>
+            </svg>
+            <p class="review-text fst-italic">"Excellent support. The implementation was seamless and it works perfectly on mobile."</p>
+          </div>
+          <div class="mt-3">
+            <div class="text-warning mb-2" style="font-size: 18px;">★★★★★</div>
+            <h6 class="mb-0 fw-bold">Marcus Thorne</h6>
+            <small class="text-muted">Founder, Techly</small>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
                 
 
                 
@@ -1239,6 +1353,7 @@ object-fit: fill;
                 @if($whatsappStore->id == 423)
                 <img src="https://staging.vcardking.com/uploads/JKFilterwala.jpg" alt="Footer Banner - JK Filterwala" style="width: 100%; margin-top: 32px;">
                  @endif
+                 
 
                 
                 
@@ -1422,6 +1537,36 @@ object-fit: fill;
 
         // Trigger video autoplay on initial load
         $slider.trigger('afterChange', [ $slider.slick('getSlick'), 0 ]);
+
+
+
+
+
+
+        $('.testimonial-slider').slick({
+            dots: true,
+            infinite: true,
+            speed: 500,
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            arrows: false,
+            responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                slidesToShow: 2,
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                slidesToShow: 1,
+                }
+            }
+            ]
+        });
     });
 </script>
 
