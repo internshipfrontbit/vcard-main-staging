@@ -1281,9 +1281,9 @@ object-fit: fill;
         }
                 </style>
 
-<section class="py-5 bg-light testimonial-section">
+<section class="py-5 testimonial-section">
   <div class="container">
-    <h2 class="text-center mb-5 fw-bold">What Our Clients Say</h2>
+    <h2 class="text-center mb-4 mt-3 title-size" style="font-weight: 600;">What Our Clients Say</h2>
     
     <!-- Slick Slider Container -->
     <div class="testimonial-slider">
