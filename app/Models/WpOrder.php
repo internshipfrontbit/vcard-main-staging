@@ -43,7 +43,8 @@ class WpOrder extends Model
         
         'dropdown_settings_order',
         'shipping_tracking_id',
-        'coupon_code'
+        'coupon_code',
+        'gst_amt'
     ];
     
 
