@@ -32,6 +32,16 @@
 
     @endif
 
+    @if($whatsappStore->id == 1391)
+
+    <label for="gstPercentage" style="margin-bottom: 10px; margin-top: 10px;">GST Percentage</label>
+    <div class="youtube-link-input-group">
+        <input type="number" id="gstPercentage" class="form-control" placeholder="Enter GST Percentage"
+            value="{{ $whatsappStore->gst_percent ?? 0 }}">
+    </div>
+
+    @endif
+
     @if($whatsappStore->id == 424 || $whatsappStore->id == 721 || $whatsappStore->id == 41 || $whatsappStore->id == 1238)
 
     <label for="courier-charge" style="margin-bottom: 10px; margin-top: 10px;">Courier Charge</label>

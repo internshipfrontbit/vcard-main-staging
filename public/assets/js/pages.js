@@ -630,9 +630,9 @@ function saveOfferText(storeId) {
     formData.append('youtube_banner_url', $('#youtube-banner-url').val());
     formData.append('minimum_order_amount', $('#minimum-order-amount').val());
     formData.append('courier_charge', $('#courier-charge').val());
+    formData.append('gst_percent', $('#gstPercentage').val());
     formData.append('testimonials', $('#testimonialInput').val());
     formData.append('dis_perc', $('#dis-percent').val());
-
 
     // Append extra cover images
     const fileInput = document.querySelector('input[name="extra_cover_img[]"]');
