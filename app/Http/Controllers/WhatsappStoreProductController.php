@@ -1201,6 +1201,12 @@ class WhatsappStoreProductController extends AppBaseController
                 $input['dis_amt'] = $request->discount_amount;
             }
 
+            if($whatsappStore->gst_percent && $whatsappStore->gst_percent != 0){
+                $gstAmount = ($input['grand_total'] * $whatsappStore->gst_percent) / 100;
+                $input['grand_total'] = $input['grand_total'] + $gstAmount;
+                $input['gst_amt'] = $gstAmount;
+            }
+
              if ($request->filled('coupon_code')) {
                 $input['coupon_code'] = $request->coupon_code;
             }
