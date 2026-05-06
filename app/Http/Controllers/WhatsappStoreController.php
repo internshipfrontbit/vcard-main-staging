@@ -337,9 +337,6 @@ class WhatsappStoreController extends AppBaseController
 
     public function show(Request $request, $alias)
     {
-        
-        $alias = $this->getMappedAlias($alias);
-
         $whatsappStore = WhatsappStore::where('url_alias', $alias)->first();
 
         if($whatsappStore === null){
@@ -747,8 +744,6 @@ public function partnerPage(){
 
 public function about($alias)
 {
-    $alias = $this->getMappedAlias($alias);
-
     $whatsappStore = WhatsappStore::where('url_alias', $alias)->first();
     if (!$whatsappStore) {
         abort(404);
@@ -777,8 +772,6 @@ public function about($alias)
 
 public function privacyPolicy($alias)
 {
-    $alias = $this->getMappedAlias($alias);
-
     $whatsappStore = WhatsappStore::where('url_alias', $alias)->first();
     if (!$whatsappStore) {
         abort(404);
@@ -807,8 +800,6 @@ public function privacyPolicy($alias)
 
 public function termsConditions($alias)
 {
-    $alias = $this->getMappedAlias($alias);
-    
     $whatsappStore = WhatsappStore::where('url_alias', $alias)->first();
     if (!$whatsappStore) {
         abort(404);
@@ -837,8 +828,6 @@ public function termsConditions($alias)
 
 public function shippingPaymentPolicy($alias)
 {
-    $alias = $this->getMappedAlias($alias);
-
     $whatsappStore = WhatsappStore::where('url_alias', $alias)->first();
     if (!$whatsappStore) {
         abort(404);
@@ -867,7 +856,6 @@ public function shippingPaymentPolicy($alias)
 
 public function refundsCancellation($alias)
 {
-    $alias = $this->getMappedAlias($alias);
     $whatsappStore = WhatsappStore::where('url_alias', $alias)->first();
     if (!$whatsappStore) {
         abort(404);
@@ -896,7 +884,6 @@ public function refundsCancellation($alias)
 
 public function contactUs($alias)
 {
-    $alias = $this->getMappedAlias($alias);
     $whatsappStore = WhatsappStore::where('url_alias', $alias)->first();
     if (!$whatsappStore) {
         abort(404);
@@ -952,8 +939,6 @@ public function contactUs($alias)
 
     public function showProducts($alias,$categoryId = null)
     {
-        $alias = $this->getMappedAlias($alias);
-        
         $whatsappStore = WhatsappStore::where('url_alias', $alias)->first();
         if(!$whatsappStore){
             abort(404);
@@ -1001,7 +986,6 @@ public function contactUs($alias)
 
     public function productDetails($alias, $id)
     {
-        $alias = $this->getMappedAlias($alias);
         $whatsappStore = WhatsappStore::where('url_alias', $alias)->first();
         if (!$whatsappStore) {
             abort(404);
@@ -1406,15 +1390,6 @@ public function contactUs($alias)
     {
         session()->forget('page_authenticated');
         return redirect()->route('whatsappstore.auth.login');
-    }
-
-    function getMappedAlias(string $alias): ?string
-    {
-        $map = [
-            'jewellery-sho' => 'beauty-shop',
-        ];
-
-        return $map[$alias] ?? $alias; // return null if not found
     }
 
 }
