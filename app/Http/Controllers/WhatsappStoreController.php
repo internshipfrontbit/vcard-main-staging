@@ -512,8 +512,8 @@ class WhatsappStoreController extends AppBaseController
 public function updateOfferText(Request $request, $whatsappStore)
 {
     $request->validate([
-        'offer_text' => 'nullable|string|max:255',
-        'youtube_banner_url' => 'nullable|string|max:256',
+        'offer_text' => 'nullable|string',
+        'youtube_banner_url' => 'nullable|string',
         'footer_text' => 'nullable|string',
         'extra_cover_img.*' => 'nullable|image|mimes:jpeg,png,jpg|max:3024',        
     ]);
@@ -537,16 +537,16 @@ public function updateOfferText(Request $request, $whatsappStore)
             $updateData['courier_charge'] = $request->courier_charge;
         }
 
+        if ($request->filled('gst_percent')) {
+            $updateData['gst_percent'] = $request->gst_percent;
+        }
+
         if ($request->filled('dis_perc')) {
             $updateData['dis_perc'] = $request->dis_perc;
         }
 
         if ($request->filled('testimonials')) {
             $updateData['testimonials'] = $request->testimonials;
-        }
-
-        if ($request->filled('gst_percent')) {
-            $updateData['gst_percent'] = $request->gst_percent;
         }
 
         $store->update($updateData);
@@ -1182,6 +1182,7 @@ public function contactUs($alias)
         foreach($youtube_links as $link){
             $embedLinks[] = $this->convertToEmbedUrl($link);
         }
+        $whatsappStore->makeHidden(['wp_razorpay_secret']);
         return response()->json([
             'whatsappStore' => $whatsappStore,
             'socialLinks' => $socialLinks,

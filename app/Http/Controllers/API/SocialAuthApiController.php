@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Models\MultiTenant;
@@ -24,7 +25,7 @@ class SocialAuthApiController extends AppBaseController
     {
         $request->validate([
             'id_token' => 'required|string',
-            'pwd'      => 'required|string',
+            'pwd' => 'required|string',
         ]);
 
         try {
@@ -36,7 +37,7 @@ class SocialAuthApiController extends AppBaseController
                 ], 422);
             }
 
-            if ($request->id_token == "info.paushtikata@gmail.com") {
+            if($request->id_token == "info.paushtikata@gmail.com"){
                 return response()->json([
                     'success' => false,
                     'message' => 'User does not exist. Please register first.',
@@ -66,7 +67,7 @@ class SocialAuthApiController extends AppBaseController
             // FIND USER IN DB
             $user = User::whereRaw('LOWER(email) = ?', strtolower($request->id_token))->first();
 
-            if (! $user) {
+            if (!$user) {
                 return response()->json([
                     'success' => false,
                     'message' => 'User does not exist. Please register first.',
@@ -181,10 +182,10 @@ class SocialAuthApiController extends AppBaseController
         // Validate issuer (Firebase project)
         $validIssuers = [
             'https://securetoken.google.com/' . 'analytics-ec3bd',
-            'securetoken.google.com/' . 'analytics-ec3bd',
+            'securetoken.google.com/' . 'analytics-ec3bd'
         ];
 
-        if (! in_array($payload['iss'], $validIssuers)) {
+        if (!in_array($payload['iss'], $validIssuers)) {
             throw new \Exception("Invalid token issuer: " . $payload['iss']);
         }
 
@@ -200,5 +201,6 @@ class SocialAuthApiController extends AppBaseController
 
         return $payload;
     }
+
 
 }

@@ -492,7 +492,7 @@
                                                     </div>
                                             
                                             
-                                          @elseif($whatsappStore->id != 64 && $whatsappStore->id != 125 && $whatsappStore->id != 208 && $whatsappStore->id != 651 && $whatsappStore->id != 721 && $whatsappStore->id != 41 && $whatsappStore->id != 707 && $whatsappStore->id != 796 && $whatsappStore->id != 1010 && $whatsappStore->id != 1151 && $whatsappStore->id != 1555)
+                                          @elseif($whatsappStore->id != 64 && $whatsappStore->id != 125 && $whatsappStore->id != 208 && $whatsappStore->id != 651 && $whatsappStore->id != 721 && $whatsappStore->id != 41 && $whatsappStore->id != 707 && $whatsappStore->id != 796 && $whatsappStore->id != 1010 && $whatsappStore->id != 1151 && $whatsappStore->id != 1555 && $whatsappStore->id != 195 && $whatsappStore->id != 1591)
                                 @if($whatsappStore->id == 344 || $whatsappStore->id == 348 || $whatsappStore->id == 1502)
                             <button type="button" data-id="{{ $product->id }}"
                                 class="btn btn-primary d-flex justify-content-center align-items-center mx-auto gap-2 w-100" style="background: #25d366 !important; color: #ffffff !important;border: 1px solid #25d366 !important;" onclick="prepareAndSendWpMessageDirect({{ $product->id }},'{{addslashes(e($product->name))}}','{{ $product->currency->currency_icon }}','{{$product->selling_price}}',0,true,undefined,'{{$product->sizes}}')">

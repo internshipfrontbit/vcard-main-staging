@@ -403,7 +403,7 @@
 </defs>
 </svg>
 
-                <span>Connect to WhatsApp Group</span>
+                <span>Join to WhatsApp Group</span>
             </a>
             </div>
         @endif
@@ -446,7 +446,7 @@
                                         <p class="category-name-size fs-20 fw-5 text-center lh-sm mb-0 text-black mt-2" style="
                                             color: #0e2c2a !important;
                                             font-size: 13px !important;
-                                        ">Click Here</p>
+                                        ">પ્રોડક્ટ જુઓ</p>
                                         @endif
                                     </div>
                                 </div>

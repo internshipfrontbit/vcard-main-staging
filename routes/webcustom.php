@@ -60,6 +60,7 @@ $customDomains = [
     'leevacreation.com' => 'leeva-creation',
     'vasudharaagri.com' => 'vasudhara-agri',
     'shreeshaamtelecom.com' => 'shreeshaamtelecom.com',
+    'iphonesbyabhishek.in' => 'shreeshaamtelecom.com',
     'subzeeq.com' => 'subzee-q',
     'allindiacab.com' => 'all-india-cab-service',
     'nityafashion.in' => 'nitya-fashion',
@@ -67,7 +68,8 @@ $customDomains = [
     'gj03i.naturalnest.in' => 'nngj03i',
     'krupasjewellery.com' => 'krupas-jewellery',
     'wowtrend.in' => 'wow-trend',
-    'fosvex.in' => 'fosvex.in'
+    'fosvex.in' => 'fosvex.in',
+    'olfenza.com' => 'olfenza',
 ];
 
 $currentDomain = request()->getHost();
@@ -135,6 +137,8 @@ if (isset($customDomains[$currentDomain])) {
     Route::post('/start-product-inq-sub-session', [AnalyticsController::class, 'startProductInqSubSession']);
     Route::post('/end-product-inq-sub-session', [AnalyticsController::class, 'endInactiveProductInquiry']);
     Route::post('/update-product-inquiry-session', [AnalyticsController::class, 'updateProductInqSubSession']);
+
+     Route::post('/update-session-user-data', [WhatsappStoreProductController::class, 'updateSessionUserData']);
         
     });
 }

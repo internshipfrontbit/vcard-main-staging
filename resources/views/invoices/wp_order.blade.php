@@ -248,7 +248,7 @@
         @endforeach
       </tbody>
       <tfoot>
-        @if($wpOrder->wp_store_id == 721 || $wpOrder->wp_store_id == 41 || $wpOrder->wp_store_id == 1238)
+        @if($wpOrder->wp_store_id == 721 || $wpOrder->wp_store_id == 41 || $wpOrder->wp_store_id == 1238 || $wpOrder->wp_store_id == 682)
         <tr style="border-top: 2px solid #676767;">
                 <td colspan="4" style="text-align: right; border: 1px solid #ddd; padding: 8px;">Courier Charges:</td>
                 <td style="border: 1px solid #ddd; padding: 8px;">
@@ -297,6 +297,52 @@
             @endif
           <td style="border: 1px solid #ddd; padding: 8px;">
             <strong style="color: #474747;">{{ number_format($wpOrder->dis_amt, 2) }}</strong>
+          </td>
+        </tr>
+        @endif
+        @if($wpOrder->gst_amt != 0)
+        <tr style="border-top: 2px solid #676767;">
+            @if($wpOrder->wp_store_id == 584)
+                <td colspan="5" style="text-align: right; border: 1px solid #ddd; padding: 8px;">
+                    <strong style="color: #474747;">SGST:</strong>
+                </td>
+            @elseif($wpOrder->wp_store_id == 236 || $wpOrder->wp_store_id == 344 || $wpOrder->wp_store_id == 364)
+                <td colspan="5" style="text-align: right; border: 1px solid #ddd; padding: 8px;">
+                    <strong style="color: #474747;">SGST:</strong>
+                </td>
+            @elseif($wpOrder->wp_store_id == 191)
+            <td colspan="6" style="text-align: right; border: 1px solid #ddd; padding: 8px;">
+                    <strong style="color: #474747;">SGST:</strong>
+                </td>
+            @else
+                <td colspan="4" style="text-align: right; border: 1px solid #ddd; padding: 8px;">
+                    <strong style="color: #474747;">SGST:</strong>
+                </td>
+            @endif
+          <td style="border: 1px solid #ddd; padding: 8px;">
+            <strong style="color: #474747;">{{ number_format(($wpOrder->gst_amt / 2), 2) }}</strong>
+          </td>
+        </tr>
+        <tr style="border-top: 2px solid #676767;">
+            @if($wpOrder->wp_store_id == 584)
+                <td colspan="5" style="text-align: right; border: 1px solid #ddd; padding: 8px;">
+                    <strong style="color: #474747;">CGST:</strong>
+                </td>
+            @elseif($wpOrder->wp_store_id == 236 || $wpOrder->wp_store_id == 344 || $wpOrder->wp_store_id == 364)
+                <td colspan="5" style="text-align: right; border: 1px solid #ddd; padding: 8px;">
+                    <strong style="color: #474747;">CGST:</strong>
+                </td>
+            @elseif($wpOrder->wp_store_id == 191)
+            <td colspan="6" style="text-align: right; border: 1px solid #ddd; padding: 8px;">
+                    <strong style="color: #474747;">CGST:</strong>
+                </td>
+            @else
+                <td colspan="4" style="text-align: right; border: 1px solid #ddd; padding: 8px;">
+                    <strong style="color: #474747;">CGST:</strong>
+                </td>
+            @endif
+          <td style="border: 1px solid #ddd; padding: 8px;">
+            <strong style="color: #474747;">{{ number_format(($wpOrder->gst_amt / 2), 2) }}</strong>
           </td>
         </tr>
         @endif

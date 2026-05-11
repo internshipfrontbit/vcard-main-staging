@@ -1,3 +1,45 @@
+<style>
+    @media(max-width: 600px){
+        .webthree-button, .webthree-button-new{
+        flex-direction: column !important;
+        justify-content: center !important;
+        margin: 13px !important;
+        width: 100% !important;
+    }
+    .webthree-button div, .webthree-button a, .webthree-button-new div, .webthree-button-new a{
+        width: calc(100% - 25px) !important;
+    }
+    .webthree-button a:nth-child(1){
+        background: #ffd814;
+        border-radius: 10px;
+        padding-left: 41px;
+    }
+    .webthree-button-new a:nth-child(1){
+        background: #1c41d6;
+        border-radius: 10px;
+        padding-left: 68px;
+    }
+    .webthree-button-new a:nth-child(2){
+        justify-content: center;
+    }
+    .webthree-button a:nth-child(1) svg{
+        margin: auto;
+        width: 330px;
+    }
+    .webthree-button a:nth-child(2){
+        background: #9f2089;
+        border-radius: 10px;
+        padding-left: 25px;
+    }
+    .webthree-button a:nth-child(2) svg{
+        margin: auto;
+        width: 358px;
+    }
+    }
+    #bannerNewCarousel .slick-prev, #bannerNewCarousel .slick-next{
+        display: none !important;
+    }
+</style>
 @if($whatsappStore->id == 262)
 <style>
     /*.navbar{*/

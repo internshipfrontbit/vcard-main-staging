@@ -60,7 +60,9 @@
                     <input class="form-check-input" type="checkbox" name="wp_show_order_form" 
                            {{ isset($settings['wp_show_order_form']) && $settings['wp_show_order_form'] == "on" ? 'checked' : '' }}>
                 </div>
-            </div>
+            </div>   
+
+            @if($whatsappStore->id == 530)
             
             <fieldset class="mt-4">
                 <legend style="font-size: 16px;font-weight: 600;">Mobile Based Discounts:</legend>
@@ -116,7 +118,7 @@
                             <input type="text" class="form-control mobile" placeholder="Mobile Number" value="${data.mobile || ''}" oninput="updateRow(this)">
                         </div>
                         <div class="col-md-3">
-                            <input type="number" class="form-control discount" placeholder="Discount %" value="${data.discount || ''}" step="0.01" oninput="updateRow(this)">
+                            <input type="number" class="form-control discount" placeholder="Discount %" value="${data.discount || ''}" oninput="updateRow(this)">
                         </div>
                         <div class="col-md-2">
                             <a class="btn btn-danger w-100" onclick="deleteRow(this)"><i class="fas fa-trash"></i></a>
@@ -157,6 +159,8 @@
                     });
                 }
             </script>
+
+           @endif 
 
     </div>
 

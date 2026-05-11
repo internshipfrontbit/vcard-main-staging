@@ -207,7 +207,7 @@
                                  </div>                                                               
                              @endif
 
-                                 @if($whatsappStore->id == 236 || $whatsappStore->id == 188 || $whatsappStore->id == 41 || $whatsappStore->id == 1488 || $whatsappStore->id == 1 || $whatsappStore->id == 1463)
+                                 @if($whatsappStore->id == 236 || $whatsappStore->id == 188 || $whatsappStore->id == 41 || $whatsappStore->id == 1488 || $whatsappStore->id == 1 || $whatsappStore->id == 1463 || $whatsappStore->id == 1620 || $whatsappStore->id == 682)
                                      <div class="col-sm-12">
                                          <div class="mb-3 form-group">
                                              <label for="name" class="form-label">{{ 'Pincode' }}:
@@ -216,7 +216,7 @@
                                                  placeholder="Enter Pincode" oninput="handlePincodeInput()" />
                                          </div>
                                      </div>
-                                     @if($whatsappStore->id == 1463)
+                                     @if($whatsappStore->id == 1463 || $whatsappStore->id == 682)
                                       <div class="my-2">
                                         <div class="row text-secondary">
 
@@ -324,7 +324,7 @@
                             
                              
                          </div>
-                          @if($whatsappStore->id == 1463)
+                          @if($whatsappStore->id == 1463 || $whatsappStore->id == 682)
                           <button type="submit" class="newWhatsappButton btn btn-primary m-0 w-100" disabled>
                                @if($whatsappStore->wp_razorpay_enabled == "1")
 

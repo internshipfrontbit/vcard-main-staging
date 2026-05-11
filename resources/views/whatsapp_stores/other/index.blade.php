@@ -32,16 +32,6 @@
 
     @endif
 
-    @if($whatsappStore->id == 1391)
-
-    <label for="gstPercentage" style="margin-bottom: 10px; margin-top: 10px;">GST Percentage</label>
-    <div class="youtube-link-input-group">
-        <input type="number" id="gstPercentage" class="form-control" placeholder="Enter GST Percentage"
-            value="{{ $whatsappStore->gst_percent ?? 0 }}">
-    </div>
-
-    @endif
-
     @if($whatsappStore->id == 424 || $whatsappStore->id == 721 || $whatsappStore->id == 41 || $whatsappStore->id == 1238)
 
     <label for="courier-charge" style="margin-bottom: 10px; margin-top: 10px;">Courier Charge</label>
@@ -52,14 +42,24 @@
 
     @endif
 
+     @if($whatsappStore->id == 1600)
+
+    <label for="gstPercentage" style="margin-bottom: 10px; margin-top: 10px;">GST Percentage</label>
+    <div class="youtube-link-input-group">
+        <input type="number" id="gstPercentage" class="form-control" placeholder="Enter GST Percentage"
+            value="{{ $whatsappStore->gst_percent ?? 0 }}">
+    </div>
+
+    @endif
+
     
         <label for="dis-percent" style="margin-bottom: 10px; margin-top: 10px;">Discount Percentage</label>
         <div class="youtube-link-input-group">
             <input type="number" id="dis-percent" class="form-control" placeholder="Enter Discount Percentage"
                 value="{{ $whatsappStore->dis_perc }}">
         </div>
-
-        <fieldset class="mt-4">
+@if($whatsappStore->id == 1600)
+                <fieldset class="mt-4">
     <legend style="font-size: 16px;font-weight: 600;">Testimonials:</legend>
 
     <a class="btn btn-primary mb-3" onclick="addTestimonial()">Add</a>
@@ -160,9 +160,12 @@ function refreshTestimonialIndexes() {
 </script>
     
 
+@endif
+    
+
         
 
-@if($whatsappStore->id == 424 || $whatsappStore->id == 564 || $whatsappStore->id == 348 || $whatsappStore->id == 208 || $whatsappStore->id == 676 || $whatsappStore->id == 446 || $whatsappStore->id == 908 ||  $whatsappStore->id == 923 || $whatsappStore->id == 970 || $whatsappStore->id == 1014 || $whatsappStore->id == 1106 || $whatsappStore->id == 1209 || $whatsappStore->id == 1378 || $whatsappStore->id == 1443 || $whatsappStore->id == 1500 || $whatsappStore->id == 1444 || $whatsappStore->id == 1583)
+@if($whatsappStore->id == 424 || $whatsappStore->id == 564 || $whatsappStore->id == 348 || $whatsappStore->id == 208 || $whatsappStore->id == 676 || $whatsappStore->id == 446 || $whatsappStore->id == 908 ||  $whatsappStore->id == 923 || $whatsappStore->id == 970 || $whatsappStore->id == 1014 || $whatsappStore->id == 1106 || $whatsappStore->id == 1209 || $whatsappStore->id == 1378 || $whatsappStore->id == 1443 || $whatsappStore->id == 1500 || $whatsappStore->id == 1444 || $whatsappStore->id == 1583 || $whatsappStore->id == 246 || $whatsappStore->id == 530)
     <!-- Extra Cover Image Upload -->
 <div class="form-group mt-3">
     <label for="extra_cover_img">Extra Cover Images (Optional)</label>
