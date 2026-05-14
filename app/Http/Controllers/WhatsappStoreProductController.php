@@ -57,7 +57,7 @@ class WhatsappStoreProductController extends AppBaseController
         
         // Define limits per whatsapp_store_id
         $limit550 = [741, 689];
-        $limit500 = [125, 114];
+        $limit500 = [125, 114, 1268];
         $limit1000 = [345, 208, 1488, 151];
         $limit1550 = [691];
         $limit650 = [];
