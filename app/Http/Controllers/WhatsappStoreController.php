@@ -59,7 +59,7 @@ class WhatsappStoreController extends AppBaseController
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInMinutes($plan->created_at) > 30
+                    now()->diffInDays($plan->created_at) > 7
                 )
                 ||
                 ( 
@@ -182,7 +182,7 @@ class WhatsappStoreController extends AppBaseController
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInMinutes($plan->created_at) > 30
+                    now()->diffInDays($plan->created_at) > 7
                 )
                 ||
                 ( 
@@ -287,7 +287,7 @@ class WhatsappStoreController extends AppBaseController
                 'success' => true,
                 'message' => 'TRIAL_ACTIVE',
             ], 200);
-        } else if($plan && $plan->payment_type === null && now()->diffInMinutes($plan->created_at) > 30){
+        } else if($plan && $plan->payment_type === null && now()->diffInDays($plan->created_at) > 7){
             return response()->json([
                 'success' => true,
                 'message' => 'TRIAL_EXPIRED',
@@ -371,7 +371,7 @@ class WhatsappStoreController extends AppBaseController
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInMinutes($plan->created_at) > 30
+                    now()->diffInDays($plan->created_at) > 7
                 )
                 ||
                 ( 
@@ -991,7 +991,7 @@ public function contactUs($alias)
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInMinutes($plan->created_at) > 30
+                    now()->diffInDays($plan->created_at) > 7
                 )
                 ||
                 ( 
@@ -1043,7 +1043,7 @@ public function contactUs($alias)
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInMinutes($plan->created_at) > 30
+                    now()->diffInDays($plan->created_at) > 7
                 )
                 ||
                 ( 
@@ -1188,7 +1188,7 @@ public function contactUs($alias)
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInMinutes($plan->created_at) > 30
+                    now()->diffInDays($plan->created_at) > 7
                 )
                 ||
                 ( 
@@ -1281,7 +1281,7 @@ public function contactUs($alias)
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInMinutes($plan->created_at) > 30
+                    now()->diffInDays($plan->created_at) > 7
                 )
                 ||
                 ( 

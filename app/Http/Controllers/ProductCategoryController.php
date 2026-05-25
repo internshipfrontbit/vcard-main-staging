@@ -63,7 +63,7 @@ class ProductCategoryController extends AppBaseController
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInMinutes($plan->created_at) > 30
+                    now()->diffInDays($plan->created_at) > 7
                 )
                 ||
                 ( 
@@ -109,7 +109,7 @@ class ProductCategoryController extends AppBaseController
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInMinutes($plan->created_at) > 30
+                    now()->diffInDays($plan->created_at) > 7
                 )
                 ||
                 ( 
@@ -147,7 +147,7 @@ class ProductCategoryController extends AppBaseController
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInMinutes($plan->created_at) > 30
+                    now()->diffInDays($plan->created_at) > 7
                 )
                 ||
                 ( 
@@ -205,7 +205,7 @@ class ProductCategoryController extends AppBaseController
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInMinutes($plan->created_at) > 30
+                    now()->diffInDays($plan->created_at) > 7
                 )
                 ||
                 ( 
@@ -250,7 +250,7 @@ class ProductCategoryController extends AppBaseController
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInMinutes($plan->created_at) > 30
+                    now()->diffInDays($plan->created_at) > 7
                 )
                 ||
                 ( 

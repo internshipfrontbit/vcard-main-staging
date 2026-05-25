@@ -140,10 +140,10 @@ class SocialAuthApiController extends AppBaseController
             $subscription                 = new Subscription();
             $subscription->plan_id        = $plan->id;
             $subscription->starts_at      = Carbon::now();
-            $subscription->ends_at        = Carbon::now()->addDays($plan->trial_days);
+            $subscription->ends_at        = Carbon::now()->addDays(7);
             $subscription->plan_amount    = $plan->price;
             $subscription->plan_frequency = $plan->frequency;
-            $subscription->trial_ends_at  = Carbon::now()->addDays($plan->trial_days);
+            $subscription->trial_ends_at  = Carbon::now()->addDays(7);
             $subscription->no_of_vcards   = $plan->no_of_vcards;
             $subscription->tenant_id      = $user['tenant_id'];
             $subscription->status         = Subscription::ACTIVE;
