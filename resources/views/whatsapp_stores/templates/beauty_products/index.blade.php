@@ -1883,7 +1883,52 @@ object-fit: fill;
                 
 
                 @if(!empty($whatsappStore->testimonials) && is_array(json_decode($whatsappStore->testimonials, true)) && count(json_decode($whatsappStore->testimonials, true)) > 0)
+                    <style>
+                        .testimonial-section .testimonial-card {
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            min-height: 280px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin: 10px; /* Space between slides in Slick */
+        }
 
+        .testimonial-section .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .testimonial-section .quote-icon {
+            width: 45px;
+            height: 45px;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+            fill: #000;
+        }
+
+        .testimonial-section .review-text {
+            font-size: 1.25rem; /* Slightly bigger as requested */
+            line-height: 1.6;
+            color: #4a4a4a;
+        }
+
+        /* Customizing Slick Dots */
+        .testimonial-section .slick-dots li button:before {
+            font-size: 12px;
+            color: #0d6efd;
+        }
+        .testimonial-section .slick-dots li.slick-active button:before {
+            color: #0d6efd;
+        }
+        
+        /* Ensure cards in the same row have equal height */
+        .testimonial-section .slick-track {
+            display: flex !important;
+        }
+        .testimonial-section .slick-slide {
+            height: inherit !important;
+        }
+                    </style>
                 <section class="py-5 testimonial-section">
                 <div class="container">
                     <h2 class="text-center mb-4 mt-3 title-size" style="font-weight: 600;">What Our Clients Say</h2>
@@ -2120,6 +2165,34 @@ object-fit: fill;
             });
 
         }
+
+        if($('.testimonial-slider')){
+            $('.testimonial-slider').slick({
+            dots: true,
+            infinite: true,
+            speed: 500,
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            arrows: false,
+            responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                slidesToShow: 2,
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                slidesToShow: 1,
+                }
+            }
+            ]
+        });
+        }
+        
     });
 </script>
 

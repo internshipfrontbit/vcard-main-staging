@@ -1,22 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet">
-  <title>Beauty Shop</title>
-  <script type="module" crossorigin src="/assets/theme_assets/ready_rasoi/assets/index-FuMCVzPu.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/theme_assets/ready_rasoi/assets/index-BxW-U3L1.css">
-</head>
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      @if ($whatsappStore->site_title && $whatsappStore->home_title)
+        <title>{{ $whatsappStore->home_title }} | {{ $whatsappStore->site_title }}</title>
+    @else
+        <title>{{ $whatsappStore->store_name }}</title>
+    @endif
+      <script type="module" crossorigin src="{{ asset('assets/js/index-Cu5bH_nD.js') }}?1.2"></script>
+      <link rel="stylesheet" crossorigin href="{{ asset('assets/js/index-BUCEsW2a.css') }}?1.3">
+    </head>
 
-<body>
-  <div id="root"></div>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <body>
+      <div id="root"></div>
 
-</body>
-
-</html>
+    </body>
+  </html>
+  

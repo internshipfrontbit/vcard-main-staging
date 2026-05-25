@@ -59,9 +59,21 @@ function viewOrderRenderData1(orderId) {
                 $("#paymentOrderStatus").text(order.payment_status);
                 $("#orderGrandTotal").html(order.grand_total);
                 $("#discountAmount").html(order.dis_amt);
-                if(order.dis_amt && order.dis_amt != 0 && order.coupon_code){
+
+                if(order.gst_amt && order.gst_amt != 0){
+                    $("#subtotalamt").html(((Number(order.grand_total) - Number(order.gst_amt))+order.dis_amt));
+                    $("#CGSTAMT").html(Number(order.gst_amt/2).toFixed(2));
+                    $("#SGSTAMT").html(Number(order.gst_amt/2).toFixed(2));
+                }
+
+                if((order.dis_amt && order.dis_amt != 0) || (order.coupon_code != undefined && order.coupon_code != null && order.coupon_code != '')){
                     $("#discountRow").removeClass("d-none");
-                    $("#discountTitle").html("Discount(Coupon: " + order.coupon_code + ")");
+                    if((order.coupon_code != undefined && order.coupon_code != null && order.coupon_code != '')){
+                        $("#discountTitle").html("Discount(Coupon: " + order.coupon_code + ")");
+                    }else{
+                        $("#discountTitle").html("Discount");
+                    }
+                    
                 }else{
                     $("#discountRow").addClass("d-none");
                     $("#discountTitle").html("Discount");
@@ -80,6 +92,9 @@ function viewOrderRenderData1(orderId) {
 
                 $("#orderAutoCharges input").val(order.auto_charges);
                 if (storeId == 721) {
+                    $("#orderCourierCharges").text(order.courier_charges);
+                }
+                if(order.courier_charges && order.courier_charges != 0){
                     $("#orderCourierCharges").text(order.courier_charges);
                 }
                 $("#orderCourierCharges input").val(order.courier_charges);
@@ -633,6 +648,7 @@ function saveOfferText(storeId) {
     formData.append('gst_percent', $('#gstPercentage').val());
     formData.append('testimonials', $('#testimonialInput').val());
     formData.append('dis_perc', $('#dis-percent').val());
+
 
     // Append extra cover images
     const fileInput = document.querySelector('input[name="extra_cover_img[]"]');

@@ -70,6 +70,8 @@ $customDomains = [
     'wowtrend.in' => 'wow-trend',
     'fosvex.in' => 'fosvex.in',
     'olfenza.com' => 'olfenza',
+    'lakhanisons.com' => "lakhani&son's",
+    'iraninatural.com' => 'iraninatural',
 ];
 
 $currentDomain = request()->getHost();

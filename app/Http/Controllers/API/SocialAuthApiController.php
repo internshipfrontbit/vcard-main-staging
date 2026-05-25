@@ -16,8 +16,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Models\User;
 use App\Models\WhatsappStore;
 use Illuminate\Http\Request;
-use Stancl\Tenancy\Database\Models\Tenant;
-
+use Laravel\Socialite\Facades\Socialite;
 
 class SocialAuthApiController extends AppBaseController
 {

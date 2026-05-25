@@ -165,7 +165,7 @@ function refreshTestimonialIndexes() {
 
         
 
-@if($whatsappStore->id == 424 || $whatsappStore->id == 564 || $whatsappStore->id == 348 || $whatsappStore->id == 208 || $whatsappStore->id == 676 || $whatsappStore->id == 446 || $whatsappStore->id == 908 ||  $whatsappStore->id == 923 || $whatsappStore->id == 970 || $whatsappStore->id == 1014 || $whatsappStore->id == 1106 || $whatsappStore->id == 1209 || $whatsappStore->id == 1378 || $whatsappStore->id == 1443 || $whatsappStore->id == 1500 || $whatsappStore->id == 1444 || $whatsappStore->id == 1583 || $whatsappStore->id == 246 || $whatsappStore->id == 530)
+@if($whatsappStore->id == 424 || $whatsappStore->id == 564 || $whatsappStore->id == 348 || $whatsappStore->id == 208 || $whatsappStore->id == 676 || $whatsappStore->id == 446 || $whatsappStore->id == 908 ||  $whatsappStore->id == 923 || $whatsappStore->id == 970 || $whatsappStore->id == 1014 || $whatsappStore->id == 1106 || $whatsappStore->id == 1209 || $whatsappStore->id == 1378 || $whatsappStore->id == 1443 || $whatsappStore->id == 1500 || $whatsappStore->id == 1444 || $whatsappStore->id == 1583 || $whatsappStore->id == 246 || $whatsappStore->id == 530 || $whatsappStore->id == 1662 || $whatsappStore->id == 1507)
     <!-- Extra Cover Image Upload -->
 <div class="form-group mt-3">
     <label for="extra_cover_img">Extra Cover Images (Optional)</label>
@@ -268,6 +268,15 @@ function previewExtraImages(event,storeid,count) {
     } else if(storeid == 970){
         if ((files.length + count) > 8) {
         alert("You can only select up to 8 images.");
+        event.target.value = '';
+        document.getElementById('extraImagePreview').innerHTML = '';
+        document.getElementById('extraImagePreviewContainer').style.display = 'none';
+        return;            
+        }
+        
+    } else if(storeid == 1662){
+        if ((files.length + count) > 10) {
+        alert("You can only select up to 10 images.");
         event.target.value = '';
         document.getElementById('extraImagePreview').innerHTML = '';
         document.getElementById('extraImagePreviewContainer').style.display = 'none';

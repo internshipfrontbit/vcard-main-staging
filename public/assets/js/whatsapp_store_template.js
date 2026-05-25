@@ -262,11 +262,11 @@ document.addEventListener("DOMContentLoaded", function () {
     Lang.setLocale(lang);
     productCount(storeId);
 
-    if(storeId == 4){
-        if(isUserDetailsSet()){
-            openUserModelForm();
-        }
-    }
+    // if(storeId == 530){
+    //     if(isUserDetailsSet()){
+    //         openUserModelForm();
+    //     }
+    // }
 
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function initVideoSlider({
+        function initVideoSlider({
     containerId,
     overlayId
 }) {
@@ -426,10 +426,10 @@ initVideoSlider({
     overlayId: 'videoOverlay'
 });
 
-// initVideoSlider({
-//     containerId: 'videoContainernew',
-//     overlayId: 'videoOverlaynew'
-// });
+initVideoSlider({
+    containerId: 'videoContainerNew',
+    overlayId: 'videoOverlayNew'
+});
 
 
 });
@@ -439,12 +439,12 @@ initVideoSlider({
 listenClick(".addToCartBtn", function (event) {
     event.preventDefault();
     let storeId = $("#whatsappStoreId").val();
-    if(storeId == 4){
-        if(isUserDetailsSet()){
-            openUserModelForm();
-            return;
-        }
-    }
+    // if(storeId == 530){
+    //     if(isUserDetailsSet()){
+    //         openUserModelForm();
+    //         return;
+    //     }
+    // }
 
     localStorage.removeItem("selectedProductId");
 
@@ -750,12 +750,12 @@ listenClick("#addToCartViewBtn", function () {
     
     let storeId = $("#whatsappStoreId").val();
 
-    if(storeId == 4){
-        if(isUserDetailsSet()){
-            openUserModelForm();
-            return;
-        }
-    }
+    // if(storeId == 530){
+    //     if(isUserDetailsSet()){
+    //         openUserModelForm();
+    //         return;
+    //     }
+    // }
 
     let cartData = JSON.parse(localStorage.getItem("cart")) || {};
 
@@ -1023,6 +1023,7 @@ listenClick("#addToCartViewBtn", function () {
     }
 
     $("#grandTotal").text(`${Number(grandTotal).toFixed(2)}`);
+     $("#finalTotal").html(grandTotal ? grandTotal.toFixed(2) : 0);
 
 
 
@@ -1691,9 +1692,9 @@ listenSubmit("#orderForm", function (event) {
                             displaySuccessMessage("Your order has been placed successfully!");
                             document.querySelector("#orderForm button").innerHTML = previousVal;
                             document.querySelector("#orderForm button").disabled = false;
-                            setTimeout(() => {
-                                window.location.reload();
-                            }, 3000);
+                            // setTimeout(() => {
+                            //     window.location.reload();
+                            // }, 3000);
                         }
                     },
                     error: function (response) {
@@ -1702,7 +1703,6 @@ listenSubmit("#orderForm", function (event) {
                         document.querySelector("#orderForm button").disabled = false;
                         $(this).find(".btn").prop("disabled", false);
                         displayErrorMessage(response.responseJSON.message);
-                        console.log(response.responseJSON.message);
                         setTimeout(() => {
                             window.location.reload();
                         }, 1500);
@@ -1847,7 +1847,6 @@ listenSubmit("#orderForm", function (event) {
                 }
             },
             error: function (response) {
-                console.log(response.responseJSON.message);
                 displayErrorMessage(response.responseJSON.message);
                 document.querySelector("#orderForm button").innerHTML = previousVal;
                 document.querySelector("#orderForm button").disabled = false;
@@ -2088,20 +2087,31 @@ function prepareAndSendWpMessage(order, paymentId) {
         message += `------------------------------\n`;
     });
 
-    if (storeId == 721 || storeId == 424 || storeId == 41 || storeId == 1238) {
+    if (storeId == 721 || storeId == 424 || storeId == 41 || storeId == 1238 || storeId == 682) {
         message += 'Courier Charge' + ` :  ${order.courier_charges}\n`;
         message += `------------------------------\n`;
     }
 
     if (order.dis_amt != 0) {
 
-        message += 'Total' + ` :  ${order.dis_amt + order.grand_total}\n`;
+        if(order.gst_amt != 0 && order.gst_amt != null && order.gst_amt != undefined){
+            message += 'Total' + ` :  ${(order.dis_amt + (order.grand_total - order.gst_amt))}\n`;
+        }else{
+            message += 'Total' + ` :  ${order.dis_amt + order.grand_total}\n`;
+        }
 
         if(order.coupon_code != "" && order.coupon_code != null && order.coupon_code != undefined){
             message += `Discount(Coupon: ${order.coupon_code})` + ` :  ${Number(order.dis_amt).toFixed(2)}\n`;
         }else{
             message += 'Discount' + ` :  ${order.dis_amt}\n`;
         }
+        message += `------------------------------\n`;
+    }
+
+    if(order.gst_amt != 0 && order.gst_amt != null && order.gst_amt != undefined){
+        let gstPercentage = Number($("#gstPercentage").val());
+        message += `CGST(${(gstPercentage/2).toFixed(2)}%)` + ` :  ${Number(order.gst_amt/2).toFixed(2)}\n`;
+        message += `SGST(${(gstPercentage/2).toFixed(2)}%)` + ` :  ${Number(order.gst_amt/2).toFixed(2)}\n`;
         message += `------------------------------\n`;
     }
 
@@ -2422,7 +2432,7 @@ function prepareAndSendWpMessageDirect(productId, productName, currency_icon, pr
 
     let isShowUserInfo = $("#wp_show_order_form").val();
 
-    if (isEnableRezorpay == "1" || storeId == 860 || storeId == 1518 || storeId == 865 || storeId == 982 || storeId == 70 || storeId == 1065 || storeId == 1093 || storeId == 1151 || storeId == 1407 || storeId == 1591 || storeId == 1193 || storeId == 1201 || isShowUserInfo == "on") {
+    if (isEnableRezorpay == "1" || storeId == 860 || storeId == 1518 || storeId == 865 || storeId == 982 || storeId == 70 || storeId == 1065 || storeId == 1093 || storeId == 1151 || storeId == 1407 || storeId == 1591 || storeId == 1700 || storeId == 1193 || storeId == 1201 || isShowUserInfo == "on") {
         
 
         if(!isAttributeAsk && !sizes){
@@ -2622,7 +2632,7 @@ function prepareAndSendWpMessageDirect(productId, productName, currency_icon, pr
             
 
             message += `------------------------------\n`;
-            let dis = getDiscountPercentage() || 0;
+            let dis = $("#discount_percentage").val() || 0;
             if (Number(dis) != 0) {
                 dis = (((productPrice * quantity) * dis) / 100).toFixed();
                 message += 'Discount' + ` : ${currency_icon} ${dis}\n`;
@@ -2932,18 +2942,29 @@ function updateCourierCharge() {
         }
     }
 
+    let total = Number($("#grandTotal").html()) || 0;
     if ($("#grandTotal").html() != 0) {
         $(".discount-class").show();
         let discount = getDiscountPercentage();
         if (discount != 0 && discount) {
             let courierCharge = $("#courierCharge").html() || 0;
-            let total = Number($("#grandTotal").html()) - Number(courierCharge) || 0;
+            total = Number($("#grandTotal").html()) - Number(courierCharge) || 0;
             let perc = ((total * Number(discount)) / 100).toFixed(2);
             $("#discountAmount").html(perc);
             $("#grandTotal").html((total - Number(perc)) + Number(courierCharge));
+            total = (total - Number(perc)) + Number(courierCharge);
         }
     } else {
         $(".discount-class").hide();
+    }
+
+    if($("#gstPercentage").val() != 0){
+        let totalGst = ((total * Number($("#gstPercentage").val())) / 100).toFixed(2);
+        
+        $("#CGSTCHARGE").html((totalGst / 2).toFixed(2));
+        $("#SGSTCHARGE").html((totalGst / 2).toFixed(2));
+
+        $("#grandTotal").html(total + Number(totalGst));
     }
 }
 
@@ -2998,6 +3019,9 @@ async function submitUserDetails() {
         region_code: userdetails.country_code,
         sc_id: mainSessionId,
     };
+
+    $("#orderForm #name").val(userdetails.name);
+    $("#orderForm #phoneNumber").val(userdetails.phone);
         
     const response = await fetch(`https://${getdomain()}/update-session-user-data`, {
             method: "POST",
@@ -3205,7 +3229,7 @@ function prepareAndSendWpMessageForPhonepe(order, paymentId,storeInfo) {
 function handlePincodeInput(){
     let storeId = $("#whatsappStoreId").val();
 
-    if(storeId == 1463){
+    if(storeId == 1463 || storeId == 682){
         let cartData = JSON.parse(localStorage.getItem("cart")) || {};
 
                     let cart = cartData[`store_${storeId}`] || {};
@@ -3217,13 +3241,27 @@ function handlePincodeInput(){
             getPincodeDetails(pincode).then(details => {
                 if(details){
                     
-                    if(details.state == 'Gujarat'){
-                        $("#courierApplyCharge").html((50).toFixed(2));
-                        $("#finalTotal").html((Number(grandTotal) + 50).toFixed(2));
+                    if(storeId == 682){
+                        if(details.district == 'Ahmedabad'){
+                            $("#courierApplyCharge").html((20).toFixed(2));
+                            $("#finalTotal").html((Number(grandTotal) + 20).toFixed(2));
+                        } else if(details.state == 'Gujarat'){
+                            $("#courierApplyCharge").html((50).toFixed(2));
+                            $("#finalTotal").html((Number(grandTotal) + 50).toFixed(2));
+                        } else{
+                            $("#courierApplyCharge").html((70).toFixed(2));
+                            $("#finalTotal").html((Number(grandTotal) + 70).toFixed(2));
+                        }
                     }else{
-                        $("#courierApplyCharge").html((70).toFixed(2));
-                        $("#finalTotal").html((Number(grandTotal) + 70).toFixed(2));
+                        if(details.state == 'Gujarat'){
+                            $("#courierApplyCharge").html((50).toFixed(2));
+                            $("#finalTotal").html((Number(grandTotal) + 50).toFixed(2));
+                        }else{
+                            $("#courierApplyCharge").html((70).toFixed(2));
+                            $("#finalTotal").html((Number(grandTotal) + 70).toFixed(2));
+                        }
                     }
+                    
 
                     $(".newWhatsappButton").removeAttr("disabled");
                 }else{

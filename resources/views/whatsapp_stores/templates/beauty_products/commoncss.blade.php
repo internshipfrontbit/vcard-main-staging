@@ -40,6 +40,15 @@
         display: none !important;
     }
 </style>
+@if($whatsappStore->id == 1700)
+    <style>
+            #addToCartBottomViewBtn {
+                position: fixed;
+                right: 21px !important;
+                bottom: 305px !important; 
+            }
+    </style>
+@endif
 @if($whatsappStore->id == 262)
 <style>
     /*.navbar{*/
