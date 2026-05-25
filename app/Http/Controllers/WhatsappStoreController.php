@@ -55,9 +55,19 @@ class WhatsappStoreController extends AppBaseController
         $plan = Subscription::whereTenantId($whatsappStore->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return response()->json(['message' => 'Trial expired or payment not completed'], 403);
         }
@@ -168,9 +178,19 @@ class WhatsappStoreController extends AppBaseController
         $plan = Subscription::whereTenantId($whatsappStore->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return response()->json(['message' => 'Trial expired'], 403);
         }
@@ -343,7 +363,7 @@ class WhatsappStoreController extends AppBaseController
             abort(404);
         }
         
-         $plan = Subscription::whereTenantId($whatsappStore->tenant_id)->orderByDesc('id')
+        $plan = Subscription::whereTenantId($whatsappStore->tenant_id)->orderByDesc('id')
         ->first();
         
         if (
@@ -967,9 +987,19 @@ public function contactUs($alias)
         ->first();
         
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
                 abort(404);
         }
@@ -1009,9 +1039,19 @@ public function contactUs($alias)
         ->first();
         
       if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
                 abort(404);
         }
@@ -1144,9 +1184,19 @@ public function contactUs($alias)
         $plan = Subscription::whereTenantId($whatsappStore->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return response()->json(['message' => 'Trial expired or payment not completed'], 403);
         }
@@ -1227,9 +1277,19 @@ public function contactUs($alias)
         $plan = Subscription::whereTenantId($whatsappStore->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return response()->json(['message' => 'Trial expired or payment not completed'], 403);
         }

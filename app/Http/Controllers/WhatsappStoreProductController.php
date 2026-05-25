@@ -44,9 +44,19 @@ class WhatsappStoreProductController extends AppBaseController
         $plan = Subscription::whereTenantId($store->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
              return $this->sendError('Trial expired or payment not completed',401);
         }
@@ -242,9 +252,19 @@ class WhatsappStoreProductController extends AppBaseController
         $plan = Subscription::whereTenantId(getLogInTenantId())->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return $this->sendError('Trial expired or payment not completed',401);
         }
@@ -274,9 +294,19 @@ class WhatsappStoreProductController extends AppBaseController
         $plan = Subscription::whereTenantId(getLogInTenantId())->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
            return $this->sendError('Trial expired or payment not completed',401);
         }
@@ -302,9 +332,19 @@ class WhatsappStoreProductController extends AppBaseController
         $plan = Subscription::whereTenantId(getLogInTenantId())->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return $this->sendError('Trial expired or payment not completed',401);
         }
@@ -340,9 +380,19 @@ class WhatsappStoreProductController extends AppBaseController
         $plan = Subscription::whereTenantId(getLogInTenantId())->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return response()->json(['message' => 'Trial expired or payment not completed'], 401);
         }
@@ -480,9 +530,19 @@ class WhatsappStoreProductController extends AppBaseController
         $plan = Subscription::whereTenantId(getLogInTenantId())->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return response()->json(['message' => 'Trial expired or payment not completed'], 401);
         }
@@ -551,9 +611,19 @@ class WhatsappStoreProductController extends AppBaseController
         $plan = Subscription::whereTenantId(getLogInTenantId())->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return response()->json(['message' => 'Trial expired or payment not completed'], 401);
         }
@@ -1514,9 +1584,19 @@ public function verifyPhonePePayment(Request $request)
         $plan = Subscription::whereTenantId($wpOrder->wpStore->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return $this->sendError('Trial expired or payment not completed',401);
         }
@@ -1581,9 +1661,19 @@ public function verifyPhonePePayment(Request $request)
         $plan = Subscription::whereTenantId($wpOrder->wpStore->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return $this->sendError('Trial expired or payment not completed',401);
         }
@@ -1878,9 +1968,19 @@ public function verifyPhonePePayment(Request $request)
         $plan = Subscription::whereTenantId($wpOrder->wpStore->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInMinutes($plan->created_at) > 30
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return $this->sendError('Trial expired or payment not completed',401);
         }
