@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 use Illuminate\Support\Facades\File;
+use App\Support\UploadSecurity;
 
 class AddOnController extends AppBaseController
 {
@@ -20,12 +21,24 @@ class AddOnController extends AppBaseController
 
     public function extractZip(Request $request)
     {
+        if (! config('upload-security.allow_addon_zip_uploads')) {
+            return $this->sendError('Add-on ZIP uploads are disabled.');
+        }
+
         $request->validate([
-            'file' => 'required|file|mimes:zip'
+            'file' => 'required|file|mimes:zip|max:' . config('upload-security.max_size_kb.archive', 25600)
         ]);
 
         $file = $request->file('file');
+        if ($message = UploadSecurity::validateZipArchive($file->getRealPath())) {
+            return $this->sendError($message);
+        }
+
         $filePathInfo = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        if (! preg_match('/^[A-Za-z0-9_-]+$/', $filePathInfo)) {
+            return $this->sendError('The module folder name is invalid.');
+        }
+
         $extractionPath = base_path('Modules/');
         $moduleFolder = $extractionPath . $filePathInfo;
 
