@@ -125,21 +125,6 @@ class UploadSecurity
             return "The uploaded file may not be greater than {$maxKb} kilobytes.";
         }
 
-        dd([
-            'class' => get_class($file),
-            'valid' => $file->isValid(),
-            'name' => $file->getClientOriginalName(),
-            'extension' => $file->getClientOriginalExtension(),
-            'clientMime' => $file->getClientMimeType(),
-            'mime' => $file->getMimeType(),
-            'realPath' => $file->getRealPath(),
-            'exists' => $file->getRealPath()
-                ? file_exists($file->getRealPath())
-                : false,
-            'size' => $file->getSize(),
-            'fileinfo' => extension_loaded('fileinfo'),
-        ]);
-
         $mime = $file->getMimeType() ?: $file->getClientMimeType();
         if (! self::mimeAllowed($mime, $group)) {
             return 'The uploaded file content does not match an allowed file type.' . $mime;
