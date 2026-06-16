@@ -125,8 +125,9 @@ class UploadSecurity
             return "The uploaded file may not be greater than {$maxKb} kilobytes.";
         }
 
-        if (! self::mimeAllowed($file->getMimeType(), $group)) {
-            return 'The uploaded file content does not match an allowed file type.'.$file->getMimeType();
+        $mime = $file->getMimeType() ?: $file->getClientMimeType();
+        if (! self::mimeAllowed($mime, $group)) {
+            return 'The uploaded file content does not match an allowed file type.' . $mime;
         }
 
         if ($extension === 'zip') {
