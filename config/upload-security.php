@@ -127,7 +127,7 @@ class UploadSecurity
 
         $mime = $file->getMimeType() ?: $file->getClientMimeType();
         if (! self::mimeAllowed($mime, $group)) {
-            return 'The uploaded file content does not match an allowed file type.' . $file->isValid();
+            return 'The uploaded file content does not match an allowed file type.' . $file->isValid() . '123';
         }
 
         if ($extension === 'zip') {
