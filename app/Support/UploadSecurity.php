@@ -29,7 +29,7 @@ class UploadSecurity
         }
 
         if (! in_array($extension, $allowedExtensions, true)) {
-            return 'This file type is not allowed3.' . $extension;
+            return 'This file type is not allowed3.' . $extension . ' Allowed: ' . implode(', ', $allowedExtensions);
         }
 
         if (self::hasBlockedExtensionSegment($originalName, $blockedExtensions)) {
