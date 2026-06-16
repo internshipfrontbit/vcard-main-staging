@@ -93,12 +93,11 @@ class UploadSecurity
         }
 
         if (in_array($extension, self::BLOCKED_EXTENSIONS, true)) {
-            return 'This file type is not allowed. ' . $extension;
+            return 'This file type is not allowed.';
         }
 
         if (! in_array($extension, self::ALLOWED_EXTENSIONS, true)) {
-            return 'This file type is not allowed. ' . $extension .
-                ' Allowed: ' . implode(', ', self::ALLOWED_EXTENSIONS);
+            return 'This file type is not allowed.';
         }
 
         if (self::hasBlockedExtensionSegment($originalName, self::BLOCKED_EXTENSIONS)) {
@@ -127,7 +126,7 @@ class UploadSecurity
 
         $mime = $file->getMimeType() ?: $file->getClientMimeType();
         if (! self::mimeAllowed($mime, $group)) {
-            return 'The uploaded file content does not match an allowed file type.' . $file->isValid() . '123';
+            return 'The uploaded file content does not match an allowed file type.';
         }
 
         if ($extension === 'zip') {
