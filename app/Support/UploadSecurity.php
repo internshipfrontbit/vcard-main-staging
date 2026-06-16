@@ -21,8 +21,8 @@ class UploadSecurity
             return 'Uploaded files must have an allowed extension.';
         }
 
-        $blockedExtensions = config('upload-security.blocked_extensions', []);
-        $allowedExtensions = config('upload-security.allowed_extensions', []);
+        $blockedExtensions = config('app.upload-security.blocked_extensions', []);
+        $allowedExtensions = config('app.upload-security.allowed_extensions', []);
 
         if (in_array($extension, $blockedExtensions, true)) {
             return 'This file type is not allowed2.'. $extension;
@@ -41,7 +41,7 @@ class UploadSecurity
         }
 
         $group = self::extensionGroup($extension);
-        $maxKb = config("upload-security.max_size_kb.$group", config('upload-security.max_size_kb.default', 10240));
+        $maxKb = config("app.upload-security.max_size_kb.$group", config('app.upload-security.max_size_kb.default', 10240));
 
         if (($file->getSize() / 1024) > $maxKb) {
             return "The uploaded file may not be greater than {$maxKb} kilobytes.";
@@ -62,8 +62,8 @@ class UploadSecurity
             return 'Unable to open the uploaded ZIP file.';
         }
 
-        $maxFiles = config('upload-security.zip.max_files', 500);
-        $maxUncompressedSize = config('upload-security.zip.max_uncompressed_size', 50 * 1024 * 1024);
+        $maxFiles = config('app.upload-security.zip.max_files', 500);
+        $maxUncompressedSize = config('app.upload-security.zip.max_uncompressed_size', 50 * 1024 * 1024);
         $totalSize = 0;
 
         if ($zip->numFiles > $maxFiles) {
@@ -97,7 +97,7 @@ class UploadSecurity
 
     private static function extensionGroup(string $extension): string
     {
-        foreach (config('upload-security.extension_groups', []) as $group => $extensions) {
+        foreach (config('app.upload-security.extension_groups', []) as $group => $extensions) {
             if (in_array($extension, $extensions, true)) {
                 return $group;
             }
@@ -112,18 +112,18 @@ class UploadSecurity
             return false;
         }
 
-        foreach (config("upload-security.mime_prefixes.$group", []) as $prefix) {
+        foreach (config("app.upload-security.mime_prefixes.$group", []) as $prefix) {
             if (Str::startsWith($mime, $prefix)) {
                 return true;
             }
         }
 
         if ($group === 'document') {
-            return in_array($mime, config('upload-security.document_mimes', []), true);
+            return in_array($mime, config('app.upload-security.document_mimes', []), true);
         }
 
         if ($group === 'archive') {
-            return in_array($mime, config('upload-security.archive_mimes', []), true);
+            return in_array($mime, config('app.upload-security.archive_mimes', []), true);
         }
 
         return $group === 'default';
