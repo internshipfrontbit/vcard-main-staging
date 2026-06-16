@@ -25,11 +25,11 @@ class UploadSecurity
         $allowedExtensions = config('upload-security.allowed_extensions', []);
 
         if (in_array($extension, $blockedExtensions, true)) {
-            return 'This file type is not allowed.';
+            return 'This file type is not allowed.'. $extension;
         }
 
         if (! in_array($extension, $allowedExtensions, true)) {
-            return 'This file type is not allowed.';
+            return 'This file type is not allowed.' . $extension;
         }
 
         if (self::hasBlockedExtensionSegment($originalName, $blockedExtensions)) {
