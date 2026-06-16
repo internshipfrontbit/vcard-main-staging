@@ -12,7 +12,7 @@ class UploadSecurity
         'jpg', 'jpeg', 'png', 'webp', 'bmp', 'apng', 'avif',
         'mp4', 'mpeg', 'ogg', 'webm', '3gp', 'mov', 'flv', 'avi', 'wmv', 'ts',
         'mp3', 'wav',
-        'txt', 'csv', 'xml', 'pdf', 'doc', 'docx', 'xls', 'xlsx',
+        'txt', 'csv', 'pdf', 'xls', 'xlsx',
         'zip',
     ];
 
@@ -36,7 +36,7 @@ class UploadSecurity
         'image' => ['jpg', 'jpeg', 'png', 'webp', 'bmp', 'apng', 'avif'],
         'video' => ['mp4', 'mpeg', 'ogg', 'webm', '3gp', 'mov', 'flv', 'avi', 'wmv', 'ts'],
         'audio' => ['mp3', 'wav', 'ogg'],
-        'document' => ['txt', 'csv', 'xml', 'pdf', 'doc', 'docx', 'xls', 'xlsx'],
+        'document' => ['txt', 'csv', 'pdf', 'xls', 'xlsx'],
         'archive' => ['zip'],
     ];
 
@@ -56,17 +56,21 @@ class UploadSecurity
         'application/vnd.ms-excel',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'application/zip',
-        'application/x-zip',
-        'application/x-zip-compressed',
-        'application/octet-stream',
+    ];
+
+    private const FILE_SIGNATURES = [
+        'jpg' => ['FFD8FF'],
+        'jpeg' => ['FFD8FF'],
+        'png' => ['89504E47'],
+        'webp' => ['52494646'],
+        'pdf' => ['25504446'],
+        'zip' => ['504B0304', '504B0506', '504B0708'],
     ];
 
     private const ARCHIVE_MIMES = [
         'application/zip',
         'application/x-zip',
         'application/x-zip-compressed',
-        'application/octet-stream',
     ];
 
     /**
@@ -78,6 +82,35 @@ class UploadSecurity
     private const ZIP_MAX_FILES = 500;
 
     private const ZIP_MAX_UNCOMPRESSED_SIZE = 50 * 1024 * 1024;
+
+    private static function validateMagicNumber(
+        string $path,
+        string $extension
+    ): bool {
+        if (! isset(self::FILE_SIGNATURES[$extension])) {
+            return true;
+        }
+
+        $handle = fopen($path, 'rb');
+
+        if (! $handle) {
+            return false;
+        }
+
+        $bytes = fread($handle, 16);
+
+        fclose($handle);
+
+        $hex = strtoupper(bin2hex($bytes));
+
+        foreach (self::FILE_SIGNATURES[$extension] as $signature) {
+            if (str_starts_with($hex, $signature)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public static function validate(UploadedFile $file): ?string
     {
@@ -124,9 +157,26 @@ class UploadSecurity
             return "The uploaded file may not be greater than {$maxKb} kilobytes.";
         }
 
-        $mime = $file->getMimeType() ?: $file->getClientMimeType();
+        $mime = $file->getMimeType();
         if (! self::mimeAllowed($mime, $group)) {
             return 'The uploaded file content does not match an allowed file type.';
+        }
+
+        if ($group === 'image') {
+            $imageInfo = @getimagesize($file->getRealPath());
+
+            if ($imageInfo === false) {
+                return 'Invalid image file.';
+            }
+        }
+
+        if (
+            ! self::validateMagicNumber(
+                $file->getRealPath(),
+                $extension
+            )
+        ) {
+            return 'File content does not match file extension.';
         }
 
         if ($extension === 'zip') {
@@ -194,6 +244,26 @@ class UploadSecurity
 
                 return 'The uploaded ZIP is too large after extraction.';
             }
+
+            $compressedSize = (int) ($stat['comp_size'] ?? 0);
+            $uncompressedSize = (int) ($stat['size'] ?? 0);
+
+            if (
+                $compressedSize > 0
+                && ($uncompressedSize / $compressedSize) > 100
+            ) {
+                $zip->close();
+
+                return 'ZIP compression ratio too high.';
+            }
+
+            $opsys = $stat['opsys'] ?? null;
+
+            if ($opsys === 3) {
+                $zip->close();
+
+                return 'ZIP contains unsupported file types.';
+            }
         }
 
         $zip->close();
@@ -257,7 +327,10 @@ class UploadSecurity
         return str_contains($fileName, "\0")
             || str_contains($fileName, '/')
             || str_contains($fileName, '\\')
-            || str_contains($fileName, '..');
+            || str_contains($fileName, '..')
+            || preg_match('/[<>:"|?*]/', $fileName)
+            || preg_match('/\s+\./', $fileName)
+            || str_ends_with($fileName, '.');
     }
 
     private static function isUnsafeZipEntry(string $name): bool
