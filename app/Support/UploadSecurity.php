@@ -8,6 +8,77 @@ use ZipArchive;
 
 class UploadSecurity
 {
+    private const ALLOWED_EXTENSIONS = [
+        'jpg', 'jpeg', 'png', 'webp', 'bmp', 'apng', 'avif',
+        'mp4', 'mpeg', 'ogg', 'webm', '3gp', 'mov', 'flv', 'avi', 'wmv', 'ts',
+        'mp3', 'wav',
+        'txt', 'csv', 'xml', 'pdf', 'doc', 'docx', 'xls', 'xlsx',
+        'zip',
+    ];
+
+    private const BLOCKED_EXTENSIONS = [
+        'php', 'php3', 'php4', 'php5', 'phtml', 'phar',
+        'html', 'htm', 'js', 'mjs', 'css', 'svg',
+        'exe', 'bat', 'cmd', 'com', 'scr', 'ps1', 'sh', 'bash',
+        'jar', 'war', 'jsp', 'asp', 'aspx', 'cgi', 'pl', 'py', 'rb',
+    ];
+
+    private const MAX_SIZE_KB = [
+        'image' => 10240,
+        'video' => 102400,
+        'audio' => 102400,
+        'document' => 20480,
+        'archive' => 25600,
+        'default' => 10240,
+    ];
+
+    private const EXTENSION_GROUPS = [
+        'image' => ['jpg', 'jpeg', 'png', 'webp', 'bmp', 'apng', 'avif'],
+        'video' => ['mp4', 'mpeg', 'ogg', 'webm', '3gp', 'mov', 'flv', 'avi', 'wmv', 'ts'],
+        'audio' => ['mp3', 'wav', 'ogg'],
+        'document' => ['txt', 'csv', 'xml', 'pdf', 'doc', 'docx', 'xls', 'xlsx'],
+        'archive' => ['zip'],
+    ];
+
+    private const MIME_PREFIXES = [
+        'image' => ['image/'],
+        'video' => ['video/'],
+        'audio' => ['audio/'],
+    ];
+
+    private const DOCUMENT_MIMES = [
+        'text/plain',
+        'text/csv',
+        'text/xml',
+        'application/xml',
+        'application/pdf',
+        'application/msword',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/zip',
+        'application/x-zip',
+        'application/x-zip-compressed',
+        'application/octet-stream',
+    ];
+
+    private const ARCHIVE_MIMES = [
+        'application/zip',
+        'application/x-zip',
+        'application/x-zip-compressed',
+        'application/octet-stream',
+    ];
+
+    /**
+     * Uploading add-ons installs executable code.
+     * Keep disabled unless explicitly enabled.
+     */
+    private const ALLOW_ADDON_ZIP_UPLOADS = false;
+
+    private const ZIP_MAX_FILES = 500;
+
+    private const ZIP_MAX_UNCOMPRESSED_SIZE = 50 * 1024 * 1024;
+
     public static function validate(UploadedFile $file): ?string
     {
         if (! $file->isValid()) {
@@ -21,29 +92,16 @@ class UploadSecurity
             return 'Uploaded files must have an allowed extension.';
         }
 
-        $blockedExtensions = [
-            'php', 'php3', 'php4', 'php5', 'phtml', 'phar',
-            'html', 'htm', 'js', 'mjs', 'css', 'svg',
-            'exe', 'bat', 'cmd', 'com', 'scr', 'ps1', 'sh', 'bash',
-            'jar', 'war', 'jsp', 'asp', 'aspx', 'cgi', 'pl', 'py', 'rb',
-        ];
-        $allowedExtensions = [
-        'jpg', 'jpeg', 'png', 'webp', 'bmp', 'apng', 'avif',
-        'mp4', 'mpeg', 'ogg', 'webm', '3gp', 'mov', 'flv', 'avi', 'wmv', 'ts',
-        'mp3', 'wav',
-        'txt', 'csv', 'xml', 'pdf', 'doc', 'docx', 'xls', 'xlsx',
-        'zip',
-        ];
-
-        if (in_array($extension, $blockedExtensions, true)) {
-            return 'This file type is not allowed.';
+        if (in_array($extension, self::BLOCKED_EXTENSIONS, true)) {
+            return 'This file type is not allowed. ' . $extension;
         }
 
-        if (! in_array($extension, $allowedExtensions, true)) {
-            return 'This file type is not allowed.';
+        if (! in_array($extension, self::ALLOWED_EXTENSIONS, true)) {
+            return 'This file type is not allowed. ' . $extension .
+                ' Allowed: ' . implode(', ', self::ALLOWED_EXTENSIONS);
         }
 
-        if (self::hasBlockedExtensionSegment($originalName, $blockedExtensions)) {
+        if (self::hasBlockedExtensionSegment($originalName, self::BLOCKED_EXTENSIONS)) {
             return 'File names containing executable extensions are not allowed.';
         }
 
@@ -51,15 +109,29 @@ class UploadSecurity
             return 'The uploaded file name is not allowed.';
         }
 
+        if (
+            $extension === 'zip'
+            && ! self::ALLOW_ADDON_ZIP_UPLOADS
+        ) {
+            return 'ZIP uploads are currently disabled.';
+        }
+
         $group = self::extensionGroup($extension);
-        $maxKb = config("upload-security.max_size_kb.$group", config('upload-security.max_size_kb.default', 10240));
+
+        $maxKb = self::MAX_SIZE_KB[$group]
+            ?? self::MAX_SIZE_KB['default'];
 
         if (($file->getSize() / 1024) > $maxKb) {
             return "The uploaded file may not be greater than {$maxKb} kilobytes.";
         }
 
-        if (! self::mimeAllowed($file->getMimeType(), $group)) {
-            return 'The uploaded file content does not match an allowed file type.';
+        $mime = $file->getMimeType() ?: $file->getClientMimeType();
+        if (! self::mimeAllowed($mime, $group)) {
+            return 'The uploaded file content does not match an allowed file type.' . $file->isValid() . '123';
+        }
+
+        if ($extension === 'zip') {
+            return self::validateZipArchive($file->getRealPath());
         }
 
         return null;
@@ -73,11 +145,9 @@ class UploadSecurity
             return 'Unable to open the uploaded ZIP file.';
         }
 
-        $maxFiles = config('upload-security.zip.max_files', 500);
-        $maxUncompressedSize = config('upload-security.zip.max_uncompressed_size', 50 * 1024 * 1024);
         $totalSize = 0;
 
-        if ($zip->numFiles > $maxFiles) {
+        if ($zip->numFiles > self::ZIP_MAX_FILES) {
             $zip->close();
 
             return 'The uploaded ZIP contains too many files.';
@@ -85,6 +155,7 @@ class UploadSecurity
 
         for ($i = 0; $i < $zip->numFiles; $i++) {
             $stat = $zip->statIndex($i);
+
             $name = $stat['name'] ?? '';
 
             if ($name === '' || self::isUnsafeZipEntry($name)) {
@@ -93,8 +164,33 @@ class UploadSecurity
                 return 'The uploaded ZIP contains an unsafe file path.';
             }
 
+            $entryExtension = strtolower(
+                pathinfo($name, PATHINFO_EXTENSION)
+            );
+
+            if (
+                $entryExtension !== ''
+                && in_array($entryExtension, self::BLOCKED_EXTENSIONS, true)
+            ) {
+                $zip->close();
+
+                return "The uploaded ZIP contains a blocked file type: {$entryExtension}.";
+            }
+
+            if (
+                self::hasBlockedExtensionSegment(
+                    basename($name),
+                    self::BLOCKED_EXTENSIONS
+                )
+            ) {
+                $zip->close();
+
+                return 'The uploaded ZIP contains a file with a blocked extension segment.';
+            }
+
             $totalSize += (int) ($stat['size'] ?? 0);
-            if ($totalSize > $maxUncompressedSize) {
+
+            if ($totalSize > self::ZIP_MAX_UNCOMPRESSED_SIZE) {
                 $zip->close();
 
                 return 'The uploaded ZIP is too large after extraction.';
@@ -108,14 +204,7 @@ class UploadSecurity
 
     private static function extensionGroup(string $extension): string
     {
-        $appconfig = [
-            'image' => ['jpg', 'jpeg', 'png', 'webp', 'bmp', 'apng', 'avif'],
-            'video' => ['mp4', 'mpeg', 'ogg', 'webm', '3gp', 'mov', 'flv', 'avi', 'wmv', 'ts'],
-            'audio' => ['mp3', 'wav', 'ogg'],
-            'document' => ['txt', 'csv', 'xml', 'pdf', 'doc', 'docx', 'xls', 'xlsx'],
-            'archive' => ['zip'],
-        ];
-        foreach ($appconfig as $group => $extensions) {
+        foreach (self::EXTENSION_GROUPS as $group => $extensions) {
             if (in_array($extension, $extensions, true)) {
                 return $group;
             }
@@ -130,25 +219,27 @@ class UploadSecurity
             return false;
         }
 
-        foreach (config("upload-security.mime_prefixes.$group", []) as $prefix) {
+        foreach (self::MIME_PREFIXES[$group] ?? [] as $prefix) {
             if (Str::startsWith($mime, $prefix)) {
                 return true;
             }
         }
 
         if ($group === 'document') {
-            return in_array($mime, config('upload-security.document_mimes', []), true);
+            return in_array($mime, self::DOCUMENT_MIMES, true);
         }
 
         if ($group === 'archive') {
-            return in_array($mime, config('upload-security.archive_mimes', []), true);
+            return in_array($mime, self::ARCHIVE_MIMES, true);
         }
 
         return $group === 'default';
     }
 
-    private static function hasBlockedExtensionSegment(string $fileName, array $blockedExtensions): bool
-    {
+    private static function hasBlockedExtensionSegment(
+        string $fileName,
+        array $blockedExtensions
+    ): bool {
         $parts = explode('.', strtolower($fileName));
 
         array_pop($parts);
