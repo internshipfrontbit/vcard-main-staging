@@ -126,7 +126,7 @@ class UploadSecurity
         }
 
         if (! self::mimeAllowed($file->getMimeType(), $group)) {
-            return 'The uploaded file content does not match an allowed file type.';
+            return 'The uploaded file content does not match an allowed file type.'.$file->getMimeType();
         }
 
         if ($extension === 'zip') {
