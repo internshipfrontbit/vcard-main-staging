@@ -447,7 +447,7 @@ class WhatsappStoreController extends AppBaseController
     }
 
     public function getTemplates(Request $request){
-        $templates = WpStoreTemplate::all()->pluck('path','id')->toArray();
+        $templates = WpStoreTemplate::where('is_active', true)->pluck('path','id')->toArray();
 
         return response()->json([
             'success' => true,
@@ -1413,10 +1413,10 @@ public function contactUs($alias)
 
         // 2. Update JSON Theme Settings (Color)
         // Decode existing settings first so we don't lose other data in that JSON
-        $existingSettings = json_decode($store->theme_settings, true) ?? [];
+        $existingSettings = $this->decodeJsonArray($store->theme_settings);
         
         // Update the color
-        $existingSettings['wp_show_order_form'] = $request->wp_show_order_form;
+        $existingSettings['wp_show_order_form'] = $request->has('wp_show_order_form') ? 'on' : null;
 
         // Encode back to JSON
         $store->theme_settings = json_encode($existingSettings);
@@ -1426,6 +1426,17 @@ public function contactUs($alias)
         $store->save();
 
         return redirect()->back()->with('success', 'Settings updated successfully!');
+    }
+
+    private function decodeJsonArray($value): array
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+
+        $decoded = json_decode((string) $value, true);
+
+        return is_array($decoded) ? $decoded : [];
     }
 
     public function checkPageAuth()
