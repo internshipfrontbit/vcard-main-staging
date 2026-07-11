@@ -55,9 +55,19 @@ class WhatsappStoreController extends AppBaseController
         $plan = Subscription::whereTenantId($whatsappStore->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInDays($plan->created_at) > 7
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return response()->json(['message' => 'Trial expired or payment not completed'], 403);
         }
@@ -168,9 +178,19 @@ class WhatsappStoreController extends AppBaseController
         $plan = Subscription::whereTenantId($whatsappStore->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInDays($plan->created_at) > 7
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return response()->json(['message' => 'Trial expired'], 403);
         }
@@ -267,7 +287,7 @@ class WhatsappStoreController extends AppBaseController
                 'success' => true,
                 'message' => 'TRIAL_ACTIVE',
             ], 200);
-        } else if($plan && $plan->payment_type === null && now()->diffInMinutes($plan->created_at) > 30){
+        } else if($plan && $plan->payment_type === null && now()->diffInDays($plan->created_at) > 7){
             return response()->json([
                 'success' => true,
                 'message' => 'TRIAL_EXPIRED',
@@ -343,13 +363,23 @@ class WhatsappStoreController extends AppBaseController
             abort(404);
         }
         
-         $plan = Subscription::whereTenantId($whatsappStore->tenant_id)->orderByDesc('id')
+        $plan = Subscription::whereTenantId($whatsappStore->tenant_id)->orderByDesc('id')
         ->first();
         
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInDays($plan->created_at) > 7
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
                 abort(404);
         }
@@ -417,7 +447,7 @@ class WhatsappStoreController extends AppBaseController
     }
 
     public function getTemplates(Request $request){
-        $templates = WpStoreTemplate::all()->pluck('path','id')->toArray();
+        $templates = WpStoreTemplate::where('is_active', true)->pluck('path','id')->toArray();
 
         return response()->json([
             'success' => true,
@@ -512,8 +542,8 @@ class WhatsappStoreController extends AppBaseController
 public function updateOfferText(Request $request, $whatsappStore)
 {
     $request->validate([
-        'offer_text' => 'nullable|string|max:255',
-        'youtube_banner_url' => 'nullable|string|max:256',
+        'offer_text' => 'nullable|string',
+        'youtube_banner_url' => 'nullable|string',
         'footer_text' => 'nullable|string',
         'extra_cover_img.*' => 'nullable|image|mimes:jpeg,png,jpg|max:3024',        
     ]);
@@ -537,16 +567,16 @@ public function updateOfferText(Request $request, $whatsappStore)
             $updateData['courier_charge'] = $request->courier_charge;
         }
 
+        if ($request->filled('gst_percent')) {
+            $updateData['gst_percent'] = $request->gst_percent;
+        }
+
         if ($request->filled('dis_perc')) {
             $updateData['dis_perc'] = $request->dis_perc;
         }
 
         if ($request->filled('testimonials')) {
             $updateData['testimonials'] = $request->testimonials;
-        }
-
-        if ($request->filled('gst_percent')) {
-            $updateData['gst_percent'] = $request->gst_percent;
         }
 
         $store->update($updateData);
@@ -957,9 +987,19 @@ public function contactUs($alias)
         ->first();
         
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInDays($plan->created_at) > 7
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
                 abort(404);
         }
@@ -999,9 +1039,19 @@ public function contactUs($alias)
         ->first();
         
       if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInDays($plan->created_at) > 7
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
                 abort(404);
         }
@@ -1134,9 +1184,19 @@ public function contactUs($alias)
         $plan = Subscription::whereTenantId($whatsappStore->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInDays($plan->created_at) > 7
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return response()->json(['message' => 'Trial expired or payment not completed'], 403);
         }
@@ -1182,6 +1242,7 @@ public function contactUs($alias)
         foreach($youtube_links as $link){
             $embedLinks[] = $this->convertToEmbedUrl($link);
         }
+        $whatsappStore->makeHidden(['wp_razorpay_secret']);
         return response()->json([
             'whatsappStore' => $whatsappStore,
             'socialLinks' => $socialLinks,
@@ -1216,9 +1277,19 @@ public function contactUs($alias)
         $plan = Subscription::whereTenantId($whatsappStore->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInDays($plan->created_at) > 7
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return response()->json(['message' => 'Trial expired or payment not completed'], 403);
         }
@@ -1342,10 +1413,10 @@ public function contactUs($alias)
 
         // 2. Update JSON Theme Settings (Color)
         // Decode existing settings first so we don't lose other data in that JSON
-        $existingSettings = json_decode($store->theme_settings, true) ?? [];
+        $existingSettings = $this->decodeJsonArray($store->theme_settings);
         
         // Update the color
-        $existingSettings['wp_show_order_form'] = $request->wp_show_order_form;
+        $existingSettings['wp_show_order_form'] = $request->has('wp_show_order_form') ? 'on' : null;
 
         // Encode back to JSON
         $store->theme_settings = json_encode($existingSettings);
@@ -1355,6 +1426,17 @@ public function contactUs($alias)
         $store->save();
 
         return redirect()->back()->with('success', 'Settings updated successfully!');
+    }
+
+    private function decodeJsonArray($value): array
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+
+        $decoded = json_decode((string) $value, true);
+
+        return is_array($decoded) ? $decoded : [];
     }
 
     public function checkPageAuth()
