@@ -382,6 +382,7 @@
                 <div class="modal-body" id="cartItemsReadyRasoi">
                     
                 </div>
+                @if($whatsappStore->id != 1628 && $whatsappStore->id != 1778)
                 <div class="coupon-section">
                     <div class="coupon-input-wrapper" id="couponInputWrapper">
                         <input type="text" id="couponCode" placeholder="Enter coupon code">
@@ -401,6 +402,7 @@
                         <button class="remove-coupon" onclick="removeCoupon()">Remove</button>
                     </div>
                 </div>
+                @endif
 
                 <div class="modal-footer">
                     <div class="discount-row d-none" id="discountRow">

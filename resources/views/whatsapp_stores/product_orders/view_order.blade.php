@@ -68,7 +68,7 @@
                         </label>
                         <div id="orderAddress" class="d-flex flex-wrap"></div>
                     </div>
-                    @if($whatsappStore->id == 236 || $whatsappStore->id == 188 || $whatsappStore->id == 41 || $whatsappStore->id == 1463)
+                    @if($whatsappStore->id == 236 || $whatsappStore->id == 188 || $whatsappStore->id == 41 || $whatsappStore->id == 1463 || $whatsappStore->id == 682)
                     <div class="col-sm-6 mb-5">
                         <label class="form-label fs-6 text-gray-700">
                             Pincode:
@@ -196,7 +196,7 @@
                         </thead>
                         <tbody class="product-list"></tbody>
                         <tfoot>
-                            @if($whatsappStore->id == 721 || $whatsappStore->id == 41)
+                            @if($whatsappStore->id == 721 || $whatsappStore->id == 41 || $whatsappStore->id == 682)
                             <tr>
                             <td colspan="4" class="text-end">Courier Charges:</td>
                                         <td id="orderCourierCharges" class="fw-bold">
@@ -217,6 +217,23 @@
                                         </td>
                                 
                             </tr>
+                            @endif
+
+                            @if($whatsappStore->gst_percent != 0)
+                                <tr>
+                                    @if($whatsappStore->id == 236 || $whatsappStore->id == 344 || $whatsappStore->id == 364)
+                                        <td colspan="5" class="text-end">Subtotal:</td>
+                                    @elseif($whatsappStore->id == 191)
+                                        <td colspan="6" class="text-end">Subtotal:</td>
+                                    @else
+                                        <td colspan="4" class="text-end">Subtotal:</td>
+                                    @endif
+                                    @if($whatsappStore->id == 208 || $whatsappStore->id == 424 || $whatsappStore->id == 1488)
+                                        <td id="subtotalamt" class="fw-bold" colspan="2"></td>
+                                    @else
+                                        <td id="subtotalamt" class="fw-bold"></td>
+                                    @endif
+                                 </tr>
                             @endif
                             
                             @if($whatsappStore->dis_perc != 0)
@@ -240,6 +257,38 @@
                                     <td id="discountAmount" class="fw-bold"></td>
                                 </tr>
                             @endif
+
+                            @if($whatsappStore->gst_percent != 0)
+                                <tr>
+                                    @if($whatsappStore->id == 236 || $whatsappStore->id == 344 || $whatsappStore->id == 364)
+                                        <td colspan="5" class="text-end">+ CGST({{$whatsappStore->gst_percent / 2}}%):</td>
+                                    @elseif($whatsappStore->id == 191)
+                                        <td colspan="6" class="text-end">+ CGST({{$whatsappStore->gst_percent / 2}}%):</td>
+                                    @else
+                                        <td colspan="4" class="text-end">+ CGST({{$whatsappStore->gst_percent / 2}}%):</td>
+                                    @endif
+                                    @if($whatsappStore->id == 208 || $whatsappStore->id == 424 || $whatsappStore->id == 1488)
+                                        <td id="CGSTAMT" class="fw-bold" colspan="2"></td>
+                                    @else
+                                        <td id="CGSTAMT" class="fw-bold"></td>
+                                    @endif
+                                 </tr>
+                                 <tr>
+                                    @if($whatsappStore->id == 236 || $whatsappStore->id == 344 || $whatsappStore->id == 364)
+                                        <td colspan="5" class="text-end">+ SGST({{$whatsappStore->gst_percent / 2}}%):</td>
+                                    @elseif($whatsappStore->id == 191)
+                                        <td colspan="6" class="text-end">+ SGST({{$whatsappStore->gst_percent / 2}}%):</td>
+                                    @else
+                                        <td colspan="4" class="text-end">+ SGST({{$whatsappStore->gst_percent / 2}}%):</td>
+                                    @endif
+                                    @if($whatsappStore->id == 208 || $whatsappStore->id == 424 || $whatsappStore->id == 1488)
+                                        <td id="SGSTAMT" class="fw-bold" colspan="2"></td>
+                                    @else
+                                        <td id="SGSTAMT" class="fw-bold"></td>
+                                    @endif
+                                 </tr>
+                            @endif
+
                             <tr>
                                 @if($whatsappStore->id == 236 || $whatsappStore->id == 344 || $whatsappStore->id == 364)
                                     <td colspan="5" class="text-end">{{ __('messages.whatsapp_stores.grand_total') }}:</td>

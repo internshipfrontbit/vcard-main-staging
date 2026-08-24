@@ -476,6 +476,7 @@
                                                         fill="currentColor" />
                                                 </svg>
                                             </button>
+                                            @if($whatsappStore->id != 41)
                                             <button data-id="{{ $product->id }}"
                                                 class="btn btn-primary d-flex justify-content-center align-items-center" onclick="prepareAndSendWpMessageDirect({{ $product->id }},'{{ $product->name }}','{{ $product->currency->currency_icon }}','{{$product->selling_price}}','{{$product->cartoon_qty}}')" style="background: #25d366 !important; color: #ffffff !important;border: 1px solid #25d366 !important;">
                                                 <svg width="800px" height="800px" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 25px;width: 25px;">
@@ -491,6 +492,7 @@
                                                     </defs>
                                                 </svg>
                                             </button>
+                                            @endif
                                             </div>
                                             
                                         </div>

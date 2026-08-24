@@ -195,7 +195,7 @@
                                         @endif
                                     <div class="mb-2 mb-lg-4 h-100 product-details">
                                         <p class="fs-16 fw-5 text-black mb-10 product-name">{{ $product->name }}</p>
-                                        <p class="fs-14 text-gray-200 fw-5 mb-0">
+                                        <p class="fs-14 text-gray-200 fw-5 mb-0" style="width: 91%;word-wrap: break-word;">
                                             {{$product->sizes}}</p>
                                         <p class="fs-14 text-gray-200 fw-5 mb-0 product-category">
                                             {{ $product->category->name }}</p>

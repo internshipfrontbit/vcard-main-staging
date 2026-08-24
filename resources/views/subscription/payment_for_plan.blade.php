@@ -626,33 +626,7 @@
                                                         <div class="row">
                                                             <div class="col-md-6 col-lg-4 col-xxl-3">
                                                             </div>
-                                                            <div class="col-md-3 col-lg-2 col-xxl-1 attachment-field">
-                                                                <label for="exampleInputImage"
-                                                                    class="form-label">{{ __('messages.mail.attachment') }}
-                                                                    :-</label>
-                                                                <div class="d-block">
-                                                                    <div class="image-picker">
-                                                                        <div class="image previewImage"
-                                                                            id="exampleInputImage"
-                                                                            style="background-image: url('{{ asset('assets/images/cover_image1.png') }}')">
-                                                                        </div>
-                                                                        <span
-                                                                            class="picker-edit rounded-circle text-gray-500 fs-small"
-                                                                            data-bs-toggle="tooltip" data-placement="top"
-                                                                            data-bs-original-title="Choose Attachment">
-                                                                            <label>
-                                                                                <i class="fa-solid fa-pen"
-                                                                                    id="profileImageIcon"></i>
-                                                                                <input type="file"
-                                                                                    id="manual_payment_attachment"
-                                                                                    name="attachment"
-                                                                                    class="image-upload file-validation d-none"
-                                                                                    accept="image/*" />
-                                                                            </label>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            
                                                             <div class="col-lg-6 col-md-9 col-xxl-4">
                                                                 <label for="exampleInputImage"
                                                                     class="form-label">{{ __('messages.mail.notes') }}

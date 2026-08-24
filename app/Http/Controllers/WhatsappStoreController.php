@@ -59,7 +59,7 @@ class WhatsappStoreController extends AppBaseController
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInDays($plan->created_at) > 7
+                    now()->diffInHours($plan->created_at) > 1
                 )
                 ||
                 ( 
@@ -182,7 +182,7 @@ class WhatsappStoreController extends AppBaseController
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInDays($plan->created_at) > 7
+                    now()->diffInHours($plan->created_at) > 1
                 )
                 ||
                 ( 
@@ -287,7 +287,7 @@ class WhatsappStoreController extends AppBaseController
                 'success' => true,
                 'message' => 'TRIAL_ACTIVE',
             ], 200);
-        } else if($plan && $plan->payment_type === null && now()->diffInDays($plan->created_at) > 7){
+        } else if($plan && $plan->payment_type === null && now()->diffInHours($plan->created_at) > 1){
             return response()->json([
                 'success' => true,
                 'message' => 'TRIAL_EXPIRED',
@@ -371,7 +371,7 @@ class WhatsappStoreController extends AppBaseController
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInDays($plan->created_at) > 7
+                    now()->diffInHours($plan->created_at) > 1
                 )
                 ||
                 ( 
@@ -991,7 +991,7 @@ public function contactUs($alias)
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInDays($plan->created_at) > 7
+                    now()->diffInHours($plan->created_at) > 1
                 )
                 ||
                 ( 
@@ -1043,7 +1043,7 @@ public function contactUs($alias)
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInDays($plan->created_at) > 7
+                    now()->diffInHours($plan->created_at) > 1
                 )
                 ||
                 ( 
@@ -1188,7 +1188,7 @@ public function contactUs($alias)
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInDays($plan->created_at) > 7
+                    now()->diffInHours($plan->created_at) > 1
                 )
                 ||
                 ( 
@@ -1281,7 +1281,7 @@ public function contactUs($alias)
            (
                 (
                     $plan->payment_type === null &&
-                    now()->diffInDays($plan->created_at) > 7
+                    now()->diffInHours($plan->created_at) > 1
                 )
                 ||
                 ( 
@@ -1413,10 +1413,10 @@ public function contactUs($alias)
 
         // 2. Update JSON Theme Settings (Color)
         // Decode existing settings first so we don't lose other data in that JSON
-        $existingSettings = $this->decodeJsonArray($store->theme_settings);
+        $existingSettings = json_decode($store->theme_settings, true) ?? [];
         
         // Update the color
-        $existingSettings['wp_show_order_form'] = $request->has('wp_show_order_form') ? 'on' : null;
+        $existingSettings['wp_show_order_form'] = $request->wp_show_order_form;
 
         // Encode back to JSON
         $store->theme_settings = json_encode($existingSettings);
@@ -1426,17 +1426,6 @@ public function contactUs($alias)
         $store->save();
 
         return redirect()->back()->with('success', 'Settings updated successfully!');
-    }
-
-    private function decodeJsonArray($value): array
-    {
-        if (is_array($value)) {
-            return $value;
-        }
-
-        $decoded = json_decode((string) $value, true);
-
-        return is_array($decoded) ? $decoded : [];
     }
 
     public function checkPageAuth()

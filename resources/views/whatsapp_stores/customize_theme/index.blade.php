@@ -1,9 +1,6 @@
 @php
     // Decode settings to populate values
-    $settings = json_decode($whatsappStore->theme_settings, true);
-    if (! is_array($settings)) {
-        $settings = [];
-    }
+    $settings = json_decode($whatsappStore->theme_settings, true) ?? [];
 @endphp
 
 <form action="{{ route('admin.store.theme.update', $whatsappStore->id) }}" method="POST">

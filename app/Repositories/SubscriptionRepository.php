@@ -217,12 +217,12 @@ class SubscriptionRepository extends BaseRepository
         }
         $subscription = Subscription::create($input);
 
-        if (isset($planData['attachment']) && ! empty($planData['attachment'])) {
-            $subscription->addMedia($planData['attachment'])->toMediaCollection(
-                Subscription::ATTACHMENT_PATH,
-                config('app.media_disc')
-            );
-        }
+        // if (isset($planData['attachment']) && ! empty($planData['attachment'])) {
+        //     $subscription->addMedia($planData['attachment'])->toMediaCollection(
+        //         Subscription::ATTACHMENT_PATH,
+        //         config('app.media_disc')
+        //     );
+        // }
 
         if ($amountToPay <= 0 || $payableAmount == 0) {
             // De-Active all other subscription

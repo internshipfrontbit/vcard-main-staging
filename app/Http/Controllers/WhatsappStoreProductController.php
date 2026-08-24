@@ -44,9 +44,19 @@ class WhatsappStoreProductController extends AppBaseController
         $plan = Subscription::whereTenantId($store->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInHours($plan->created_at) > 1
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
              return $this->sendError('Trial expired or payment not completed',401);
         }
@@ -55,54 +65,16 @@ class WhatsappStoreProductController extends AppBaseController
         $input['whatsapp_store_id'] = $store->id;
         unset($input['alias']);
         
-        // Define limits per whatsapp_store_id
-        $limit550 = [741, 689];
-        $limit500 = [125, 114];
-        $limit1000 = [345, 208, 1488];
-        $limit1550 = [691];
-        $limit650 = [];
-        $limit100 = [364, 382, 503, 520, 564, 584,308, 752, 1014, 651, 966, 1234, 1238, 1277];
-        $limit250 = [392, 425, 77, 970, 530];        
-        $limit220 = [346];
-        $limit150 = [128, 363, 652, 738, 376, 982, 1263];
-        $limit200 = [322,1241,151];
-        $limit80 = [210];
-        $limit2 = [99,1662];
-
+    
         $unlimited = false;
 
-        // if($plan->plan_id == 24){
-        //     $unlimited = true;
-        // }
 
-        // Determine the max limit
-        if (in_array($input['whatsapp_store_id'], $limit550)) {
-            $maxLimit = 550;
-        } elseif (in_array($input['whatsapp_store_id'], $limit500)) {
-            $maxLimit = 500;
-        } elseif (in_array($input['whatsapp_store_id'], $limit650)) {
-            $maxLimit = 650;
-        } elseif (in_array($input['whatsapp_store_id'], $limit2)) {
-            $maxLimit = 2;
-        } elseif (in_array($input['whatsapp_store_id'], $limit150)) {
-            $maxLimit = 150;
-        } elseif (in_array($input['whatsapp_store_id'], $limit80)) {
-            $maxLimit = 80;
-        } elseif (in_array($input['whatsapp_store_id'], $limit100)) {
-            $maxLimit = 100;
-        } elseif (in_array($input['whatsapp_store_id'], $limit250)) {
-            $maxLimit = 250;
-        } elseif (in_array($input['whatsapp_store_id'], $limit220)) {
-            $maxLimit = 220;
-        } elseif (in_array($input['whatsapp_store_id'], $limit200)) {
-            $maxLimit = 200;
-        } elseif (in_array($input['whatsapp_store_id'], $limit1000)) {
-            $maxLimit = 1000;
-        } elseif (in_array($input['whatsapp_store_id'], $limit1550)) {
-            $maxLimit = 1550;
-        }else {
-            $maxLimit = 50;
+        if($plan->plan_id == 24){
+            $unlimited = true;
         }
+
+        $maxLimit = $store->product_count ?? 50;
+
 
         if($unlimited == false){
             // Check current product count
@@ -125,12 +97,10 @@ class WhatsappStoreProductController extends AppBaseController
         // Handle image uploads
         if ($request->hasFile('images')) {
             $images = $request->file('images');
-    
-            if ($input['whatsapp_store_id'] == 71 || $input['whatsapp_store_id'] == 128 || $input['whatsapp_store_id'] == 322 || $input['whatsapp_store_id'] == 344 || $input['whatsapp_store_id'] == 280 || $input['whatsapp_store_id'] == 564 || $input['whatsapp_store_id'] == 681 || $input['whatsapp_store_id'] == 676 || $input['whatsapp_store_id'] == 682 || $input['whatsapp_store_id'] == 1083 || $input['whatsapp_store_id'] == 1502) {
-                // Special case: allow max 3 images, remove oldest if needed
-                foreach ($images as $image) {
+
+            foreach ($images as $image) {
                     $product->refresh();
-                    if ($product->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 3) {
+                    if ($product->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= $store->image_count) {
                         $product->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
                         $product->refresh();
                     }
@@ -140,73 +110,6 @@ class WhatsappStoreProductController extends AppBaseController
                         config('app.media_disc')
                     );
                 }
-            }else if($input['whatsapp_store_id'] == 327 || $input['whatsapp_store_id'] == 346 || $input['whatsapp_store_id'] == 406 || $input['whatsapp_store_id'] == 600 || $input['whatsapp_store_id'] == 41 || $input['whatsapp_store_id'] == 738 || $input['whatsapp_store_id'] == 927 || $input['whatsapp_store_id'] == 806 || $input['whatsapp_store_id'] == 530 || $input['whatsapp_store_id'] == 982 || $input['whatsapp_store_id'] == 990 || $input['whatsapp_store_id'] == 1158 || $input['whatsapp_store_id'] == 348 || $input['whatsapp_store_id'] == 1437 || $input['whatsapp_store_id'] == 1588 || $input['whatsapp_store_id'] == 1497) { 
-                 foreach ($images as $image) {
-                    $product->refresh();
-                    if ($product->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 2) {
-                        $product->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
-                        $product->refresh();
-                    }
-    
-                    $product->addMedia($image)->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            }else if($input['whatsapp_store_id'] == 118 || $input['whatsapp_store_id'] == 396 || $input['whatsapp_store_id'] == 424) {
-                // Special case: allow max 3 images, remove oldest if needed
-                foreach ($images as $image) {
-                    $product->refresh();
-                    if ($product->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 6) {
-                        $product->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
-                        $product->refresh();
-                    }
-    
-                    $product->addMedia($image)->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            } else if($input['whatsapp_store_id'] == 865 || $input['whatsapp_store_id'] == 1557) {
-                // Special case: allow max 3 images, remove oldest if needed
-                foreach ($images as $image) {
-                    $product->refresh();
-                    if ($product->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 4) {
-                        $product->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
-                        $product->refresh();
-                    }
-    
-                    $product->addMedia($image)->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            } else if($input['whatsapp_store_id'] == 208 || $input['whatsapp_store_id'] == 77 || $input['whatsapp_store_id'] == 908 || $input['whatsapp_store_id'] == 1209 || $input['whatsapp_store_id'] == 1241 || $input['whatsapp_store_id'] == 1323) {
-                // Special case: allow max 3 images, remove oldest if needed
-                foreach ($images as $image) {
-                    $product->refresh();
-                    if ($product->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 5) {
-                        $product->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
-                        $product->refresh();
-                    }
-    
-                    $product->addMedia($image)->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            } else {
-                // Default behavior: just add the first image (or override)
-                if (count($images) > 0) {
-                    // Optionally remove previous images
-                    $product->clearMediaCollection(WhatsappStoreProduct::PRODUCT_IMAGES);
-    
-                    $product->addMedia($images[0])->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            }
         }
 
         $whatsappStore = WhatsappStore::where('id', $input['whatsapp_store_id'])->where('tenant_id', getLogInTenantId())->first();        
@@ -242,9 +145,19 @@ class WhatsappStoreProductController extends AppBaseController
         $plan = Subscription::whereTenantId(getLogInTenantId())->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInHours($plan->created_at) > 1
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return $this->sendError('Trial expired or payment not completed',401);
         }
@@ -274,9 +187,19 @@ class WhatsappStoreProductController extends AppBaseController
         $plan = Subscription::whereTenantId(getLogInTenantId())->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInHours($plan->created_at) > 1
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
            return $this->sendError('Trial expired or payment not completed',401);
         }
@@ -302,9 +225,19 @@ class WhatsappStoreProductController extends AppBaseController
         $plan = Subscription::whereTenantId(getLogInTenantId())->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInHours($plan->created_at) > 1
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return $this->sendError('Trial expired or payment not completed',401);
         }
@@ -340,9 +273,19 @@ class WhatsappStoreProductController extends AppBaseController
         $plan = Subscription::whereTenantId(getLogInTenantId())->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInHours($plan->created_at) > 1
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return response()->json(['message' => 'Trial expired or payment not completed'], 401);
         }
@@ -381,12 +324,10 @@ class WhatsappStoreProductController extends AppBaseController
         // Handle image uploads
         if ($request->hasFile('images')) {
             $images = $request->file('images');
-    
-            if ($wpStoreProduct->whatsapp_store_id == 71 || $input['whatsapp_store_id'] == 128 || $input['whatsapp_store_id'] == 322 || $input['whatsapp_store_id'] == 280 || $input['whatsapp_store_id'] == 564 || $input['whatsapp_store_id'] == 681 || $input['whatsapp_store_id'] == 676 || $input['whatsapp_store_id'] == 682 || $input['whatsapp_store_id'] == 1083) {
-                // Special case: rolling image behavior
-                foreach ($images as $image) {
+
+            foreach ($images as $image) {
                     $wpStoreProduct->refresh();
-                    if ($wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 3) {
+                    if ($wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= $whatsappStore->image_count) {
                         $wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
                         $wpStoreProduct->refresh();
                     }
@@ -396,72 +337,6 @@ class WhatsappStoreProductController extends AppBaseController
                         config('app.media_disc')
                     );
                 }
-            }else if($input['whatsapp_store_id'] == 327 || $input['whatsapp_store_id'] == 346 || $input['whatsapp_store_id'] == 406 || $input['whatsapp_store_id'] == 600 || $input['whatsapp_store_id'] == 41 || $input['whatsapp_store_id'] == 738 || $input['whatsapp_store_id'] == 927 || $input['whatsapp_store_id'] == 806 || $input['whatsapp_store_id'] == 530 || $input['whatsapp_store_id'] == 982 || $input['whatsapp_store_id'] == 990 || $input['whatsapp_store_id'] == 1158 || $input['whatsapp_store_id'] == 348  || $input['whatsapp_store_id'] == 1437 || $input['whatsapp_store_id'] == 1588 || $input['whatsapp_store_id'] == 1497) {
-                 foreach ($images as $image) {
-                    $wpStoreProduct->refresh();
-                    if ($wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 2) {
-                        $wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
-                        $wpStoreProduct->refresh();
-                    }
-    
-                    $wpStoreProduct->addMedia($image)->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            } else if($input['whatsapp_store_id'] == 118 || $input['whatsapp_store_id'] == 392 || $input['whatsapp_store_id'] == 396 || $input['whatsapp_store_id'] == 424) {
-                // Special case: rolling image behavior
-                foreach ($images as $image) {
-                    $wpStoreProduct->refresh();
-                    if ($wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 6) {
-                        $wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
-                        $wpStoreProduct->refresh();
-                    }
-    
-                    $wpStoreProduct->addMedia($image)->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            } else if($input['whatsapp_store_id'] == 865 || $input['whatsapp_store_id'] == 1557) {
-                // Special case: rolling image behavior
-                foreach ($images as $image) {
-                    $wpStoreProduct->refresh();
-                    if ($wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 4) {
-                        $wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
-                        $wpStoreProduct->refresh();
-                    }
-    
-                    $wpStoreProduct->addMedia($image)->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            } else if($input['whatsapp_store_id'] == 208 || $input['whatsapp_store_id'] == 77 || $input['whatsapp_store_id'] == 908 || $input['whatsapp_store_id'] == 1209 || $input['whatsapp_store_id'] == 1241 || $input['whatsapp_store_id'] == 1323) {
-                // Special case: rolling image behavior
-                foreach ($images as $image) {
-                    $wpStoreProduct->refresh();
-                    if ($wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 5) {
-                        $wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
-                        $wpStoreProduct->refresh();
-                    }
-    
-                    $wpStoreProduct->addMedia($image)->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            } else {
-                // Default behavior: replace with first image
-                if (count($images) > 0) {
-                    $wpStoreProduct->clearMediaCollection(WhatsappStoreProduct::PRODUCT_IMAGES);
-    
-                    $wpStoreProduct->addMedia($images[0])->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            }
         }
     
         return response()->json([
@@ -480,9 +355,19 @@ class WhatsappStoreProductController extends AppBaseController
         $plan = Subscription::whereTenantId(getLogInTenantId())->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInHours($plan->created_at) > 1
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return response()->json(['message' => 'Trial expired or payment not completed'], 401);
         }
@@ -551,9 +436,19 @@ class WhatsappStoreProductController extends AppBaseController
         $plan = Subscription::whereTenantId(getLogInTenantId())->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInHours($plan->created_at) > 1
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return response()->json(['message' => 'Trial expired or payment not completed'], 401);
         }
@@ -626,15 +521,15 @@ class WhatsappStoreProductController extends AppBaseController
     
         $input = $request->all();
         $wpStoreProduct->update($input);
+
+        $whatsappStore = WhatsappStore::where('id', $wpStoreProduct->whatsapp_store_id)->where('tenant_id', getLogInTenantId())->first();
     
         if ($request->hasFile('images')) {
             $images = $request->file('images');
-    
-            if ($wpStoreProduct->whatsapp_store_id == 71 || $input['whatsapp_store_id'] == 128 || $input['whatsapp_store_id'] == 322 || $input['whatsapp_store_id'] == 280 || $input['whatsapp_store_id'] == 564 || $input['whatsapp_store_id'] == 681 || $input['whatsapp_store_id'] == 676 || $input['whatsapp_store_id'] == 682 || $input['whatsapp_store_id'] == 1083) {
-                // Special case: rolling image behavior
-                foreach ($images as $image) {
+
+            foreach ($images as $image) {
                     $wpStoreProduct->refresh();
-                    if ($wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 3) {
+                    if ($wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= $whatsappStore->image_count) {
                         $wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
                         $wpStoreProduct->refresh();
                     }
@@ -644,72 +539,6 @@ class WhatsappStoreProductController extends AppBaseController
                         config('app.media_disc')
                     );
                 }
-            }else if($input['whatsapp_store_id'] == 327 || $input['whatsapp_store_id'] == 346 || $input['whatsapp_store_id'] == 406 || $input['whatsapp_store_id'] == 600 || $input['whatsapp_store_id'] == 41 || $input['whatsapp_store_id'] == 738 || $input['whatsapp_store_id'] == 927 || $input['whatsapp_store_id'] == 530 || $input['whatsapp_store_id'] == 806 || $input['whatsapp_store_id'] == 982 || $input['whatsapp_store_id'] == 990 || $input['whatsapp_store_id'] == 1158 || $input['whatsapp_store_id'] == 348 || $input['whatsapp_store_id'] == 1437 || $input['whatsapp_store_id'] == 1588 || $input['whatsapp_store_id'] == 1497) {
-                 foreach ($images as $image) {
-                    $wpStoreProduct->refresh();
-                    if ($wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 2) {
-                        $wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
-                        $wpStoreProduct->refresh();
-                    }
-    
-                    $wpStoreProduct->addMedia($image)->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            } else if($input['whatsapp_store_id'] == 118 || $input['whatsapp_store_id'] == 392 || $input['whatsapp_store_id'] == 396 || $input['whatsapp_store_id'] == 424) {
-                // Special case: rolling image behavior
-                foreach ($images as $image) {
-                    $wpStoreProduct->refresh();
-                    if ($wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 6) {
-                        $wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
-                        $wpStoreProduct->refresh();
-                    }
-    
-                    $wpStoreProduct->addMedia($image)->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            } else if($input['whatsapp_store_id'] == 208 || $input['whatsapp_store_id'] == 77 || $input['whatsapp_store_id'] == 908  || $input['whatsapp_store_id'] == 1209 || $input['whatsapp_store_id'] == 1241 || $input['whatsapp_store_id'] == 1323) {
-                // Special case: rolling image behavior
-                foreach ($images as $image) {
-                    $wpStoreProduct->refresh();
-                    if ($wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 5) {
-                        $wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
-                        $wpStoreProduct->refresh();
-                    }
-    
-                    $wpStoreProduct->addMedia($image)->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            } else if($input['whatsapp_store_id'] == 865 || $input['whatsapp_store_id'] == 1557) {
-                // Special case: rolling image behavior
-                foreach ($images as $image) {
-                    $wpStoreProduct->refresh();
-                    if ($wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->count() >= 4) {
-                        $wpStoreProduct->getMedia(WhatsappStoreProduct::PRODUCT_IMAGES)->first()->delete();
-                        $wpStoreProduct->refresh();
-                    }
-    
-                    $wpStoreProduct->addMedia($image)->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            } else {
-                // Default behavior: replace with first image
-                if (count($images) > 0) {
-                    $wpStoreProduct->clearMediaCollection(WhatsappStoreProduct::PRODUCT_IMAGES);
-    
-                    $wpStoreProduct->addMedia($images[0])->toMediaCollection(
-                        WhatsappStoreProduct::PRODUCT_IMAGES,
-                        config('app.media_disc')
-                    );
-                }
-            }
         }
 
         $whatsappStore = WhatsappStore::where('id', $wpStoreProduct->whatsapp_store_id)->where('tenant_id', getLogInTenantId())->first();        
@@ -811,10 +640,10 @@ class WhatsappStoreProductController extends AppBaseController
 
                 // 2. Apply Discount
                 $discountAmount = 0;
-                if ($whatsappStore->dis_perc != 0) {
+                // if ($whatsappStore->dis_perc != 0) {
                     $mobileDiscountSettings = json_decode($whatsappStore->mobile_discount_settings, true);
 
-                    $finalDiscount = $whatsappStore->dis_perc;
+                    $finalDiscount = $whatsappStore->dis_perc ?? 0;
 
                     if (!empty($mobileDiscountSettings)) {
                          foreach ($mobileDiscountSettings as $item) {
@@ -825,16 +654,27 @@ class WhatsappStoreProductController extends AppBaseController
                                     $finalDiscount = 0;
                                 } else {
                                     $finalDiscount = (float)$item['discount'];
+                                    $discountAmount = ($grandTotal * $finalDiscount) / 100;
+                                    $grandTotal = $grandTotal - $discountAmount;
                                 }
 
                                 break; // stop loop once found
                             }
                         }
                     }else{
-                        $discountAmount = ($grandTotal * $finalDiscount) / 100;
-                        $grandTotal = $grandTotal - $discountAmount;
+                        if($finalDiscount != 0){
+                            $discountAmount = ($grandTotal * $finalDiscount) / 100;
+                            $grandTotal = $grandTotal - $discountAmount;
+                        }
                     }
-                }
+
+                    if($discountAmount == 0){
+                        if($finalDiscount != 0){
+                            $discountAmount = ($grandTotal * $finalDiscount) / 100;
+                            $grandTotal = $grandTotal - $discountAmount;
+                        }
+                    }
+                // }
 
                  if ($request->filled('coupon_code')) {
                     $response = Http::withHeaders([
@@ -958,6 +798,42 @@ class WhatsappStoreProductController extends AppBaseController
                         $grandTotal = $grandTotal + 70; // Add delivery charge
                     }
                         
+                }
+
+                if($whatsappStore->id == 682){
+                    
+                    $response = Http::withHeaders([
+                        'User-Agent' => 'Mozilla/5.0',
+                        'Accept' => 'application/json'
+                    ])->get('https://api.postalpincode.in/pincode/' . $request->pincode);
+
+                    if ($response->successful()) {
+                        $data = $response->json();
+
+                        if (isset($data[0]['Status']) && $data[0]['Status'] === 'Success') {
+                            $postOffice = $data[0]['PostOffice'][0] ?? null;
+
+                            if ($postOffice) {
+                                
+                                if($postOffice['District'] == "Ahmedabad"){
+                                    $request->merge(['courier_charges' => 20]);
+                                    $grandTotal = $grandTotal + 20;
+                                }else if($postOffice['State'] == "Gujarat"){
+                                    $request->merge(['courier_charges' => 50]);
+                                    $grandTotal = $grandTotal + 50;
+                                } else{
+                                    $request->merge(['courier_charges' => 70]);
+                                    $grandTotal = $grandTotal + 70;
+                                }
+                            }else{
+                                return $this->sendError("Invalid pincode.");
+                            }
+                        }else{
+                            return $this->sendError("Invalid pincode.");
+                        }
+                    }else{
+                        return $this->sendError("Invalid pincode.");
+                    }
                 }
 
                 // 3. Determine Payment Method
@@ -1151,6 +1027,9 @@ class WhatsappStoreProductController extends AppBaseController
             $orderID = Str::upper(Str::random(8));
             $input['order_id'] = $orderID;
 
+            if($request->filled('courier_charges') && $input['courier_charges'] != 0){
+                $input['grand_total'] = $input['grand_total'] + $input['courier_charges'];
+            }   
                 
                 if($whatsappStore->id == 721 || $whatsappStore->id == 41 || $whatsappStore->id == 424){
                     if($input['grand_total'] < $whatsappStore->minimum_order_amount){
@@ -1159,7 +1038,7 @@ class WhatsappStoreProductController extends AppBaseController
                     }else{
                         $input['courier_charges'] = 0;
                     }
-                }
+                } 
 
 
             if ($whatsappStore->id == 3) {
@@ -1169,30 +1048,39 @@ class WhatsappStoreProductController extends AppBaseController
 
             $discountAmount = 0;
 
-                if ($whatsappStore->dis_perc != 0) {
-                    $mobileDiscountSettings = json_decode($whatsappStore->mobile_discount_settings, true);
+                    // if ($whatsappStore->dis_perc != 0) {
+                        $mobileDiscountSettings = json_decode($whatsappStore->mobile_discount_settings, true);
 
-                    if (!empty($mobileDiscountSettings)) {
-                         foreach ($mobileDiscountSettings as $item) {
-                            if ($item['mobile'] == $request->phone) {
+                        if (!empty($mobileDiscountSettings)) {
+                            foreach ($mobileDiscountSettings as $item) {
+                                if ($item['mobile'] == $request->phone) {
 
-                                // If discount is 0 → no discount
-                                if ((float)$item['discount'] === 0.0) {
-                                    $discountAmount = 0;
-                                } else {
-                                    $finalDiscount = (float)$item['discount'];
-                                    $discountAmount = ($input['grand_total'] * $finalDiscount) / 100;
-                                    $input['grand_total'] = $input['grand_total'] - $discountAmount;
+                                    // If discount is 0 → no discount
+                                    if ((float)$item['discount'] === 0.0) {
+                                        $discountAmount = 0;
+                                    } else {
+                                        $finalDiscount = (float)$item['discount'];
+                                        $discountAmount = ($input['grand_total'] * $finalDiscount) / 100;
+                                        $input['grand_total'] = $input['grand_total'] - $discountAmount;
+                                    }
+
+                                    break; // stop loop once found
                                 }
-
-                                break; // stop loop once found
+                            }
+                        }else{
+                            if($whatsappStore->dis_perc != 0){
+                                $discountAmount = ($input['grand_total'] * $whatsappStore->dis_perc) / 100;
+                                $input['grand_total'] = $input['grand_total'] - $discountAmount;
                             }
                         }
-                    }else{
-                        $discountAmount = ($input['grand_total'] * $whatsappStore->dis_perc) / 100;
-                        $input['grand_total'] = $input['grand_total'] - $discountAmount;
+                    // }
+
+                    if($discountAmount == 0){
+                        if($whatsappStore->dis_perc != 0){
+                            $discountAmount = ($input['grand_total'] * $whatsappStore->dis_perc) / 100;
+                            $input['grand_total'] = $input['grand_total'] - $discountAmount;
+                        }
                     }
-                }
 
                     $input['dis_amt'] = $discountAmount;
 
@@ -1288,7 +1176,8 @@ class WhatsappStoreProductController extends AppBaseController
         }
     }
 
-    public function updateSessionUserData(Request $request){
+
+public function updateSessionUserData(Request $request){
         $input = $request->all();
 
         $analyticsNew = new AnalyticsController();
@@ -1454,9 +1343,19 @@ public function verifyPhonePePayment(Request $request)
         $plan = Subscription::whereTenantId($wpOrder->wpStore->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInHours($plan->created_at) > 1
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return $this->sendError('Trial expired or payment not completed',401);
         }
@@ -1521,9 +1420,19 @@ public function verifyPhonePePayment(Request $request)
         $plan = Subscription::whereTenantId($wpOrder->wpStore->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInHours($plan->created_at) > 1
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return $this->sendError('Trial expired or payment not completed',401);
         }
@@ -1585,7 +1494,13 @@ public function verifyPhonePePayment(Request $request)
                 }
             }
 
-            $gst = $grandTotal * 0.05;
+            if($whatsappStore->id == 1258){
+                $gst = $grandTotal * 0.05;
+            }else{
+                $gst = 0;
+            }
+
+            
 
             // Add GST to total
             $grandTotal = $grandTotal + $gst;
@@ -1812,9 +1727,19 @@ public function verifyPhonePePayment(Request $request)
         $plan = Subscription::whereTenantId($wpOrder->wpStore->tenant_id)->orderByDesc('id')->first();
     
         if (
-            $plan &&
-            $plan->payment_type === null &&
-            now()->diffInMinutes($plan->created_at) > 30
+           $plan &&
+           (
+                (
+                    $plan->payment_type === null &&
+                    now()->diffInHours($plan->created_at) > 1
+                )
+                ||
+                ( 
+                    $plan->payment_type !== null &&
+                    $plan->ends_at &&
+                    now()->greaterThan($plan->ends_at)
+                )
+            )
         ) {
             return $this->sendError('Trial expired or payment not completed',401);
         }

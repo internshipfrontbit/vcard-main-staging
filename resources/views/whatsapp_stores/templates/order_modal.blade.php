@@ -58,7 +58,13 @@
 
                              <div class="col-sm-12">
                                  <div class="mb-3 form-group">
-                                     <label for="name" class="form-label">{{ __('messages.common.name') }}:
+                                    @if($whatsappStore->id == 1628 || $whatsappStore->id == 1778)
+                                     <label for="name" class="form-label">Student Name:
+                                    @else
+                                      @if($whatsappStore->id == 530) 
+	                                    <label for="name" class="form-label">Business Name:
+                                      @endif
+                                    @endif    
                                      </label><span class="text-danger">*</span>
                                      <input type="text" required class="form-control" name="name" id="name"
                                          placeholder="{{ __('messages.common.name') }}">
@@ -72,6 +78,18 @@
                                          value="{{ url(route('whatsapp.store.product.buy')) }}">
                                  </div>
                              </div>
+                             @if($whatsappStore->id == 1628 || $whatsappStore->id == 1778)
+                             <div class="col-sm-12">
+                                 <div class="mb-3 form-group">
+                                    
+                                     <label for="address" class="form-label">Standard / Division:
+                                       
+                                     </label><span class="text-danger">*</span>
+                                     <input type="text" required class="form-control" name="address" id="address"
+                                         placeholder="Standard / Division">
+                                 </div>
+                             </div>
+                             @endif
                           
                                 <div class="col-sm-12">
                                      <div class="form-group mb-3 phone-block {{ app()->getLocale() == 'ar' ? 'rtl-phone-input' : '' }}">
@@ -110,14 +128,14 @@
                                   @endif
 
                                 
-
+                                 @if($whatsappStore->id != 1628 && $whatsappStore->id != 1778)
                                  <div class="col-sm-12">
                                      <div class="mb-3 form-group">
                                         @if($whatsappStore->id == 530)
-                                            <label for="name" class="form-label">City:
+                                            <label for="name" class="form-label">Address:
                                          </label><span class="text-danger">*</span>
-                                         <textarea class="form-control" id="address" name="address" rows="1" required
-                                             placeholder="City"></textarea>
+                                         <textarea class="form-control" id="address" name="address" rows="3" required
+                                             placeholder="Address"></textarea>
                                         @else
                                             <label for="name" class="form-label">{{ $whatsappStore->id == 860 || $whatsappStore->id == 1518 ? 'Message' : __('messages.setting.address') }}:
                                          </label><span class="text-danger">*</span>
@@ -127,6 +145,7 @@
                                         
                                      </div>
                                  </div>
+                                 @endif
 
                                  @if($whatsappStore->id == 1488 || $whatsappStore->id == 1)
                                   <div class="col-sm-12">
@@ -207,7 +226,7 @@
                                  </div>                                                               
                              @endif
 
-                                 @if($whatsappStore->id == 236 || $whatsappStore->id == 188 || $whatsappStore->id == 41 || $whatsappStore->id == 1488 || $whatsappStore->id == 1 || $whatsappStore->id == 1463)
+                                 @if($whatsappStore->id == 236 || $whatsappStore->id == 188 || $whatsappStore->id == 41 || $whatsappStore->id == 1488 || $whatsappStore->id == 1 || $whatsappStore->id == 1463 || $whatsappStore->id == 1620 || $whatsappStore->id == 682)
                                      <div class="col-sm-12">
                                          <div class="mb-3 form-group">
                                              <label for="name" class="form-label">{{ 'Pincode' }}:
@@ -216,7 +235,7 @@
                                                  placeholder="Enter Pincode" oninput="handlePincodeInput()" />
                                          </div>
                                      </div>
-                                     @if($whatsappStore->id == 1463)
+                                     @if($whatsappStore->id == 1463 || $whatsappStore->id == 682)
                                       <div class="my-2">
                                         <div class="row text-secondary">
 
@@ -324,7 +343,7 @@
                             
                              
                          </div>
-                          @if($whatsappStore->id == 1463)
+                          @if($whatsappStore->id == 1463 || $whatsappStore->id == 682)
                           <button type="submit" class="newWhatsappButton btn btn-primary m-0 w-100" disabled>
                                @if($whatsappStore->wp_razorpay_enabled == "1")
 

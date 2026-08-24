@@ -70,8 +70,10 @@
                                         @if($whatsappStore->dis_perc)
                                         <span class="discount-class text-success" style="font-size: 14px;margin-bottom: -22px;margin-top: 6px;display: block;">- Discount: <span id="discountAmount">0</span></span> <br>
                                         @endif
-                                        
-                                        
+                                        @if($whatsappStore->gst_percent != 0)
+                                            <span class="courier-class" style="color: #959595;font-size: 14px;margin-bottom: -22px;margin-top: 6px;display: block;">+ CGST({{$whatsappStore->gst_percent / 2}}%): <span id="CGSTCHARGE">0</span></span> <br> 
+                                            <span class="courier-class" style="color: #959595;font-size: 14px;margin-bottom: -22px;margin-top: 6px;display: block;">+ SGST({{$whatsappStore->gst_percent / 2}}%): <span id="SGSTCHARGE">0</span></span> <br> 
+                                        @endif
                                         <span>{{ __('messages.whatsapp_stores.grand_total') }}: <span id="grandTotal">0</span></span>
                                       </td>
 

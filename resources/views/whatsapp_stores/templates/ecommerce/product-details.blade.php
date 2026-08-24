@@ -434,6 +434,7 @@
                                             </span>
                                             {{ __('messages.whatsapp_stores_templates.add_to_cart') }}
                                         </button>
+                                        @if($whatsappStore->id != 41)
                                         <button
                                             class="btn btn-primary d-flex justify-content-center align-items-center w-50 fs-18 gap-2"
                                             data-id="{{ $product->id }}" onclick="prepareAndSendWpMessageDirect({{ $product->id }},'{{ $product->name }}','{{ $product->currency->currency_icon }}','{{$product->selling_price}}','{{$product->cartoon_qty}}')" style="height: 42px;background: #25d366 !important; color: #ffffff !important;border: 1px solid #25d366 !important;">
@@ -453,6 +454,7 @@
                                             </span>
                                             {{ 'Order Now' }}
                                         </button>
+                                        @endif
                                     </div>
                                         
                                     @else

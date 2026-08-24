@@ -12,6 +12,9 @@
         if(window.location.href.includes("seller-zone-surat")){
             window.location.href = "https://sellerzones.com/"
         }
+        if(window.location.href.includes("bhakti-insurance") && !window.location.href.includes("bhakti-insurance-gujarat")){
+            window.location.href = "https://staging.vcardking.com/store/bhakti-insurance-gujarat"
+        }
     </script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- PWA  -->
@@ -187,7 +190,7 @@
             </div>
         @endif
         @include('whatsapp_stores.templates.order_modal')
-        @if($whatsappStore->id == 1151 || $whatsappStore->id == 1407 || $whatsappStore->id == 1591)
+        @if($whatsappStore->id == 1151 || $whatsappStore->id == 1407 || $whatsappStore->id == 1591 || $whatsappStore->id == 1700 || $whatsappStore->id == 7 || $whatsappStore->id == 1589 || $whatsappStore->id == 1774)
             @include('whatsapp_stores.templates.ready_rasoi.cart_modal')
         @else
             @include('whatsapp_stores.templates.cart_modal')

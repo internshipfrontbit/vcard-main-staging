@@ -142,7 +142,11 @@
         </div>
     @endif
         @include('whatsapp_stores.templates.order_modal')
-        @include('whatsapp_stores.templates.restaurant.cart_modal')
+        @if($whatsappStore->id == 1628 || $whatsappStore->id == 1778)
+            @include('whatsapp_stores.templates.ready_rasoi.cart_modal')
+        @else
+            @include('whatsapp_stores.templates.restaurant.cart_modal')
+        @endif
         @include('whatsapp_stores.templates.restaurant.quantity_modal')
     </div>
     

@@ -11,6 +11,7 @@ class WpStoreTemplate extends Model
     protected $fillable = [
         'name',
         'path',
+        'is_active'
     ];
     
 }

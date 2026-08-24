@@ -9,6 +9,9 @@
         if(window.location.href.includes("seller-zone-surat")){
             window.location.href = "https://sellerzones.com/"
         }
+        if(window.location.href.includes("bhakti-insurance") && !window.location.href.includes("bhakti-insurance-gujarat")){
+            window.location.href = "https://staging.vcardking.com/store/bhakti-insurance-gujarat"
+        }
     </script>
     <title>{{ $product->name }} | {{ $whatsappStore->store_name }}</title>
     <link href="{{ asset('front/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -671,7 +674,7 @@
                                        
                                        @if($whatsappStore->id != 396 && $whatsappStore->id != 322 && $whatsappStore->id != 619 && $whatsappStore->id != 651 && $whatsappStore->id != 721 && $whatsappStore->id != 707 && $whatsappStore->id != 860 && $whatsappStore->id != 1518 && $whatsappStore->id != 983)
                                         <button
-                                        class="btn btn-primary d-flex justify-content-center align-items-center mobile-full-button {{$whatsappStore->id == 208 || $whatsappStore->id == 1488 || $whatsappStore->id == 1151 ? 'w-100' : 'w-50'}} fs-18 gap-2 addToCartBtn mx-1"
+                                        class="btn btn-primary d-flex justify-content-center align-items-center mobile-full-button {{$whatsappStore->id == 208 || $whatsappStore->id == 1488 || $whatsappStore->id == 1151 || $whatsappStore->id == 195 || $whatsappStore->id == 1591 ? 'w-100' : 'w-50'}} fs-18 gap-2 addToCartBtn mx-1"
                                         data-id="{{ $product->id }}">
                                         <span>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="31"
@@ -713,7 +716,7 @@
                                             {{ __('messages.whatsapp_stores_templates.order_now') }}
                                             </button>
                                         @else
-                                            @if($whatsappStore->id != 208 && $whatsappStore->id != 796 && $whatsappStore->id != 1151 && $whatsappStore->id != 1555)
+                                            @if($whatsappStore->id != 208 && $whatsappStore->id != 796 && $whatsappStore->id != 1151 && $whatsappStore->id != 1555 && $whatsappStore->id != 195 && $whatsappStore->id != 1591)
                                             <button
                                             class="btn btn-primary d-flex justify-content-center mobile-full-button align-items-center {{$whatsappStore->id == 396 ? 'w-100' : 'w-50'}} fs-18 gap-2 mx-1"
                                             data-id="{{ $product->id }}" id="whatsappOrderButton" onclick="prepareAndSendWpMessageDirect({{ $product->id }},'{{addslashes(e($product->name))}}','{{ $product->currency->currency_icon }}','{{$product->selling_price}}')" style="background: #25d366 !important; color: #ffffff !important;height: 42px;border: 1px solid #25d366 !important;">
@@ -851,7 +854,7 @@
             @endif
         </div>
         @include('whatsapp_stores.templates.order_modal')
-        @if($whatsappStore->id == 1151 || $whatsappStore->id == 1407 || $whatsappStore->id == 1591)
+        @if($whatsappStore->id == 1151 || $whatsappStore->id == 1407 || $whatsappStore->id == 1591 || $whatsappStore->id == 1700 || $whatsappStore->id == 7 || $whatsappStore->id == 1589 || $whatsappStore->id == 1774)
             @include('whatsapp_stores.templates.ready_rasoi.cart_modal')
         @else
             @include('whatsapp_stores.templates.cart_modal')
