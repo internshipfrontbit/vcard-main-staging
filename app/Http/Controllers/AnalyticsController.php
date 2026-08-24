@@ -33,7 +33,7 @@ class AnalyticsController extends AppBaseController
     
     public $secretKey = "encryptdatasecretkey";
     public $method = "AES-256-CBC";
-    public $baseUrl = "https://backend.vcardking.com/analytics/api";
+    public $baseUrl = "https://backend.vcardking.com/analyticsdemo/api";
 
     public function __construct()
     {
